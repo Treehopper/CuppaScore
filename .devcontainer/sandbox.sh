@@ -61,6 +61,10 @@ case "${1:-help}" in
                       elif .type == "tool_use" then "  → \(.name) \(.input.command // .input.file_path // .input.url // "" | tostring | .[0:120])"
                       else empty end'\''
             ' _ "$log" || echo "session $i exited non-zero (see $log); continuing"
+            if grep -qs "hit your session limit\|usage limit" "$ROOT/$log"; then
+                echo "Usage limit reached; stopping. Re-run after the reset to resume."
+                break
+            fi
         done
         ;;
     status)
