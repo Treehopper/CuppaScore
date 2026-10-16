@@ -1,0 +1,71 @@
+# Egress allowlist for the CupLog Claude sandbox (read by init-firewall.sh).
+# Baked into the image at /etc/claude-firewall/ — rebuild the container after editing
+# (`.devcontainer/sandbox.sh rebuild`).
+#
+# One domain per line. A trailing "!" marks it required: the firewall setup aborts if it
+# doesn't resolve. GitHub's published ranges (https://api.github.com/meta: web, api,
+# git, pages) are added automatically, but GitHub also serves from IPs outside them, so
+# its hostnames are resolved below too.
+
+# --- Claude Code -------------------------------------------------------------
+api.anthropic.com!
+statsig.com
+sentry.io
+claude.ai
+console.anthropic.com
+platform.claude.com
+docs.claude.com
+code.claude.com
+mcp.svelte.dev            # official Svelte MCP server (docs + svelte-autofixer)
+
+# --- Package registries & toolchain -------------------------------------------
+registry.npmjs.org!
+nodejs.org
+github.com!
+api.github.com!
+uploads.github.com
+raw.githubusercontent.com
+objects.githubusercontent.com
+release-assets.githubusercontent.com
+codeload.github.com
+
+# --- Playwright browser downloads (only needed if @playwright/test version differs
+#     from the one baked into the image) -----------------------------------------
+cdn.playwright.dev
+playwright.download.prss.microsoft.com
+playwright.azureedge.net
+
+# --- Docs for the stack in README §8.4 ------------------------------------------
+svelte.dev!               # Svelte + SvelteKit docs, /llms.txt, /llms-full.txt
+vite.dev
+vitejs.dev
+vitest.dev
+playwright.dev
+vite-pwa-org.netlify.app  # vite-plugin-pwa
+developer.chrome.com      # Workbox, Lighthouse, PWA install docs
+web.dev
+developer.mozilla.org
+dexie.org
+zod.dev
+fast-check.dev
+www.typescriptlang.org
+pnpm.io
+www.chartjs.org
+eslint.org
+prettier.io
+typescript-eslint.io
+docs.github.com           # Actions / Pages docs
+caniuse.com
+webkit.org                # iOS / Safari PWA behaviour
+www.w3.org
+schema.org                # catalog builder: schema.org Product JSON-LD
+json-schema.org
+
+# --- App data sources -----------------------------------------------------------
+world.openfoodfacts.org   # barcode lookup (README §6.4, optional)
+static.openfoodfacts.org
+
+# --- Catalog builder sellers (README §6.4) ---------------------------------------
+# Not enabled by default: the seller list is still "to verify", and robots.txt/ToS must
+# be checked first (README §17). Add each verified webshop domain here, e.g.:
+# shop.example-roaster.de

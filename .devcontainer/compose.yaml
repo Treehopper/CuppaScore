@@ -1,0 +1,43 @@
+# Shared by devcontainer.json (VS Code / devcontainer CLI) and sandbox.sh (plain Docker).
+name: cuplog-sandbox
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TZ: ${TZ:-Europe/Berlin}
+        CLAUDE_CODE_VERSION: latest
+    image: cuplog-sandbox:latest
+    command: sleep infinity
+    init: true
+    user: node
+    working_dir: /workspace
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    shm_size: 2gb # Chromium under Playwright crashes with Docker's default 64 MB /dev/shm
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_OPTIONS: --max-old-space-size=6144
+      CLAUDE_CONFIG_DIR: /home/node/.claude
+      POWERLEVEL9K_DISABLE_GITSTATUS: "true"
+      DISABLE_AUTOUPDATER: "1"
+      CI: ${CI:-}
+    ports:
+      - "127.0.0.1:5173:5173" # vite dev
+      - "127.0.0.1:4173:4173" # vite preview (PWA / service worker testing)
+      - "127.0.0.1:9323:9323" # playwright show-report
+    volumes:
+      - ..:/workspace:cached
+      - claude-config:/home/node/.claude
+      - command-history:/commandhistory
+      - pnpm-store:/home/node/.local/share/pnpm/store
+
+volumes:
+  claude-config:
+  command-history:
+  pnpm-store:

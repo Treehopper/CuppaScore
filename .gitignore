@@ -1,0 +1,27 @@
+node_modules/
+dist/
+build/
+.svelte-kit/
+coverage/
+*.tsbuildinfo
+.vite/
+.eslintcache
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Lighthouse
+.lighthouseci/
+
+# Sandbox
+.devcontainer/.env
+.autopilot/
+STOP
+
+.env
+.env.*
+!.env.example
+.DS_Store

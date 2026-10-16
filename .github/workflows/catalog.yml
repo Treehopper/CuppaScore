@@ -1,0 +1,59 @@
+name: catalog
+
+on:
+  schedule:
+    - cron: "17 4 * * 1" # Mondays 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: catalog
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build catalog
+        id: build
+        run: |
+          pnpm run catalog:build | tee catalog-summary.txt
+          {
+            echo 'summary<<EOF'
+            tail -c 60000 catalog-summary.txt
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          rm catalog-summary.txt
+
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          # PRs opened with GITHUB_TOKEN don't trigger ci.yml; set a fine-grained PAT
+          # secret CATALOG_PR_TOKEN to have CI run automatically (README §14.2).
+          token: ${{ secrets.CATALOG_PR_TOKEN || github.token }}
+          branch: chore/catalog-refresh
+          base: develop
+          commit-message: "chore(catalog): weekly refresh"
+          title: Weekly catalog refresh
+          body: |
+            Automated rebuild of `catalog.json` by `catalog.yml`.
+
+            ```
+            ${{ steps.build.outputs.summary }}
+            ```
+          add-paths: apps/pwa/public/catalog*.json
+          delete-branch: true
