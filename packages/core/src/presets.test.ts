@@ -5,8 +5,8 @@ import { makeRating } from './testing';
 
 const NOW = Date.parse('2026-10-16T08:00:00+02:00'); // Friday morning
 const TZ = 'Europe/Berlin';
-const openBag = { openedAt: '2026-10-06', finishedAt: null, roastDate: '2026-10-02', expiryDate: '2027-04-02' };
-const bags = new Map([
+const openBag: { openedAt: string; finishedAt: string | null; roastDate: string; expiryDate: string } = { openedAt: '2026-10-06', finishedAt: null, roastDate: '2026-10-02', expiryDate: '2027-04-02' };
+const bags = new Map<string, typeof openBag>([
   ['bag1', openBag],
   ['bag2', openBag],
   ['done', { ...openBag, finishedAt: '2026-10-10' }],
