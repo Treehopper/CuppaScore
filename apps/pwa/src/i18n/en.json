@@ -302,5 +302,23 @@
   "ratings": {
     "timeline": "Cups",
     "empty": "No cups logged yet."
+  },
+  "log": {
+    "title": "Log a cup",
+    "mode": "Where was it made?",
+    "presets": "Your usual",
+    "bag": "Bag",
+    "method": "Method",
+    "addBag": "Add bag…",
+    "rate": "Rate",
+    "stars": "Stars",
+    "starsValue": "{value} of 5 stars",
+    "meal": "Meal",
+    "saved": "Cup saved",
+    "undone": "Removed",
+    "noBags": "Add your first bag to start logging.",
+    "pickStars": "Tap the stars to rate.",
+    "pin": "Pin preset",
+    "unpin": "Unpin preset"
   }
 }

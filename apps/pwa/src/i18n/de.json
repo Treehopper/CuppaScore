@@ -302,5 +302,23 @@
   "ratings": {
     "timeline": "Tassen",
     "empty": "Noch keine Tassen geloggt."
+  },
+  "log": {
+    "title": "Tasse loggen",
+    "mode": "Wo wurde er gemacht?",
+    "presets": "Deine Klassiker",
+    "bag": "Tüte",
+    "method": "Methode",
+    "addBag": "Tüte hinzufügen…",
+    "rate": "Bewerten",
+    "stars": "Sterne",
+    "starsValue": "{value} von 5 Sternen",
+    "meal": "Essen dazu",
+    "saved": "Tasse gespeichert",
+    "undone": "Entfernt",
+    "noBags": "Füge deine erste Tüte hinzu, um loszulegen.",
+    "pickStars": "Tippe auf die Sterne zum Bewerten.",
+    "pin": "Vorlage anheften",
+    "unpin": "Vorlage lösen"
   }
 }

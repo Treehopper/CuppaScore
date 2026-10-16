@@ -302,5 +302,23 @@
   "ratings": {
     "timeline": "Tazas",
     "empty": "Aún no hay tazas registradas."
+  },
+  "log": {
+    "title": "Registrar una taza",
+    "mode": "¿Dónde se preparó?",
+    "presets": "Lo habitual",
+    "bag": "Bolsa",
+    "method": "Método",
+    "addBag": "Añadir bolsa…",
+    "rate": "Valorar",
+    "stars": "Estrellas",
+    "starsValue": "{value} de 5 estrellas",
+    "meal": "Comida",
+    "saved": "Taza guardada",
+    "undone": "Eliminada",
+    "noBags": "Añade tu primera bolsa para empezar.",
+    "pickStars": "Toca las estrellas para valorar.",
+    "pin": "Fijar favorito",
+    "unpin": "Quitar de fijados"
   }
 }

@@ -302,5 +302,23 @@
   "ratings": {
     "timeline": "Tazze",
     "empty": "Ancora nessuna tazza registrata."
+  },
+  "log": {
+    "title": "Registra una tazza",
+    "mode": "Dove è stato preparato?",
+    "presets": "I tuoi soliti",
+    "bag": "Sacchetto",
+    "method": "Metodo",
+    "addBag": "Aggiungi sacchetto…",
+    "rate": "Valuta",
+    "stars": "Stelle",
+    "starsValue": "{value} stelle su 5",
+    "meal": "Cibo",
+    "saved": "Tazza salvata",
+    "undone": "Rimossa",
+    "noBags": "Aggiungi il primo sacchetto per iniziare.",
+    "pickStars": "Tocca le stelle per valutare.",
+    "pin": "Fissa preferito",
+    "unpin": "Rimuovi dai fissati"
   }
 }

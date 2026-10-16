@@ -8,6 +8,7 @@
   import BagDetailPage from './pages/BagDetailPage.svelte';
   import BagFormPage from './pages/BagFormPage.svelte';
   import BagsPage from './pages/BagsPage.svelte';
+  import LogPage from './pages/LogPage.svelte';
   import NotFound from './pages/NotFound.svelte';
   import ProductDetailPage from './pages/ProductDetailPage.svelte';
   import ProductFormPage from './pages/ProductFormPage.svelte';
@@ -28,7 +29,7 @@
 <UpdateBanner />
 <main>
   {#if section === 'log'}
-    <Placeholder title={t('nav.log')} />
+    <LogPage />
   {:else if section === 'bags'}
     {#if !sub}
       <BagsPage />
