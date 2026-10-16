@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 9 (export/import).
+- Task 10 (themes).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -23,7 +23,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: contract suite in `@cuplog/contract-tests` (`describeRepositoryContract`); memory adapter is non-atomic (flagged); `typecheck` runs with `--no-sort` because of a dev-only workspace cycle (contract-tests ↔ storage-dexie/api)
 - [x] 8. `@cuplog/api`: DTO zod schemas, `CupLogApi`, `LocalApi` (in-process + Web Worker via Comlink), `subscribe`, API contract tests
   - note: transport is one generic `call(method,args) → Result` (Comlink now, HTTP later); errors cross as `ApiError{code,details}`; `subscribe` is client-side (topics emitted after successful commands, `COMMAND_TOPICS`); `@cuplog/api` = UI entry (no storage code), `@cuplog/api/local` = in-process backend; worker bundle ~224 kB
-- [ ] 9. Export/import (JSON bundle with `schemaVersion`, merge/replace) + ratings CSV
+- [x] 9. Export/import (JSON bundle with `schemaVersion`, merge/replace) + ratings CSV
+  - note: bundle includes soft-deleted records; merge keeps higher `rev` (then later `updatedAt`); photos/media not in the bundle yet; CSV guards against formula injection
 - [ ] 10. Themes: 4 themes + System (light/dark pairing), semantic tokens, runtime `theme-color`, WCAG AA contrast test in `check`
 - [ ] 11. i18n: de/en/it/es + `en-XA` pseudo-locale, detection, ICU plurals, Intl formatting, missing-key check in `check`
 - [ ] 12. App shell: nav, hash routes, Settings screen (theme, language, owned methods, default rating level, about/version)
