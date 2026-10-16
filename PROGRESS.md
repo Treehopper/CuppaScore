@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 17 (Ratings history: edit/delete, "not representative" flag; export/import UI).
+- Task 18 (M1 wrap-up: installability/offline check, `navigator.storage.persist()`, products ranking screen, a11y pass).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -39,7 +39,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: form ↔ Brew/rating conversion is pure in `lib/logForm.ts` (unit-tested); brew edits are an overlay keyed by preset, otherwise the preset's `lastBrew` is shown; profile uses 1–5 tap scales (unset is possible) rather than range sliders; `main` reserves room for nav + toast so the last control is never stuck under a toast
 - [x] 16. Café mode: venues, drink/milk/size/bean/price, "Same as last time here", venue list
   - note: Quick Log lives in `pages/log/` (LogPage → HomeLog / CafeLog on shared `RatingPanel` + `PresetChips`, saving via `lib/logCup.ts`); new venues are created inline on first save (name only); "Same as last time" uses `venue.lastDrink` (timestamps have second precision); venue list at `#/venues` (linked from café mode) — nearest-first venue sorting skipped (no location permission yet); only one "Cup saved" toast at a time
-- [ ] 17. Ratings history: edit/delete, "not representative" flag; export/import UI
+- [x] 17. Ratings history: edit/delete, "not representative" flag; export/import UI
+  - note: `#/ratings` (History link in the Log header) and `#/ratings/:id` edit page incl. meal note (B6), time + time-of-day override (B5); `updateRating` patches clear optional level fields with `null` (undefined is dropped by the JSON transport); `ratedAt` may be sent as wall-clock `YYYY-MM-DDTHH:MM` and is stored zoned in the settings tz (`parseDateTimeInZone` in core); backup in Settings uses native `confirm()` for replace; toasts are single (newest replaces)
 - [ ] 18. M1 wrap-up: installability/offline check, `navigator.storage.persist()`, products ranking screen, a11y pass
 
 ## M1b — Reminders & install
