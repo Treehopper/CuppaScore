@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 5 (core presets).
+- Task 6 (services).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -15,7 +15,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: ids are plain UUIDv7 (no `prod_` prefixes); preset link stored as deterministic `presetKey`; DST-gap times shift forward (Temporal "compatible"); method params are a discriminated union (`kind: aeropress|flairNeo`)
 - [x] 4. Core stats: preference mapping `(p, c)` (§5.1 fixed mapping), mean/median/trimmed mean/spread, MAD outlier exclusion (§5.2), with fast-check property tests
   - note: `aggregate()` already includes recency weighting (§5.3) and accepts a `Calibration` (personal centring/swipe calibration computed in task 23); core exports `@cuplog/core/testing` fixtures
-- [ ] 5. Core presets: derive presets from rating history, ranking (§4.5), hide finished/expired bags, pinned first
+- [x] 5. Core presets: derive presets from rating history, ranking (§4.5), hide finished/expired bags, pinned first
+  - note: recency half-life 3 days; frequency = uses in 30 d normalised to the top preset; pins stored in `DomainSettings.pinnedPresets`
 - [ ] 6. Services: port interfaces + use cases (products, bags, venues, ratings CRUD + exclude, presets, bag/product stats), in-memory repos for tests
 - [ ] 7. storage-dexie adapter + repository contract tests (fake-indexeddb); in-memory adapter passes the same suite
 - [ ] 8. `@cuplog/api`: DTO zod schemas, `CupLogApi`, `LocalApi` (in-process + Web Worker via Comlink), `subscribe`, API contract tests
