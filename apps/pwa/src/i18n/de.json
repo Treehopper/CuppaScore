@@ -326,7 +326,17 @@
     "wouldBuyAgain": "Wieder kaufen?",
     "brewDetails": "Brühdetails",
     "swipeHint": "Karte ziehen oder Knöpfe nutzen",
-    "afterRoast": "{days, plural, one {# Tag} other {# Tage}} nach Röstung"
+    "afterRoast": "{days, plural, one {# Tag} other {# Tage}} nach Röstung",
+    "venue": "Café",
+    "addVenue": "Neues Café…",
+    "venueName": "Name des Cafés",
+    "drink": "Getränk",
+    "size": "Größe",
+    "bean": "Bohne",
+    "beanUnknown": "Unbekannt",
+    "beanHouse": "Hausmischung",
+    "cafeDetails": "Milch, Größe, Bohne & Preis",
+    "sameAsLastTime": "Wie letztes Mal hier"
   },
   "brewField": {
     "doseG": "Dosis (g)",
@@ -352,5 +362,11 @@
     "high": "Hoch",
     "preinfusionS": "Preinfusion (s)",
     "preheat": "Vorgeheizt"
+  },
+  "venues": {
+    "title": "Cafés",
+    "empty": "Cafés, in denen du einen Kaffee bewertest, erscheinen hier.",
+    "visits": "{count, plural, one {# Besuch} other {# Besuche}}",
+    "all": "Alle Cafés"
   }
 }

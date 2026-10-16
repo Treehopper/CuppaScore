@@ -130,3 +130,34 @@ export function detailFields(level: Exclude<RatingLevel, 'swipe'>, d: DetailStat
   }
   return out;
 }
+
+type CafeDetails = NonNullable<RatingDto['cafe']>;
+export type Drink = CafeDetails['drink'];
+
+/** Café details as the form edits them (README §4.3 café cup). */
+export interface CafeForm {
+  drink: Drink;
+  milk: CafeDetails['milk'];
+  size: CafeDetails['size'];
+  /** 'unknown' | 'house' | a productId */
+  bean: string;
+  price: string;
+}
+
+export function cafeToForm(c: CafeDetails | null | undefined, bean: string | null | undefined, drink: Drink): CafeForm {
+  return {
+    drink: c?.drink ?? drink,
+    milk: c?.milk ?? 'unknown',
+    size: c?.size ?? 'regular',
+    bean: bean ?? 'unknown',
+    price: str(c?.priceEur),
+  };
+}
+
+export function formToCafe(f: CafeForm): { cafe: CafeDetails; beanKnown: string } {
+  const priceEur = parseNum(f.price);
+  return {
+    cafe: compact({ drink: f.drink, milk: f.milk, size: f.size, priceEur }),
+    beanKnown: f.bean || 'unknown',
+  };
+}

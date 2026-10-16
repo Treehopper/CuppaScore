@@ -8,12 +8,13 @@
   import BagDetailPage from './pages/BagDetailPage.svelte';
   import BagFormPage from './pages/BagFormPage.svelte';
   import BagsPage from './pages/BagsPage.svelte';
-  import LogPage from './pages/LogPage.svelte';
+  import LogPage from './pages/log/LogPage.svelte';
   import NotFound from './pages/NotFound.svelte';
   import ProductDetailPage from './pages/ProductDetailPage.svelte';
   import ProductFormPage from './pages/ProductFormPage.svelte';
   import ProductsPage from './pages/ProductsPage.svelte';
   import Placeholder from './pages/Placeholder.svelte';
+  import VenuesPage from './pages/VenuesPage.svelte';
   import SettingsPage from './pages/SettingsPage.svelte';
   import { applyThemeEffect } from './themes/apply.svelte';
 
@@ -54,6 +55,8 @@
     {:else}
       {#key sub}<ProductDetailPage id={sub} />{/key}
     {/if}
+  {:else if section === 'venues'}
+    <VenuesPage />
   {:else if section === 'stats'}
     <Placeholder title={t('nav.stats')} />
   {:else if section === 'discover'}

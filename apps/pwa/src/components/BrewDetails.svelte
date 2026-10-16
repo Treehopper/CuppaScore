@@ -17,7 +17,7 @@
   </label>
 {/snippet}
 
-<details class="brew" data-testid="brew-details">
+<details class="disclosure" data-testid="brew-details">
   <summary>{t('log.brewDetails')}</summary>
   <div class="stack">
     <div class="row">
@@ -106,25 +106,3 @@
     {/if}
   </div>
 </details>
-
-<style>
-  .brew summary {
-    cursor: pointer;
-    font-weight: 600;
-    padding: 0.5rem 0;
-    min-height: 2.75rem;
-    display: flex;
-    align-items: center;
-  }
-  .brew summary::after {
-    content: '▾';
-    margin-left: 0.4rem;
-    color: var(--muted);
-  }
-  .brew[open] summary::after {
-    content: '▴';
-  }
-  .brew summary::-webkit-details-marker {
-    display: none;
-  }
-</style>

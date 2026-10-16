@@ -326,7 +326,17 @@
     "wouldBuyAgain": "Would buy again?",
     "brewDetails": "Brew details",
     "swipeHint": "Drag the card or use the buttons",
-    "afterRoast": "{days, plural, one {# day} other {# days}} after roast"
+    "afterRoast": "{days, plural, one {# day} other {# days}} after roast",
+    "venue": "Café",
+    "addVenue": "New café…",
+    "venueName": "Name of the café",
+    "drink": "Drink",
+    "size": "Size",
+    "bean": "Bean",
+    "beanUnknown": "Unknown",
+    "beanHouse": "House blend",
+    "cafeDetails": "Milk, size, bean & price",
+    "sameAsLastTime": "Same as last time here"
   },
   "brewField": {
     "doseG": "Dose (g)",
@@ -352,5 +362,11 @@
     "high": "High",
     "preinfusionS": "Preinfusion (s)",
     "preheat": "Preheated"
+  },
+  "venues": {
+    "title": "Cafés",
+    "empty": "Cafés you rate a cup at show up here.",
+    "visits": "{count, plural, one {# visit} other {# visits}}",
+    "all": "All cafés"
   }
 }

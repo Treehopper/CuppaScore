@@ -326,7 +326,17 @@
     "wouldBuyAgain": "¿Volverías a comprarlo?",
     "brewDetails": "Detalles de preparación",
     "swipeHint": "Arrastra la tarjeta o usa los botones",
-    "afterRoast": "{days, plural, one {# día} other {# días}} tras el tueste"
+    "afterRoast": "{days, plural, one {# día} other {# días}} tras el tueste",
+    "venue": "Cafetería",
+    "addVenue": "Nueva cafetería…",
+    "venueName": "Nombre de la cafetería",
+    "drink": "Bebida",
+    "size": "Tamaño",
+    "bean": "Grano",
+    "beanUnknown": "Desconocido",
+    "beanHouse": "Mezcla de la casa",
+    "cafeDetails": "Leche, tamaño, grano y precio",
+    "sameAsLastTime": "Lo mismo que la última vez"
   },
   "brewField": {
     "doseG": "Dosis (g)",
@@ -352,5 +362,11 @@
     "high": "Alta",
     "preinfusionS": "Preinfusión (s)",
     "preheat": "Precalentado"
+  },
+  "venues": {
+    "title": "Cafeterías",
+    "empty": "Las cafeterías donde valoras un café aparecen aquí.",
+    "visits": "{count, plural, one {# visita} other {# visitas}}",
+    "all": "Todas las cafeterías"
   }
 }

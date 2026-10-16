@@ -280,6 +280,27 @@ textarea {
   border-color: var(--good);
 }
 
+/* collapsible "… details ▾" sections */
+.disclosure > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+}
+.disclosure > summary::after {
+  content: '▾';
+  margin-left: 0.4rem;
+  color: var(--muted);
+}
+.disclosure[open] > summary::after {
+  content: '▴';
+}
+.disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px;

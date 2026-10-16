@@ -326,7 +326,17 @@
     "wouldBuyAgain": "Lo ricompreresti?",
     "brewDetails": "Dettagli di preparazione",
     "swipeHint": "Trascina la carta o usa i pulsanti",
-    "afterRoast": "{days, plural, one {# giorno} other {# giorni}} dalla tostatura"
+    "afterRoast": "{days, plural, one {# giorno} other {# giorni}} dalla tostatura",
+    "venue": "Bar",
+    "addVenue": "Nuovo bar…",
+    "venueName": "Nome del bar",
+    "drink": "Bevanda",
+    "size": "Formato",
+    "bean": "Chicco",
+    "beanUnknown": "Sconosciuto",
+    "beanHouse": "Miscela della casa",
+    "cafeDetails": "Latte, formato, chicco e prezzo",
+    "sameAsLastTime": "Come l'ultima volta qui"
   },
   "brewField": {
     "doseG": "Dose (g)",
@@ -352,5 +362,11 @@
     "high": "Alta",
     "preinfusionS": "Preinfusione (s)",
     "preheat": "Preriscaldato"
+  },
+  "venues": {
+    "title": "Bar",
+    "empty": "I bar in cui valuti un caffè appaiono qui.",
+    "visits": "{count, plural, one {# visita} other {# visite}}",
+    "all": "Tutti i bar"
   }
 }

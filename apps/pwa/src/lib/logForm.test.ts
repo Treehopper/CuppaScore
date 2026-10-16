@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { brewToForm, detailFields, emptyDetail, formToBrew, parseNum } from './logForm';
+import { brewToForm, cafeToForm, detailFields, emptyDetail, formToBrew, formToCafe, parseNum } from './logForm';
 
 describe('parseNum', () => {
   it('accepts comma and dot decimals, rejects garbage', () => {
@@ -76,5 +76,19 @@ describe('detailFields', () => {
 
   it('omits everything not set', () => {
     expect(detailFields('advanced', { ...emptyDetail(), stars: 3 })).toEqual({ overall: 3 });
+  });
+});
+
+describe('café form', () => {
+  it('defaults for a new venue and round-trips', () => {
+    const f = cafeToForm(null, null, 'cappuccino');
+    expect(f).toEqual({ drink: 'cappuccino', milk: 'unknown', size: 'regular', bean: 'unknown', price: '' });
+    expect(formToCafe(f)).toEqual({ cafe: { drink: 'cappuccino', milk: 'unknown', size: 'regular' }, beanKnown: 'unknown' });
+    const cafe = { drink: 'flatWhite' as const, milk: 'plant' as const, size: 'large' as const, priceEur: 4.2 };
+    expect(formToCafe(cafeToForm(cafe, 'house', 'espresso'))).toEqual({ cafe, beanKnown: 'house' });
+  });
+
+  it('parses a comma price', () => {
+    expect(formToCafe({ ...cafeToForm(null, null, 'espresso'), price: '2,8' }).cafe.priceEur).toBe(2.8);
   });
 });
