@@ -4,13 +4,13 @@ test.describe('device language detection', () => {
   test.use({ locale: 'de-DE' });
   test('German device gets German UI', async ({ page }) => {
     await page.goto('./');
-    await expect(page.getByTestId('home')).toHaveText('Logge deine nächste Tasse.');
+    await expect(page.getByRole('link', { name: 'Loggen' })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', 'de');
   });
 });
 
 test('language can be overridden and persists', async ({ page }) => {
-  await page.goto('./#/about');
+  await page.goto('./?pseudo#/settings');
   await page.getByTestId('language-picker').selectOption('it');
   await expect(page.getByRole('radio', { name: 'Sistema' })).toBeVisible();
   await page.reload();

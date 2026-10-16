@@ -15,7 +15,7 @@ test('System theme follows the colour scheme (Crema / Espresso)', async ({ page 
 });
 
 test('chosen theme persists across reloads without a flash', async ({ page }) => {
-  await page.goto('./#/about');
+  await page.goto('./#/settings');
   await page.getByRole('radio', { name: 'Solarized Dark' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'solarized-dark');
   await page.reload();

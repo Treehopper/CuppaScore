@@ -194,5 +194,31 @@
     "IMPORT_INVALID": "The file is not a valid CupLog export.",
     "UNSUPPORTED_SCHEMA_VERSION": "This export comes from a newer CupLog version.",
     "INTERNAL": "Something went wrong."
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "brewing": "Brewing",
+    "ownedMethods": "Brew methods I own",
+    "ownedMethodsHint": "Only these appear in the Method list.",
+    "defaultLevel": "Default rating level",
+    "advanced": "Advanced",
+    "halfLife": "Taste drift half-life",
+    "halfLifeValue": "{days} days",
+    "outlierMethod": "Outlier handling",
+    "outlier": {
+      "mad": "Automatic (robust z-score)",
+      "trimmed": "Trimmed mean only",
+      "off": "Off"
+    },
+    "weights": "Rating level weights",
+    "about": "About",
+    "version": "Version {version}",
+    "built": "Built {date}",
+    "saved": "Saved"
+  },
+  "page": {
+    "notFound": "Page not found",
+    "comingSoon": "Coming soon"
   }
 }

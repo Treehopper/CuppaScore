@@ -4,3 +4,5 @@ export * from './api';
 export * from './errors';
 export { connectApi } from './client';
 export { createBrowserApi } from './browser';
+// zod-free vocabularies for the UI (enum keys; the UI translates them)
+export * from '@cuplog/core/vocab';

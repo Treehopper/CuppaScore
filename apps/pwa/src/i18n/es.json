@@ -194,5 +194,31 @@
     "IMPORT_INVALID": "El archivo no es una exportación válida de CupLog.",
     "UNSUPPORTED_SCHEMA_VERSION": "Esta exportación viene de una versión más reciente de CupLog.",
     "INTERNAL": "Algo salió mal."
+  },
+  "settings": {
+    "title": "Ajustes",
+    "appearance": "Apariencia",
+    "brewing": "Preparación",
+    "ownedMethods": "Mis métodos",
+    "ownedMethodsHint": "Solo estos aparecen en la lista de métodos.",
+    "defaultLevel": "Nivel de valoración predeterminado",
+    "advanced": "Avanzado",
+    "halfLife": "Vida media del gusto",
+    "halfLifeValue": "{days} días",
+    "outlierMethod": "Gestión de valores atípicos",
+    "outlier": {
+      "mad": "Automática (z robusto)",
+      "trimmed": "Solo media recortada",
+      "off": "Desactivada"
+    },
+    "weights": "Peso de los niveles de valoración",
+    "about": "Acerca de",
+    "version": "Versión {version}",
+    "built": "Compilada {date}",
+    "saved": "Guardado"
+  },
+  "page": {
+    "notFound": "Página no encontrada",
+    "comingSoon": "Próximamente"
   }
 }

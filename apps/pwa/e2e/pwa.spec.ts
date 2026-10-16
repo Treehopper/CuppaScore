@@ -24,9 +24,9 @@ test('works offline after the service worker is installed', async ({ page, conte
   await page.reload();
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
   await context.setOffline(true);
-  await page.goto('./#/about');
+  await page.goto('./#/settings');
   await expect(page.getByTestId('about')).toBeVisible();
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'CupLog' })).toBeVisible();
+  await expect(page.getByRole('navigation')).toBeVisible();
   await context.setOffline(false);
 });

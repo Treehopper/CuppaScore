@@ -194,5 +194,31 @@
     "IMPORT_INVALID": "Die Datei ist kein gültiger CupLog-Export.",
     "UNSUPPORTED_SCHEMA_VERSION": "Dieser Export stammt aus einer neueren CupLog-Version.",
     "INTERNAL": "Etwas ist schiefgelaufen."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "appearance": "Darstellung",
+    "brewing": "Zubereitung",
+    "ownedMethods": "Meine Zubereitungsarten",
+    "ownedMethodsHint": "Nur diese erscheinen in der Methodenliste.",
+    "defaultLevel": "Standard-Bewertungsart",
+    "advanced": "Erweitert",
+    "halfLife": "Halbwertszeit für Geschmackswandel",
+    "halfLifeValue": "{days} Tage",
+    "outlierMethod": "Umgang mit Ausreißern",
+    "outlier": {
+      "mad": "Automatisch (robuster z-Wert)",
+      "trimmed": "Nur getrimmter Mittelwert",
+      "off": "Aus"
+    },
+    "weights": "Gewichtung der Bewertungsarten",
+    "about": "Über",
+    "version": "Version {version}",
+    "built": "Erstellt {date}",
+    "saved": "Gespeichert"
+  },
+  "page": {
+    "notFound": "Seite nicht gefunden",
+    "comingSoon": "Bald verfügbar"
   }
 }
