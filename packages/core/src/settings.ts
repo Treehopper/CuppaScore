@@ -22,6 +22,8 @@ export const DomainSettings = z.object({
   timeZone: z.string().min(1).max(64).default(DEFAULT_TIME_ZONE),
   wishlist: z.array(z.string().max(200)).default([]),
   dismissed: z.array(z.string().max(200)).default([]),
+  /** preset keys pinned to the top of the quick log */
+  pinnedPresets: z.array(z.string().max(200)).default([]),
   onboardingCompletedAt: IsoDateTime.nullable().default(null),
   updatedAt: IsoDateTime.nullable().default(null),
   rev: z.number().int().nonnegative().default(0),
