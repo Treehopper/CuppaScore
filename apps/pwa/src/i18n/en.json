@@ -1,0 +1,198 @@
+{
+  "app": {
+    "name": "CupLog",
+    "tagline": "Log your next cup."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "undo": "Undo",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "add": "Add",
+    "done": "Done",
+    "next": "Next",
+    "skip": "Skip",
+    "later": "Later",
+    "reload": "Reload",
+    "loading": "Loading…",
+    "none": "None",
+    "optional": "optional",
+    "yes": "Yes",
+    "no": "No",
+    "cups": "{count, plural, one {# cup} other {# cups}}",
+    "days": "{count, plural, one {# day} other {# days}}"
+  },
+  "nav": {
+    "log": "Log",
+    "bags": "Bags",
+    "stats": "Stats",
+    "discover": "Discover",
+    "settings": "Settings"
+  },
+  "pwa": {
+    "newVersion": "New version available"
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System",
+    "crema": "Crema",
+    "espresso": "Espresso",
+    "solarized-light": "Solarized Light",
+    "solarized-dark": "Solarized Dark",
+    "systemLight": "Light",
+    "systemDark": "Dark"
+  },
+  "language": {
+    "label": "Language",
+    "auto": "Device language",
+    "de": "Deutsch",
+    "en": "English",
+    "it": "Italiano",
+    "es": "Español",
+    "en-XA": "Pseudo-locale (test)"
+  },
+  "brew": {
+    "aeropress": "AeroPress",
+    "flairNeo": "Flair NEO",
+    "espressoMachine": "Espresso machine",
+    "v60": "V60",
+    "chemex": "Chemex",
+    "kalita": "Kalita",
+    "frenchPress": "French press",
+    "moka": "Moka pot",
+    "filterMachine": "Filter machine",
+    "coldBrew": "Cold brew",
+    "beanToCup": "Bean-to-cup machine"
+  },
+  "drink": {
+    "espresso": "Espresso",
+    "doppio": "Doppio",
+    "ristretto": "Ristretto",
+    "americano": "Americano",
+    "cappuccino": "Cappuccino",
+    "flatWhite": "Flat white",
+    "latte": "Latte",
+    "cortado": "Cortado",
+    "macchiato": "Macchiato",
+    "batch": "Batch brew",
+    "pourOver": "Pour-over",
+    "coldBrew": "Cold brew",
+    "other": "Other"
+  },
+  "milk": {
+    "none": "No milk",
+    "dairy": "Dairy",
+    "oat": "Oat",
+    "soy": "Soy",
+    "almond": "Almond",
+    "otherPlant": "Other plant milk",
+    "plant": "Plant milk",
+    "unknown": "Unknown"
+  },
+  "size": {
+    "small": "Small",
+    "regular": "Regular",
+    "large": "Large"
+  },
+  "meal": {
+    "none": "None",
+    "sweet": "Sweet",
+    "savory": "Savory",
+    "mixed": "Mixed",
+    "unspecified": "Not specified"
+  },
+  "level": {
+    "swipe": "Swipe",
+    "stars": "Stars",
+    "advanced": "Detail"
+  },
+  "source": {
+    "home": "Home",
+    "cafe": "Café"
+  },
+  "swipe": {
+    "more": "More of this",
+    "less": "Less of this"
+  },
+  "flavour": {
+    "chocolate": "Chocolate",
+    "nutty": "Nutty",
+    "caramel": "Caramel",
+    "berry": "Berry",
+    "citrus": "Citrus",
+    "stoneFruit": "Stone fruit",
+    "tropical": "Tropical",
+    "floral": "Floral",
+    "spice": "Spice",
+    "earthy": "Earthy",
+    "herbal": "Herbal",
+    "winey": "Winey"
+  },
+  "attr": {
+    "acidity": "Acidity",
+    "sweetness": "Sweetness",
+    "bitterness": "Bitterness",
+    "body": "Body",
+    "aftertaste": "Aftertaste",
+    "strength": "Strength"
+  },
+  "wish": {
+    "more": "More",
+    "justRight": "Just right",
+    "less": "Less"
+  },
+  "process": {
+    "washed": "Washed",
+    "natural": "Natural",
+    "honey": "Honey",
+    "anaerobic": "Anaerobic",
+    "other": "Other"
+  },
+  "roastFor": {
+    "filter": "Filter",
+    "espresso": "Espresso",
+    "omni": "Omni"
+  },
+  "roastLevel": {
+    "1": "Very light",
+    "2": "Light",
+    "3": "Medium",
+    "4": "Medium-dark",
+    "5": "Dark"
+  },
+  "form": {
+    "beans": "Beans",
+    "ground": "Ground",
+    "capsules": "Capsules",
+    "pods": "Pods"
+  },
+  "timeOfDay": {
+    "early": "Early",
+    "morning": "Morning",
+    "midday": "Midday",
+    "afternoon": "Afternoon",
+    "evening": "Evening"
+  },
+  "bagStatus": {
+    "unopened": "Unopened",
+    "open": "Open",
+    "finished": "Finished"
+  },
+  "warning": {
+    "pastExpiry": "Past expiry",
+    "staleRoast": "Roasted {days, plural, one {# day} other {# days}} ago"
+  },
+  "error": {
+    "NOT_FOUND": "That item no longer exists.",
+    "VALIDATION": "Please check the highlighted fields.",
+    "INVALID_RATING_SHAPE": "This rating is incomplete.",
+    "BAG_FINISHED": "This bag is finished.",
+    "REV_CONFLICT": "This was changed elsewhere. Please reload.",
+    "IMPORT_INVALID": "The file is not a valid CupLog export.",
+    "UNSUPPORTED_SCHEMA_VERSION": "This export comes from a newer CupLog version.",
+    "INTERNAL": "Something went wrong."
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "app": {
+    "name": "CupLog",
+    "tagline": "Registra la tua prossima tazza."
+  },
+  "common": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "undo": "Annulla azione",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "close": "Chiudi",
+    "back": "Indietro",
+    "add": "Aggiungi",
+    "done": "Fatto",
+    "next": "Avanti",
+    "skip": "Salta",
+    "later": "Più tardi",
+    "reload": "Ricarica",
+    "loading": "Caricamento…",
+    "none": "Nessuno",
+    "optional": "facoltativo",
+    "yes": "Sì",
+    "no": "No",
+    "cups": "{count, plural, one {# tazza} other {# tazze}}",
+    "days": "{count, plural, one {# giorno} other {# giorni}}"
+  },
+  "nav": {
+    "log": "Registra",
+    "bags": "Sacchetti",
+    "stats": "Statistiche",
+    "discover": "Scopri",
+    "settings": "Impostazioni"
+  },
+  "pwa": {
+    "newVersion": "Nuova versione disponibile"
+  },
+  "theme": {
+    "label": "Tema",
+    "system": "Sistema",
+    "crema": "Crema",
+    "espresso": "Espresso",
+    "solarized-light": "Solarized chiaro",
+    "solarized-dark": "Solarized scuro",
+    "systemLight": "Chiaro",
+    "systemDark": "Scuro"
+  },
+  "language": {
+    "label": "Lingua",
+    "auto": "Lingua del dispositivo",
+    "de": "Deutsch",
+    "en": "English",
+    "it": "Italiano",
+    "es": "Español",
+    "en-XA": "Pseudo-lingua (test)"
+  },
+  "brew": {
+    "aeropress": "AeroPress",
+    "flairNeo": "Flair NEO",
+    "espressoMachine": "Macchina espresso",
+    "v60": "V60",
+    "chemex": "Chemex",
+    "kalita": "Kalita",
+    "frenchPress": "Caffettiera a stantuffo",
+    "moka": "Moka",
+    "filterMachine": "Macchina da filtro",
+    "coldBrew": "Cold brew",
+    "beanToCup": "Macchina superautomatica"
+  },
+  "drink": {
+    "espresso": "Espresso",
+    "doppio": "Doppio",
+    "ristretto": "Ristretto",
+    "americano": "Americano",
+    "cappuccino": "Cappuccino",
+    "flatWhite": "Flat white",
+    "latte": "Latte macchiato",
+    "cortado": "Cortado",
+    "macchiato": "Macchiato",
+    "batch": "Caffè filtro",
+    "pourOver": "Pour-over",
+    "coldBrew": "Cold brew",
+    "other": "Altro"
+  },
+  "milk": {
+    "none": "Senza latte",
+    "dairy": "Latte vaccino",
+    "oat": "Avena",
+    "soy": "Soia",
+    "almond": "Mandorla",
+    "otherPlant": "Altra bevanda vegetale",
+    "plant": "Bevanda vegetale",
+    "unknown": "Non so"
+  },
+  "size": {
+    "small": "Piccolo",
+    "regular": "Normale",
+    "large": "Grande"
+  },
+  "meal": {
+    "none": "Niente",
+    "sweet": "Dolce",
+    "savory": "Salato",
+    "mixed": "Misto",
+    "unspecified": "Non indicato"
+  },
+  "level": {
+    "swipe": "Swipe",
+    "stars": "Stelle",
+    "advanced": "Dettaglio"
+  },
+  "source": {
+    "home": "Casa",
+    "cafe": "Bar"
+  },
+  "swipe": {
+    "more": "Di più",
+    "less": "Di meno"
+  },
+  "flavour": {
+    "chocolate": "Cioccolato",
+    "nutty": "Nocciolato",
+    "caramel": "Caramello",
+    "berry": "Frutti di bosco",
+    "citrus": "Agrumi",
+    "stoneFruit": "Frutta a nocciolo",
+    "tropical": "Tropicale",
+    "floral": "Floreale",
+    "spice": "Speziato",
+    "earthy": "Terroso",
+    "herbal": "Erbaceo",
+    "winey": "Vinoso"
+  },
+  "attr": {
+    "acidity": "Acidità",
+    "sweetness": "Dolcezza",
+    "bitterness": "Amarezza",
+    "body": "Corpo",
+    "aftertaste": "Retrogusto",
+    "strength": "Intensità"
+  },
+  "wish": {
+    "more": "Di più",
+    "justRight": "Giusto",
+    "less": "Di meno"
+  },
+  "process": {
+    "washed": "Lavato",
+    "natural": "Naturale",
+    "honey": "Honey",
+    "anaerobic": "Anaerobico",
+    "other": "Altro"
+  },
+  "roastFor": {
+    "filter": "Filtro",
+    "espresso": "Espresso",
+    "omni": "Omni"
+  },
+  "roastLevel": {
+    "1": "Molto chiara",
+    "2": "Chiara",
+    "3": "Media",
+    "4": "Medio-scura",
+    "5": "Scura"
+  },
+  "form": {
+    "beans": "Chicchi",
+    "ground": "Macinato",
+    "capsules": "Capsule",
+    "pods": "Cialde"
+  },
+  "timeOfDay": {
+    "early": "Presto",
+    "morning": "Mattina",
+    "midday": "Mezzogiorno",
+    "afternoon": "Pomeriggio",
+    "evening": "Sera"
+  },
+  "bagStatus": {
+    "unopened": "Chiuso",
+    "open": "Aperto",
+    "finished": "Finito"
+  },
+  "warning": {
+    "pastExpiry": "Scaduto",
+    "staleRoast": "Tostato {days, plural, one {# giorno} other {# giorni}} fa"
+  },
+  "error": {
+    "NOT_FOUND": "Questo elemento non esiste più.",
+    "VALIDATION": "Controlla i campi evidenziati.",
+    "INVALID_RATING_SHAPE": "Questa valutazione è incompleta.",
+    "BAG_FINISHED": "Questo sacchetto è finito.",
+    "REV_CONFLICT": "È stato modificato altrove. Ricarica.",
+    "IMPORT_INVALID": "Il file non è un'esportazione CupLog valida.",
+    "UNSUPPORTED_SCHEMA_VERSION": "Questa esportazione proviene da una versione più recente di CupLog.",
+    "INTERNAL": "Qualcosa è andato storto."
+  }
+}

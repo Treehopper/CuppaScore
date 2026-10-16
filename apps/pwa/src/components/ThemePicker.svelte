@@ -1,20 +1,13 @@
 <script lang="ts">
+  import { t } from '../i18n/i18n.svelte';
   import { prefs } from '../lib/prefs.svelte';
   import { DARK_THEMES, LIGHT_THEMES, THEMES, type ThemeChoice, type ThemeId } from '../themes/themes';
-
-  const NAMES: Record<ThemeChoice, string> = {
-    system: 'System',
-    crema: 'Crema',
-    espresso: 'Espresso',
-    'solarized-light': 'Solarized Light',
-    'solarized-dark': 'Solarized Dark',
-  };
 
   const choices: ThemeChoice[] = ['system', ...THEMES];
 </script>
 
 <div class="stack" data-testid="theme-picker">
-  <div class="swatches" role="radiogroup" aria-label="Theme">
+  <div class="swatches" role="radiogroup" aria-label={t('theme.label')}>
     {#each choices as c (c)}
       <button
         type="button"
@@ -25,7 +18,7 @@
         onclick={() => prefs.set('theme', c)}
       >
         <span class="dot" aria-hidden="true"></span>
-        {NAMES[c]}
+        {t(`theme.${c}`)}
       </button>
     {/each}
   </div>
@@ -33,18 +26,18 @@
   {#if prefs.value.theme === 'system'}
     <div class="row">
       <label class="field">
-        <span>Light</span>
+        <span>{t('theme.systemLight')}</span>
         <select
           value={prefs.value.systemLight}
           onchange={(e) => prefs.set('systemLight', e.currentTarget.value as ThemeId)}
         >
-          {#each LIGHT_THEMES as t (t)}<option value={t}>{NAMES[t]}</option>{/each}
+          {#each LIGHT_THEMES as th (th)}<option value={th}>{t(`theme.${th}`)}</option>{/each}
         </select>
       </label>
       <label class="field">
-        <span>Dark</span>
+        <span>{t('theme.systemDark')}</span>
         <select value={prefs.value.systemDark} onchange={(e) => prefs.set('systemDark', e.currentTarget.value as ThemeId)}>
-          {#each DARK_THEMES as t (t)}<option value={t}>{NAMES[t]}</option>{/each}
+          {#each DARK_THEMES as th (th)}<option value={th}>{t(`theme.${th}`)}</option>{/each}
         </select>
       </label>
     </div>
