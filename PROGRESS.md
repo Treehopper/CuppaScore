@@ -4,12 +4,13 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 2 (PWA plumbing).
+- Task 3 (core entities).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
   - note: TypeScript pinned to 6.0.3 (typescript-eslint/svelte-check don't support TS 7 yet); pnpm 12 uses `allowBuilds` in pnpm-workspace.yaml; workspace packages export `src/index.ts` directly (no package build step); in-place `sed -i` fails on this mount, use python/Edit
-- [ ] 2. PWA plumbing: vite-plugin-pwa (manifest from BASE_PATH, icons incl. maskable + apple-touch, `registerType: "prompt"` + update banner), iOS meta, safe areas, version stamp, offline e2e
+- [x] 2. PWA plumbing: vite-plugin-pwa (manifest from BASE_PATH, icons incl. maskable + apple-touch, `registerType: "prompt"` + update banner), iOS meta, safe areas, version stamp, offline e2e
+  - note: icons rendered from `public/icons/icon.svg` by `node scripts/gen-icons.ts` (Chromium); iOS splash screens deferred to task 38; update banner not e2e-tested (needs two builds)
 - [ ] 3. Core entities: zod schemas for Product, Bag, Rating (3 levels, home/café), Venue, settings; sync fields; `Clock`/`IdGenerator`/`rng` ports; UUIDv7; timeOfDay buckets; `derived` fields
 - [ ] 4. Core stats: preference mapping `(p, c)` (§5.1 fixed mapping), mean/median/trimmed mean/spread, MAD outlier exclusion (§5.2), with fast-check property tests
 - [ ] 5. Core presets: derive presets from rating history, ranking (§4.5), hide finished/expired bags, pinned first
