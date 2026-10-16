@@ -301,7 +301,8 @@
   },
   "ratings": {
     "timeline": "Tassen",
-    "empty": "Noch keine Tassen geloggt."
+    "empty": "Noch keine Tassen geloggt.",
+    "title": "Verlauf"
   },
   "log": {
     "title": "Tasse loggen",
@@ -336,7 +337,8 @@
     "beanUnknown": "Unbekannt",
     "beanHouse": "Hausmischung",
     "cafeDetails": "Milch, Größe, Bohne & Preis",
-    "sameAsLastTime": "Wie letztes Mal hier"
+    "sameAsLastTime": "Wie letztes Mal hier",
+    "history": "Verlauf"
   },
   "brewField": {
     "doseG": "Dosis (g)",
@@ -368,5 +370,39 @@
     "empty": "Cafés, in denen du einen Kaffee bewertest, erscheinen hier.",
     "visits": "{count, plural, one {# Besuch} other {# Besuche}}",
     "all": "Alle Cafés"
+  },
+  "rating": {
+    "editTitle": "Tasse bearbeiten",
+    "deleted": "Tasse gelöscht",
+    "mealNote": "Notiz zum Essen",
+    "mealNoteHint": "z. B. Brezn",
+    "when": "Wann",
+    "timeOfDay": "Tageszeit",
+    "timeOfDayAuto": "Automatisch ({bucket})",
+    "notRepresentative": "Nicht repräsentativ",
+    "notRepresentativeHint": "Bleibt erhalten, zählt aber nicht in die Wertung (Maschinenproblem, krank, gehetzt …).",
+    "reason": "Grund",
+    "reasonHint": "z. B. Mühle verstopft"
+  },
+  "data": {
+    "title": "Datensicherung",
+    "exportJson": "Alles exportieren (JSON)",
+    "exportCsv": "Bewertungen als CSV",
+    "importMode": "Importmodus",
+    "merge": "Zusammenführen",
+    "replace": "Ersetzen",
+    "mergeHint": "Fügt neue Einträge hinzu; gibt es einen Eintrag doppelt, gewinnt die neuere Version.",
+    "replaceHint": "Löscht zuerst alles auf diesem Gerät und importiert dann die Datei.",
+    "replaceConfirm": "Alle Daten auf diesem Gerät durch die Datei ersetzen? Das lässt sich nicht rückgängig machen.",
+    "import": "Datei importieren…",
+    "imported": "Import abgeschlossen",
+    "notJson": "Diese Datei ist keine CupLog-Sicherung.",
+    "counts": "{added} neu · {updated} aktualisiert · {skipped} unverändert",
+    "kind": {
+      "products": "Produkte",
+      "bags": "Packungen",
+      "ratings": "Tassen",
+      "venues": "Cafés"
+    }
   }
 }

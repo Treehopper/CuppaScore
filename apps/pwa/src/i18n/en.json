@@ -301,7 +301,8 @@
   },
   "ratings": {
     "timeline": "Cups",
-    "empty": "No cups logged yet."
+    "empty": "No cups logged yet.",
+    "title": "History"
   },
   "log": {
     "title": "Log a cup",
@@ -336,7 +337,8 @@
     "beanUnknown": "Unknown",
     "beanHouse": "House blend",
     "cafeDetails": "Milk, size, bean & price",
-    "sameAsLastTime": "Same as last time here"
+    "sameAsLastTime": "Same as last time here",
+    "history": "History"
   },
   "brewField": {
     "doseG": "Dose (g)",
@@ -368,5 +370,39 @@
     "empty": "Cafés you rate a cup at show up here.",
     "visits": "{count, plural, one {# visit} other {# visits}}",
     "all": "All cafés"
+  },
+  "rating": {
+    "editTitle": "Edit cup",
+    "deleted": "Cup deleted",
+    "mealNote": "Meal note",
+    "mealNoteHint": "e.g. Croissant",
+    "when": "When",
+    "timeOfDay": "Time of day",
+    "timeOfDayAuto": "Auto ({bucket})",
+    "notRepresentative": "Not representative",
+    "notRepresentativeHint": "Kept, but left out of scores (machine problem, ill, rushed brew …).",
+    "reason": "Reason",
+    "reasonHint": "e.g. grinder clogged"
+  },
+  "data": {
+    "title": "Backup",
+    "exportJson": "Export all (JSON)",
+    "exportCsv": "Ratings as CSV",
+    "importMode": "Import mode",
+    "merge": "Merge",
+    "replace": "Replace",
+    "mergeHint": "Adds new records; where both have a record, the newer version wins.",
+    "replaceHint": "Deletes everything on this device first, then imports the file.",
+    "replaceConfirm": "Replace all data on this device with the file? This cannot be undone.",
+    "import": "Import file…",
+    "imported": "Import finished",
+    "notJson": "This file is not a CupLog backup.",
+    "counts": "{added} added · {updated} updated · {skipped} unchanged",
+    "kind": {
+      "products": "Products",
+      "bags": "Bags",
+      "ratings": "Cups",
+      "venues": "Cafés"
+    }
   }
 }

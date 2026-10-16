@@ -301,7 +301,8 @@
   },
   "ratings": {
     "timeline": "Tazze",
-    "empty": "Ancora nessuna tazza registrata."
+    "empty": "Ancora nessuna tazza registrata.",
+    "title": "Cronologia"
   },
   "log": {
     "title": "Registra una tazza",
@@ -336,7 +337,8 @@
     "beanUnknown": "Sconosciuto",
     "beanHouse": "Miscela della casa",
     "cafeDetails": "Latte, formato, chicco e prezzo",
-    "sameAsLastTime": "Come l'ultima volta qui"
+    "sameAsLastTime": "Come l'ultima volta qui",
+    "history": "Cronologia"
   },
   "brewField": {
     "doseG": "Dose (g)",
@@ -368,5 +370,39 @@
     "empty": "I bar in cui valuti un caffè appaiono qui.",
     "visits": "{count, plural, one {# visita} other {# visite}}",
     "all": "Tutti i bar"
+  },
+  "rating": {
+    "editTitle": "Modifica tazza",
+    "deleted": "Tazza eliminata",
+    "mealNote": "Nota sul cibo",
+    "mealNoteHint": "es. Cornetto",
+    "when": "Quando",
+    "timeOfDay": "Momento della giornata",
+    "timeOfDayAuto": "Automatico ({bucket})",
+    "notRepresentative": "Non rappresentativa",
+    "notRepresentativeHint": "Resta salvata, ma esclusa dai punteggi (problema alla macchina, malattia, fretta …).",
+    "reason": "Motivo",
+    "reasonHint": "es. macinino intasato"
+  },
+  "data": {
+    "title": "Backup",
+    "exportJson": "Esporta tutto (JSON)",
+    "exportCsv": "Valutazioni in CSV",
+    "importMode": "Modalità di importazione",
+    "merge": "Unisci",
+    "replace": "Sostituisci",
+    "mergeHint": "Aggiunge nuovi elementi; se un elemento esiste già, vince la versione più recente.",
+    "replaceHint": "Elimina prima tutto su questo dispositivo, poi importa il file.",
+    "replaceConfirm": "Sostituire tutti i dati su questo dispositivo con il file? Non si può annullare.",
+    "import": "Importa file…",
+    "imported": "Importazione completata",
+    "notJson": "Questo file non è un backup di CupLog.",
+    "counts": "{added} aggiunti · {updated} aggiornati · {skipped} invariati",
+    "kind": {
+      "products": "Prodotti",
+      "bags": "Confezioni",
+      "ratings": "Tazze",
+      "venues": "Bar"
+    }
   }
 }

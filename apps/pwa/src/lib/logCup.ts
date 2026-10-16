@@ -6,16 +6,12 @@ import { toasts } from './toast.svelte';
 
 export type LogCmd = Parameters<CupLogApi['logRating']>[0];
 
-let lastToast: number | null = null;
-
 /** Saves a cup and offers Undo (README §9.2); returns false when saving failed. */
 export async function logCup(cmd: LogCmd): Promise<boolean> {
   try {
     const r = await api().logRating(cmd);
     if (navigator.vibrate) navigator.vibrate(15);
-    // one "saved" toast at a time: Undo always refers to the latest cup
-    if (lastToast !== null) toasts.dismiss(lastToast);
-    lastToast = toasts.show(t('log.saved'), {
+    toasts.show(t('log.saved'), {
       action: {
         label: t('common.undo'),
         run: async () => {

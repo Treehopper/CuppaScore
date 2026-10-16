@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { PresetView } from '@cuplog/api';
   import { untrack } from 'svelte';
+  import CafeDetails from '../../components/CafeDetails.svelte';
   import PresetChips from '../../components/PresetChips.svelte';
   import RatingPanel from '../../components/RatingPanel.svelte';
   import { fmtTime } from '../../i18n/format';
   import { t } from '../../i18n/i18n.svelte';
   import { api } from '../../lib/api';
-  import { CAFE_MILKS, CUP_SIZES, DRINKS, type RatingLevel } from '../../lib/domain';
+  import { DRINKS, type RatingLevel } from '../../lib/domain';
   import { showError } from '../../lib/errors';
   import { logCup, type LogCmd } from '../../lib/logCup';
   import { cafeToForm, formToCafe, type CafeForm, type Drink } from '../../lib/logForm';
@@ -22,7 +23,6 @@
 
   const presets = query(() => api().listPresets({ source: 'cafe' }), ['ratings', 'venues', 'settings']);
   const venues = query(() => api().listVenues(), ['venues', 'ratings']);
-  const products = query(() => api().listProducts(), ['products']);
 
   // explicit picks; `?venue=` comes from "Same as last time" on the venue list
   let picked = $state<{ venueId: string | null; drink: Drink | null; level: RatingLevel | null }>({
@@ -62,9 +62,6 @@
     const p = atVenue(venueId).find((x) => x.preset.drink === drink);
     return cafeToForm(p?.preset.lastCafe, p?.preset.lastBeanKnown, drink);
   });
-  const setForm = <K extends keyof CafeForm>(k: K, v: CafeForm[K]): void => {
-    edits = { key: detailsKey, form: { ...form, [k]: v } };
-  };
 
   const presetKey = $derived(venueId && !isNew ? `cafe:${venueId}:${drink}:${form.milk}:${form.size}` : null);
   const preset = $derived(presets.data?.find((p) => p.preset.key === presetKey));
@@ -166,43 +163,7 @@
   onsave={save}
 >
   {#snippet details()}
-    <details class="disclosure" data-testid="cafe-details">
-      <summary>{t('log.cafeDetails')}</summary>
-      <div class="stack">
-        <div class="row">
-          <label class="field">
-            <span>{t('brewField.milk')}</span>
-            <select value={form.milk} onchange={(e) => setForm('milk', e.currentTarget.value as CafeForm['milk'])}>
-              {#each CAFE_MILKS as m (m)}
-                <option value={m}>{t(`milk.${m}`)}</option>
-              {/each}
-            </select>
-          </label>
-          <label class="field">
-            <span>{t('log.size')}</span>
-            <select value={form.size} onchange={(e) => setForm('size', e.currentTarget.value as CafeForm['size'])}>
-              {#each CUP_SIZES as s (s)}
-                <option value={s}>{t(`size.${s}`)}</option>
-              {/each}
-            </select>
-          </label>
-        </div>
-        <label class="field">
-          <span>{t('log.bean')}</span>
-          <select value={form.bean} onchange={(e) => setForm('bean', e.currentTarget.value)}>
-            <option value="unknown">{t('log.beanUnknown')}</option>
-            <option value="house">{t('log.beanHouse')}</option>
-            {#each products.data ?? [] as p (p.product.id)}
-              <option value={p.product.id}>{p.product.roaster} – {p.product.name}</option>
-            {/each}
-          </select>
-        </label>
-        <label class="field">
-          <span>{t('bag.priceEur')}</span>
-          <input inputmode="decimal" value={form.price} oninput={(e) => setForm('price', e.currentTarget.value)} />
-        </label>
-      </div>
-    </details>
+    <CafeDetails {form} onchange={(f) => (edits = { key: detailsKey, form: f })} />
   {/snippet}
 </RatingPanel>
 

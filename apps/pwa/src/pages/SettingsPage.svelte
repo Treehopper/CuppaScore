@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { DomainSettingsDto } from '@cuplog/api';
+  import DataSection from '../components/DataSection.svelte';
   import LanguagePicker from '../components/LanguagePicker.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import ThemePicker from '../components/ThemePicker.svelte';
@@ -111,6 +112,8 @@
       </fieldset>
     </details>
   {/if}
+
+  <DataSection />
 
   <section class="card" aria-labelledby="s-about" data-testid="about">
     <h2 id="s-about">{t('settings.about')}</h2>

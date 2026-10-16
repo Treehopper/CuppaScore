@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { brewToForm, cafeToForm, detailFields, emptyDetail, formToBrew, formToCafe, parseNum } from './logForm';
+import {
+  brewToForm,
+  cafeToForm,
+  detailFields,
+  detailFromRating,
+  emptyDetail,
+  formToBrew,
+  formToCafe,
+  levelPatch,
+  parseNum,
+} from './logForm';
 
 describe('parseNum', () => {
   it('accepts comma and dot decimals, rejects garbage', () => {
@@ -90,5 +100,49 @@ describe('café form', () => {
 
   it('parses a comma price', () => {
     expect(formToCafe({ ...cafeToForm(null, null, 'espresso'), price: '2,8' }).cafe.priceEur).toBe(2.8);
+  });
+});
+
+describe('editing', () => {
+  const base = {
+    level: 'advanced' as const,
+    overall: 4,
+    strength: 2,
+    flavourTags: ['citrus' as const],
+    profile: { body: 3 },
+    meal: { type: 'none' as const },
+  };
+
+  it('loads a rating into the edit state', () => {
+    expect(detailFromRating(base as never)).toEqual({
+      stars: 4,
+      wouldBuyAgain: null,
+      strength: 2,
+      profile: { body: 3 },
+      wish: {},
+      tags: ['citrus'],
+    });
+  });
+
+  it('sends null for everything not set at the level', () => {
+    const d = { ...detailFromRating(base as never), tags: [] };
+    expect(levelPatch('advanced', d, null)).toEqual({
+      swipe: null,
+      overall: 4,
+      wouldBuyAgain: null,
+      strength: 2,
+      profile: { body: 3 },
+      wish: null,
+      flavourTags: null,
+    });
+    expect(levelPatch('swipe', d, 'less')).toEqual({
+      swipe: 'less',
+      overall: null,
+      wouldBuyAgain: null,
+      strength: null,
+      profile: null,
+      wish: null,
+      flavourTags: null,
+    });
   });
 });

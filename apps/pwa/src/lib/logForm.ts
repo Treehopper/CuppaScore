@@ -1,5 +1,5 @@
 // Pure helpers behind the Quick Log form: text inputs ↔ Brew, detail state → rating fields.
-import type { RatingDto } from '@cuplog/api';
+import type { RatingDto, RatingPatch } from '@cuplog/api';
 import type { BrewMethod, RatingLevel } from './domain';
 
 type Brew = NonNullable<RatingDto['brew']>;
@@ -159,5 +159,35 @@ export function formToCafe(f: CafeForm): { cafe: CafeDetails; beanKnown: string 
   return {
     cafe: compact({ drink: f.drink, milk: f.milk, size: f.size, priceEur }),
     beanKnown: f.bean || 'unknown',
+  };
+}
+
+/** Edit state of an existing rating (Stars/Detail fields). */
+export function detailFromRating(r: RatingDto): DetailState {
+  return {
+    stars: r.overall ?? null,
+    wouldBuyAgain: r.wouldBuyAgain ?? null,
+    strength: r.strength ?? null,
+    profile: { ...r.profile },
+    wish: { ...r.wish },
+    tags: [...(r.flavourTags ?? [])],
+  };
+}
+
+
+/**
+ * Level fields for an update: set fields as values, unset ones as `null` so the backend removes
+ * them (undefined would be dropped on the way).
+ */
+export function levelPatch(level: RatingLevel, d: DetailState, swipe: 'more' | 'less' | null): RatingPatch {
+  const set: Partial<RatingDto> = level === 'swipe' ? {} : detailFields(level, d);
+  return {
+    swipe: level === 'swipe' ? swipe : null,
+    overall: set.overall ?? null,
+    wouldBuyAgain: set.wouldBuyAgain ?? null,
+    strength: set.strength ?? null,
+    profile: set.profile ?? null,
+    wish: set.wish ?? null,
+    flavourTags: set.flavourTags ?? null,
   };
 }

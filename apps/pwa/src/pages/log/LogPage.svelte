@@ -25,7 +25,11 @@
   const defaultLevel = $derived(settings.data?.defaultLevel ?? 'stars');
 </script>
 
-<PageHeader title={t('log.title')} />
+<PageHeader title={t('log.title')}>
+  {#snippet actions()}
+    <a class="btn btn-ghost" href="#/ratings">{t('log.history')}</a>
+  {/snippet}
+</PageHeader>
 
 <div class="stack">
   <div class="segmented" role="radiogroup" aria-label={t('log.mode')}>

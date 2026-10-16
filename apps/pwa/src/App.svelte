@@ -14,6 +14,8 @@
   import ProductFormPage from './pages/ProductFormPage.svelte';
   import ProductsPage from './pages/ProductsPage.svelte';
   import Placeholder from './pages/Placeholder.svelte';
+  import RatingPage from './pages/RatingPage.svelte';
+  import RatingsPage from './pages/RatingsPage.svelte';
   import VenuesPage from './pages/VenuesPage.svelte';
   import SettingsPage from './pages/SettingsPage.svelte';
   import { applyThemeEffect } from './themes/apply.svelte';
@@ -54,6 +56,14 @@
       {/key}
     {:else}
       {#key sub}<ProductDetailPage id={sub} />{/key}
+    {/if}
+  {:else if section === 'ratings'}
+    {#if !sub}
+      <RatingsPage />
+    {:else}
+      {#key sub}
+        {#await api().getRating(sub) then r}<RatingPage initial={r} />{:catch}<NotFound />{/await}
+      {/key}
     {/if}
   {:else if section === 'venues'}
     <VenuesPage />

@@ -301,7 +301,8 @@
   },
   "ratings": {
     "timeline": "Tazas",
-    "empty": "Aún no hay tazas registradas."
+    "empty": "Aún no hay tazas registradas.",
+    "title": "Historial"
   },
   "log": {
     "title": "Registrar una taza",
@@ -336,7 +337,8 @@
     "beanUnknown": "Desconocido",
     "beanHouse": "Mezcla de la casa",
     "cafeDetails": "Leche, tamaño, grano y precio",
-    "sameAsLastTime": "Lo mismo que la última vez"
+    "sameAsLastTime": "Lo mismo que la última vez",
+    "history": "Historial"
   },
   "brewField": {
     "doseG": "Dosis (g)",
@@ -368,5 +370,39 @@
     "empty": "Las cafeterías donde valoras un café aparecen aquí.",
     "visits": "{count, plural, one {# visita} other {# visitas}}",
     "all": "Todas las cafeterías"
+  },
+  "rating": {
+    "editTitle": "Editar taza",
+    "deleted": "Taza eliminada",
+    "mealNote": "Nota sobre la comida",
+    "mealNoteHint": "p. ej. Croissant",
+    "when": "Cuándo",
+    "timeOfDay": "Momento del día",
+    "timeOfDayAuto": "Automático ({bucket})",
+    "notRepresentative": "No representativa",
+    "notRepresentativeHint": "Se guarda, pero no cuenta en las puntuaciones (fallo de la máquina, enfermedad, prisa …).",
+    "reason": "Motivo",
+    "reasonHint": "p. ej. molinillo atascado"
+  },
+  "data": {
+    "title": "Copia de seguridad",
+    "exportJson": "Exportar todo (JSON)",
+    "exportCsv": "Valoraciones en CSV",
+    "importMode": "Modo de importación",
+    "merge": "Combinar",
+    "replace": "Reemplazar",
+    "mergeHint": "Añade registros nuevos; si un registro ya existe, gana la versión más reciente.",
+    "replaceHint": "Borra primero todo en este dispositivo y luego importa el archivo.",
+    "replaceConfirm": "¿Reemplazar todos los datos de este dispositivo por el archivo? No se puede deshacer.",
+    "import": "Importar archivo…",
+    "imported": "Importación completada",
+    "notJson": "Este archivo no es una copia de CupLog.",
+    "counts": "{added} añadidos · {updated} actualizados · {skipped} sin cambios",
+    "kind": {
+      "products": "Productos",
+      "bags": "Bolsas",
+      "ratings": "Tazas",
+      "venues": "Cafeterías"
+    }
   }
 }
