@@ -111,6 +111,29 @@ describe('logging ratings', () => {
     expect((await svc.updateRating(r.id, { note: 'x' })).timeOfDay).toBe('evening');
   });
 
+  it('edits: null clears optional fields; ratedAt accepts wall-clock time in the settings zone', async () => {
+    const { svc, bag } = await setup();
+    const r = await svc.logRating({
+      level: 'advanced',
+      overall: 4,
+      wouldBuyAgain: true,
+      strength: 3,
+      flavourTags: ['berry'],
+      source: 'home',
+      bagId: bag.id,
+      brew: { method: 'aeropress' },
+    });
+    const u = await svc.updateRating(r.id, { wouldBuyAgain: null, flavourTags: null, ratedAt: '2026-10-15T19:30' });
+    expect('wouldBuyAgain' in u).toBe(false);
+    expect('flavourTags' in u).toBe(false);
+    expect(u).toMatchObject({ strength: 3, ratedAt: '2026-10-15T19:30:00+02:00', timeOfDay: 'evening' });
+    // UTC input is stored zoned too
+    expect((await svc.updateRating(r.id, { ratedAt: '2026-10-15T05:00:00Z' })).ratedAt).toBe('2026-10-15T07:00:00+02:00');
+    await expectCode(svc.updateRating(r.id, { ratedAt: 'yesterday' }), 'VALIDATION');
+    // overall is required at this level, so clearing it is rejected
+    await expectCode(svc.updateRating(r.id, { overall: null }), 'INVALID_RATING_SHAPE');
+  });
+
   it('excludes, deletes and restores', async () => {
     const { svc, bag } = await setup();
     const r = await svc.logRating({ level: 'stars', overall: 1, source: 'home', bagId: bag.id, brew: { method: 'aeropress' } });

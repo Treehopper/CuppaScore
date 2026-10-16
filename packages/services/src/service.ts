@@ -13,6 +13,7 @@ import {
   ProductFields,
   Rating,
   RatingFields,
+  parseDateTimeInZone,
   stripForLevel,
   timeOfDayOf,
   toZonedIso,
@@ -56,7 +57,10 @@ export type LogRatingCmd = Omit<RatingInput, 'timeOfDay' | 'ratedAt' | 'derived'
   ratedAt?: string;
   timeOfDay?: TimeOfDay;
 };
-export type RatingPatch = Partial<LogRatingCmd>;
+/** Optional rating fields a patch can remove by sending `null` (undefined doesn't survive the transport). */
+export const CLEARABLE_RATING_FIELDS = ['swipe', 'overall', 'wouldBuyAgain', 'strength', 'profile', 'flavourTags', 'wish'] as const;
+type Clearable = (typeof CLEARABLE_RATING_FIELDS)[number];
+export type RatingPatch = Partial<Omit<LogRatingCmd, Clearable>> & { [K in Clearable]?: LogRatingCmd[K] | null };
 
 export interface BagQuery {
   status?: BagStatus[];
@@ -376,7 +380,14 @@ export class CupLogService {
   // ---------- ratings ----------
 
   private async buildRating(input: LogRatingCmd, base?: Rating): Promise<z.infer<typeof RatingFields>> {
-    const ratedAt = input.ratedAt ?? base?.ratedAt ?? (await this.nowIso());
+    // ratedAt may come as wall-clock time without offset (datetime-local); stored zoned (README §4.3)
+    let ratedAt = base?.ratedAt ?? (await this.nowIso());
+    if (input.ratedAt !== undefined) {
+      const tz = (await this.getSettings()).timeZone;
+      const ms = parseDateTimeInZone(input.ratedAt, tz);
+      if (ms === null) throw new DomainError('VALIDATION', { field: 'ratedAt', value: input.ratedAt });
+      ratedAt = toZonedIso(ms, tz);
+    }
     const level = input.level ?? base?.level;
     const draft: Record<string, unknown> = { ...input, ratedAt, level };
     // the time of day follows ratedAt unless overridden (B5)
@@ -443,9 +454,10 @@ export class CupLogService {
   async updateRating(id: string, patch: RatingPatch): Promise<Rating> {
     const cur = await this.mustGet(this.repos.ratings, id, 'rating');
     const { id: _i, ownerId: _o, createdAt: _c, updatedAt: _u, deletedAt: _d, rev: _r, ...curFields } = cur;
-    const merged = { ...curFields, ...patch } as LogRatingCmd;
+    const merged = { ...curFields, ...patch } as Record<string, unknown>;
+    for (const f of CLEARABLE_RATING_FIELDS) if (patch[f] === null) delete merged[f];
     if (patch.ratedAt && !patch.timeOfDay) delete merged.timeOfDay;
-    const fields = await this.buildRating(merged, cur);
+    const fields = await this.buildRating(merged as LogRatingCmd, cur);
     const meta: RecordMeta = { id: cur.id, ownerId: cur.ownerId, createdAt: cur.createdAt, updatedAt: cur.updatedAt, deletedAt: cur.deletedAt, rev: cur.rev };
     const rec = Rating.parse(await this.bump({ ...meta, ...fields }));
     await this.repos.ratings.put(rec);

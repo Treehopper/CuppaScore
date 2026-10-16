@@ -102,6 +102,23 @@ export function zonedTimeToMs(date: string, minuteOfDay: number, tz: string = DE
   return Math.max(guess, after);
 }
 
+/**
+ * Epoch ms of a date-time string: ISO with offset (`…+02:00`, `…Z`) as is, or a local wall-clock
+ * time without offset (`2026-10-16T07:45`, as from `<input type="datetime-local">`) in `tz`.
+ * Returns null for anything else.
+ */
+export function parseDateTimeInZone(s: string, tz: string = DEFAULT_TIME_ZONE): number | null {
+  const local = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?$/.exec(s);
+  if (local) {
+    const [, date, h, m, sec] = local as unknown as [string, string, string, string, string | undefined];
+    if (Number.isNaN(Date.parse(`${date}T00:00:00Z`)) || +h > 23 || +m > 59) return null;
+    return zonedTimeToMs(date, +h * 60 + +m, tz) + (sec ? +sec * 1000 : 0);
+  }
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(s)) return null;
+  const ms = Date.parse(s);
+  return Number.isNaN(ms) ? null : ms;
+}
+
 /** Calendar days from date `a` to date `b` (YYYY-MM-DD), negative if b < a. */
 export function daysBetween(a: string, b: string): number {
   return Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / DAY_MS);

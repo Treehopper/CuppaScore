@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import fc from 'fast-check';
-import { addDays, daysBetween, localParts, timeOfDayAt, toZonedIso, zonedTimeToMs } from './time';
+import { addDays, daysBetween, localParts, parseDateTimeInZone, timeOfDayAt, toZonedIso, zonedTimeToMs } from './time';
 
 describe('time', () => {
   it('formats with the Berlin offset in summer and winter', () => {
@@ -41,5 +41,39 @@ describe('time', () => {
     expect([6, 7, 10, 11, 13, 14, 17, 18, 23].map(timeOfDayAt)).toEqual([
       'early', 'morning', 'morning', 'midday', 'midday', 'afternoon', 'afternoon', 'evening', 'evening',
     ]);
+  });
+});
+
+describe('parseDateTimeInZone', () => {
+  it('reads wall-clock times in the given zone, across DST', () => {
+    expect(parseDateTimeInZone('2026-10-16T07:45')).toBe(Date.parse('2026-10-16T05:45:00Z'));
+    expect(parseDateTimeInZone('2026-12-01T06:45:30')).toBe(Date.parse('2026-12-01T05:45:30Z'));
+    expect(parseDateTimeInZone('2026-12-01T00:45', 'America/New_York')).toBe(Date.parse('2026-12-01T05:45:00Z'));
+  });
+
+  it('keeps explicit offsets', () => {
+    expect(parseDateTimeInZone('2026-10-16T07:45:00+02:00', 'America/New_York')).toBe(Date.parse('2026-10-16T05:45:00Z'));
+    expect(parseDateTimeInZone('2026-10-16T05:45:00.123Z')).toBe(Date.parse('2026-10-16T05:45:00.123Z'));
+  });
+
+  it('resolves the autumn fold to a valid instant', () => {
+    expect(toZonedIso(parseDateTimeInZone('2026-10-25T02:30')!).slice(0, 16)).toBe('2026-10-25T02:30');
+  });
+
+  it('rejects garbage', () => {
+    for (const s of ['', 'yesterday', '2026-10-16', '2026-13-01T07:45', '2026-10-16T25:00', '2026-10-16 07:45'])
+      expect(parseDateTimeInZone(s)).toBeNull();
+  });
+
+  it('round-trips toZonedIso', () => {
+    fc.assert(
+      fc.property(fc.integer({ min: Date.parse('2000-01-01'), max: Date.parse('2060-01-01') }), (ms) => {
+        const s = Math.floor(ms / 1000) * 1000;
+        expect(parseDateTimeInZone(toZonedIso(s))).toBe(s);
+        // wall-clock input is ambiguous in the autumn fold, so compare wall-clock times
+        const local = toZonedIso(s).slice(0, 19);
+        expect(toZonedIso(parseDateTimeInZone(local)!).slice(0, 19)).toBe(local);
+      }),
+    );
   });
 });
