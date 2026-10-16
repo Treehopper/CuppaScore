@@ -293,9 +293,16 @@ importers:
       '@cuplog/services':
         specifier: workspace:*
         version: link:../services
+      '@cuplog/storage-dexie':
+        specifier: workspace:*
+        version: link:../storage-dexie
       vitest:
         specifier: ^5.0.5
         version: 5.0.5(@types/node@26.6.5)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(terser@5.51.2)(tsx@4.23.15))
+    devDependencies:
+      fake-indexeddb:
+        specifier: ^6.2.5
+        version: 6.2.5
 
   packages/core:
     dependencies:
