@@ -92,5 +92,21 @@ export function describeApiContract(name: string, make: () => Promise<CupLogApi>
       await api.updateProduct(p.id, { name: 'M' });
       expect(seen).toEqual(['products']);
     });
+
+    it('exports and imports bundles; CSV', async () => {
+      const api = await make();
+      const p = await api.addProduct({ roaster: 'R', name: 'N' });
+      const b = await api.addBag({ productId: p.id });
+      await api.logRating({ level: 'stars', overall: 4, source: 'home', bagId: b.id, brew: { method: 'v60' } });
+      const bundle = await api.exportAll();
+      expect(bundle.ratings).toHaveLength(1);
+      const seen: string[] = [];
+      api.subscribe('ratings', () => seen.push('ratings'));
+      const report = await api.importAll(JSON.parse(JSON.stringify(bundle)), 'replace');
+      expect(report.ratings.added).toBe(1);
+      expect(seen).toEqual(['ratings']);
+      expect(await codeOf(api.importAll({ nope: true }, 'merge'))).toBe('UNSUPPORTED_SCHEMA_VERSION');
+      expect((await api.exportRatingsCsv()).split('\r\n')[0]).toMatch(/^id,ratedAt/);
+    });
   });
 }

@@ -25,6 +25,7 @@ import {
   type BagStatus,
   type BagWarning,
   type BrewMethod,
+  type ExportBundle,
   type Drink,
   type MealType,
   type Preset,
@@ -37,6 +38,7 @@ import {
   type VenueInput,
 } from '@cuplog/core';
 import type { z } from 'zod';
+import { exportAll, exportRatingsCsv, importAll, type ImportMode, type ImportReport } from './data';
 import { DomainError } from './errors';
 import type { Ctx, Repositories } from './ports';
 
@@ -513,6 +515,20 @@ export class CupLogService {
     const counts = new Map<BrewMethod, number>(settings.ownedMethods.map((m) => [m, 0]));
     for (const r of ratings) if (r.brew && counts.has(r.brew.method)) counts.set(r.brew.method, counts.get(r.brew.method)! + 1);
     return [...counts].map(([method, uses]) => ({ method, uses })).sort((a, b) => b.uses - a.uses);
+  }
+
+  // ---------- data ----------
+
+  exportAll(): Promise<ExportBundle> {
+    return exportAll(this.repos, this.ctx);
+  }
+
+  importAll(bundle: unknown, mode: ImportMode): Promise<ImportReport> {
+    return importAll(this.repos, this.ctx, bundle, mode);
+  }
+
+  exportRatingsCsv(): Promise<string> {
+    return exportRatingsCsv(this.repos, this.ctx);
   }
 
   // ---------- stats ----------

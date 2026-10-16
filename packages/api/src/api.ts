@@ -1,4 +1,4 @@
-import type { Bag, DomainSettings, Product, Rating, RatingSource, Venue } from '@cuplog/core';
+import type { Bag, DomainSettings, ExportBundle, Product, Rating, RatingSource, Venue } from '@cuplog/core';
 import type {
   AddBagCmd,
   AddProductCmd,
@@ -6,6 +6,8 @@ import type {
   BagPatch,
   BagQuery,
   BagView,
+  ImportMode,
+  ImportReport,
   LogRatingCmd,
   MethodUsage,
   PresetView,
@@ -21,6 +23,7 @@ import type {
 
 // DTOs are the plain-JSON domain records and views (validated by zod schemas in core/services).
 export type ProductDto = Product;
+export type { ExportBundle };
 export type BagDto = Bag;
 export type VenueDto = Venue;
 export type RatingDto = Rating;
@@ -32,6 +35,8 @@ export type {
   BagPatch,
   BagQuery,
   BagView,
+  ImportMode,
+  ImportReport,
   LogRatingCmd,
   MethodUsage,
   PresetView,
@@ -89,6 +94,12 @@ export interface CupLogApi {
   getBagStats(bagId: string, opts?: StatsOptions): Promise<StatsView>;
   getProductStats(productId: string, opts?: StatsOptions): Promise<ProductStatsView>;
 
+  // data
+  exportAll(): Promise<ExportBundle>;
+  /** `bundle` is untrusted JSON; it is validated and migrated in the backend. */
+  importAll(bundle: unknown, mode: ImportMode): Promise<ImportReport>;
+  exportRatingsCsv(): Promise<string>;
+
   // events
   subscribe(topic: Topic, cb: () => void): Unsubscribe;
 }
@@ -110,6 +121,7 @@ export const COMMAND_TOPICS: Partial<Record<ApiMethod, Topic[]>> = {
   restoreRating: ['ratings'],
   updateSettings: ['settings'],
   setPresetPinned: ['settings'],
+  importAll: ['ratings', 'bags', 'products', 'venues', 'settings'],
 };
 
 export const API_METHODS: readonly ApiMethod[] = [
@@ -138,4 +150,7 @@ export const API_METHODS: readonly ApiMethod[] = [
   'methodUsage',
   'getBagStats',
   'getProductStats',
+  'exportAll',
+  'importAll',
+  'exportRatingsCsv',
 ];
