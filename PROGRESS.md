@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 18 (M1 wrap-up: installability/offline check, `navigator.storage.persist()`, products ranking screen, a11y pass).
+- Task 19 (core reminders: `dueReminders`, `nextDueAt`, `applyAction`; read README §4.7 + §12).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -41,7 +41,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: Quick Log lives in `pages/log/` (LogPage → HomeLog / CafeLog on shared `RatingPanel` + `PresetChips`, saving via `lib/logCup.ts`); new venues are created inline on first save (name only); "Same as last time" uses `venue.lastDrink` (timestamps have second precision); venue list at `#/venues` (linked from café mode) — nearest-first venue sorting skipped (no location permission yet); only one "Cup saved" toast at a time
 - [x] 17. Ratings history: edit/delete, "not representative" flag; export/import UI
   - note: `#/ratings` (History link in the Log header) and `#/ratings/:id` edit page incl. meal note (B6), time + time-of-day override (B5); `updateRating` patches clear optional level fields with `null` (undefined is dropped by the JSON transport); `ratedAt` may be sent as wall-clock `YYYY-MM-DDTHH:MM` and is stored zoned in the settings tz (`parseDateTimeInZone` in core); backup in Settings uses native `confirm()` for replace; toasts are single (newest replaces)
-- [ ] 18. M1 wrap-up: installability/offline check, `navigator.storage.persist()`, products ranking screen, a11y pass
+- [x] 18. M1 wrap-up: installability/offline check, `navigator.storage.persist()`, products ranking screen, a11y pass
+  - note: `e2e/a11y.spec.ts` runs axe (WCAG 2.x A/AA) on every screen in all 4 themes; persistence is requested after the first saved cup (Firefox may prompt) and shown/requestable in Settings → Backup; products ranking + bag-to-bag comparison already came with task 13; Lighthouse in CI is still task 38. **M1 complete.**
 
 ## M1b — Reminders & install
 - [ ] 19. Core reminders: `dueReminders`, `nextDueAt`, `applyAction` with table-driven tests (TZ, DST, quiet hours, pause, snooze)
