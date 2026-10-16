@@ -9,5 +9,14 @@
   "scripts": {
     "typecheck": "tsc -p ."
   },
-  "dependencies": { "@cuplog/core": "workspace:*", "@cuplog/services": "workspace:*", "dexie": "catalog:" }
+  "dependencies": {
+    "@cuplog/core": "workspace:*",
+    "@cuplog/services": "workspace:*",
+    "dexie": "catalog:"
+  },
+  "devDependencies": {
+    "@cuplog/contract-tests": "workspace:*",
+    "fake-indexeddb": "^6.2.5",
+    "@cuplog/services": "workspace:*"
+  }
 }

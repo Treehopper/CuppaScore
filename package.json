@@ -9,7 +9,7 @@
   "scripts": {
     "check": "pnpm run lint && pnpm run typecheck && pnpm run depcruise && pnpm run i18n:check",
     "lint": "eslint .",
-    "typecheck": "pnpm -r --if-present run typecheck",
+    "typecheck": "pnpm -r --no-sort --if-present run typecheck",
     "depcruise": "depcruise packages apps/pwa/src catalog-builder/src --config .dependency-cruiser.cjs",
     "i18n:check": "node scripts/check-i18n.ts",
     "test": "vitest run",

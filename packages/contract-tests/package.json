@@ -9,5 +9,10 @@
   "scripts": {
     "typecheck": "tsc -p ."
   },
-  "dependencies": { "@cuplog/core": "workspace:*", "@cuplog/services": "workspace:*", "@cuplog/api": "workspace:*" }
+  "dependencies": {
+    "@cuplog/core": "workspace:*",
+    "@cuplog/services": "workspace:*",
+    "@cuplog/api": "workspace:*",
+    "vitest": "^5.0.5"
+  }
 }
