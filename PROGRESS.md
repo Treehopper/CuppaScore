@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 7 (storage-dexie + repo contract tests).
+- Task 8 (`@cuplog/api`).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -19,7 +19,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: recency half-life 3 days; frequency = uses in 30 d normalised to the top preset; pins stored in `DomainSettings.pinnedPresets`
 - [x] 6. Services: port interfaces + use cases (products, bags, venues, ratings CRUD + exclude, presets, bag/product stats), in-memory repos for tests
   - note: `CupLogService` class; logging from an unopened bag sets `openedAt`; finished bags reject new cups (`BAG_FINISHED`); café cups get `productId` only when `beanKnown` is one of our product ids (C10); soft delete + `restoreRating` for Undo
-- [ ] 7. storage-dexie adapter + repository contract tests (fake-indexeddb); in-memory adapter passes the same suite
+- [x] 7. storage-dexie adapter + repository contract tests (fake-indexeddb); in-memory adapter passes the same suite
+  - note: contract suite in `@cuplog/contract-tests` (`describeRepositoryContract`); memory adapter is non-atomic (flagged); `typecheck` runs with `--no-sort` because of a dev-only workspace cycle (contract-tests ↔ storage-dexie/api)
 - [ ] 8. `@cuplog/api`: DTO zod schemas, `CupLogApi`, `LocalApi` (in-process + Web Worker via Comlink), `subscribe`, API contract tests
 - [ ] 9. Export/import (JSON bundle with `schemaVersion`, merge/replace) + ratings CSV
 - [ ] 10. Themes: 4 themes + System (light/dark pairing), semantic tokens, runtime `theme-color`, WCAG AA contrast test in `check`
