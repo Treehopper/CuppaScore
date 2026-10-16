@@ -9,3 +9,7 @@ export * from './venue';
 export * from './rating';
 export * from './settings';
 export * from './derive';
+export * from './stats';
+export * from './preference';
+export * from './outliers';
+export * from './aggregate';
