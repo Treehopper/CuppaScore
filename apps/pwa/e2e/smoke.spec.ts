@@ -15,5 +15,5 @@ test('hash routes work on reload', async ({ page }) => {
 
 test('backend worker starts and answers over IndexedDB', async ({ page }) => {
   await page.goto('./');
-  await expect(page.locator('main[data-api-ready="true"]')).toBeAttached();
+  await expect(page.getByTestId('api-ready')).toBeAttached();
 });

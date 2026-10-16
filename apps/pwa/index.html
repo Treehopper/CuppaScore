@@ -12,6 +12,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="CupLog" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Pre-paint theme (no flash): mirrors resolveTheme() in src/themes/themes.ts.
+      try {
+        var p = JSON.parse(localStorage.getItem('cuplog:prefs') || '{}');
+        var dark = matchMedia('(prefers-color-scheme: dark)').matches;
+        var t = !p.theme || p.theme === 'system' ? (dark ? p.systemDark || 'espresso' : p.systemLight || 'crema') : p.theme;
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
   </head>
   <body>

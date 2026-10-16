@@ -1,0 +1,69 @@
+/*
+ * Colour themes (README §10). Components use only these semantic tokens.
+ * Values follow the README table; where a pair failed WCAG the colour's lightness was nudged
+ * (hue kept) until it passes. Rules, enforced by `pnpm run contrast:check`:
+ *   --text, --muted           ≥ 4.5:1 on --bg and --surface (text)
+ *   --on-accent               ≥ 4.5:1 on --accent (button labels)
+ *   --accent, --accent-2, --star, --good, --bad ≥ 3:1 on --bg and --surface (non-text UI, WCAG 1.4.11)
+ */
+
+:root,
+:root[data-theme='crema'] {
+  color-scheme: light;
+  --bg: #f7efe4; /* milk foam */
+  --surface: #efe1cc; /* latte */
+  --text: #3b2a20; /* dark roast */
+  --muted: #756153; /* README #8a7262 → AA */
+  --accent: #a0522d; /* sienna */
+  --on-accent: #f7efe4;
+  --accent-2: #688a5b; /* coffee leaf, README #6b8f5e → 3:1 */
+  --border: #dcc7ab;
+  --star: #b57129; /* README #c47a2c → 3:1 */
+  --good: #5f8b4c;
+  --bad: #b23a2a;
+}
+
+:root[data-theme='espresso'] {
+  color-scheme: dark;
+  --bg: #1e1410; /* roasted bean */
+  --surface: #2b1d17; /* espresso */
+  --text: #f1e4d3; /* crema */
+  --muted: #a68b75;
+  --accent: #d4a373; /* caramel */
+  --on-accent: #1e1410;
+  --accent-2: #e9c46a; /* honey */
+  --border: #3d2a20;
+  --star: #e0a24e;
+  --good: #8fb573;
+  --bad: #e06c5a;
+}
+
+:root[data-theme='solarized-light'] {
+  color-scheme: light;
+  --bg: #fdf6e3;
+  --surface: #eee8d5;
+  --text: #566b72; /* base01 #586e75, nudged for AA on base2 */
+  --muted: #5d6b6b; /* base1 #93a1a1 → AA */
+  --accent: #a87f00; /* yellow #b58900 → 3:1 */
+  --on-accent: #00141a;
+  --accent-2: #268bd2; /* blue */
+  --border: #e4ddc8;
+  --star: #cb4b16;
+  --good: #7a8c00; /* green #859900 → 3:1 */
+  --bad: #dc322f;
+}
+
+:root[data-theme='solarized-dark'] {
+  color-scheme: dark;
+  --bg: #002b36;
+  --surface: #073642;
+  --text: #93a1a1;
+  --muted: #859ca3; /* base01 #586e75 → AA */
+  --accent: #b58900;
+  --on-accent: #002b36;
+  --accent-2: #2aa198; /* cyan */
+  --border: #0d4a57;
+  --star: #d44e17; /* orange #cb4b16 → 3:1 */
+  --good: #859900;
+  --bad: #de3f3c; /* red #dc322f → 3:1 */
+}
