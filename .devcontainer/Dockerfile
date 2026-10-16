@@ -3,7 +3,7 @@
 # pnpm, Playwright browsers + system deps, and a locked-down egress firewall.
 #
 # Bookworm is pinned because Playwright's `--with-deps` officially targets it.
-FROM node:24-bookworm
+FROM node:25-bookworm
 
 ARG TZ=Europe/Berlin
 ENV TZ="$TZ"
