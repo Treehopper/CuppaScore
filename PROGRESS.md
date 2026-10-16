@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 10 (themes).
+- Task 11 (i18n).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -25,7 +25,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: transport is one generic `call(method,args) → Result` (Comlink now, HTTP later); errors cross as `ApiError{code,details}`; `subscribe` is client-side (topics emitted after successful commands, `COMMAND_TOPICS`); `@cuplog/api` = UI entry (no storage code), `@cuplog/api/local` = in-process backend; worker bundle ~224 kB
 - [x] 9. Export/import (JSON bundle with `schemaVersion`, merge/replace) + ratings CSV
   - note: bundle includes soft-deleted records; merge keeps higher `rev` (then later `updatedAt`); photos/media not in the bundle yet; CSV guards against formula injection
-- [ ] 10. Themes: 4 themes + System (light/dark pairing), semantic tokens, runtime `theme-color`, WCAG AA contrast test in `check`
+- [x] 10. Themes: 4 themes + System (light/dark pairing), semantic tokens, runtime `theme-color`, WCAG AA contrast test in `check`
+  - note: contrast rules: text/muted 4.5:1 on bg+surface, `--on-accent` 4.5:1 on accent, accent/accent-2/star/good/bad 3:1 (non-text, WCAG 1.4.11); several README colours nudged in lightness (see comments in `themes.css`); `scripts/svelte-autofix.sh` runs the svelte-autofixer CLI over all components; MCP previews via `scripts/mcp-preview.sh` (:4174)
 - [ ] 11. i18n: de/en/it/es + `en-XA` pseudo-locale, detection, ICU plurals, Intl formatting, missing-key check in `check`
 - [ ] 12. App shell: nav, hash routes, Settings screen (theme, language, owned methods, default rating level, about/version)
 - [ ] 13. Products & bags UI: add product, add bag, bag list by status, bag detail (stats, timeline, excluded outliers), freshness/expiry badges, open/finish bag
@@ -66,7 +67,7 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 - [ ] 38. Final polish: Lighthouse config, pseudo-locale overflow pass, a11y
 
 ## Decisions (README §17 and other gaps)
-_(none yet)_
+- Theme colours: README §10 demands both the official Solarized values and WCAG AA for all text pairs, which conflict; kept hues, nudged lightness of failing tokens (themes.css), added `--on-accent`.
 
 ## Blocked / needs owner
 _(none yet)_
