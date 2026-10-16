@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 14 (Quick Log home).
+- Task 15 (Quick Log levels: swipe card drag, Detail level, brew details). Detail level currently shows only stars.
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -33,7 +33,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: `query(fn, topics)` re-fetches on reactive deps and API topics; vocab lists come from `@cuplog/core/vocab` (zod-free) re-exported by `@cuplog/api`; pseudo-locale option shown in dev or with `?pseudo`; MCP browser keeps the old SW → unregister SW + caches before visual checks
 - [x] 13. Products & bags UI: add product, add bag, bag list by status, bag detail (stats, timeline, excluded outliers), freshness/expiry badges, open/finish bag
   - note: API transport JSON-normalises args (Svelte `$state` proxies can't be postMessage'd); edit forms get `initial` from an `{#await}` in App and copy it with `untrack`; `e2e/layout.spec.ts` guards against horizontal overflow at 360 px
-- [ ] 14. Quick Log (home): preset chips, Bag ▾ / Method ▾, Stars level, meal, Save + Undo toast
+- [x] 14. Quick Log (home): preset chips, Bag ▾ / Method ▾, Stars level, meal, Save + Undo toast
+  - note: `StarInput` is a keyboard slider (half steps); tapping the left 40 % of a star gives a half star; coffee themes draw beans; swipe level has 👎/👍 buttons only so far (drag card is task 15); café mode shows a placeholder until task 16; `e2e/helpers.ts` `addBag()` for reuse
 - [ ] 15. Quick Log levels: Swipe card (drag + 👎/👍 buttons + Undo), Detail level (strength, profile + wish, tags, would-buy-again), brew details incl. AeroPress & Flair NEO params, level remembered per preset
 - [ ] 16. Café mode: venues, drink/milk/size/bean/price, "Same as last time here", venue list
 - [ ] 17. Ratings history: edit/delete, "not representative" flag; export/import UI
