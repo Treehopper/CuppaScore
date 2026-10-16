@@ -1,0 +1,38 @@
+{
+  "name": "cuplog",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.14.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "check": "pnpm run lint && pnpm run typecheck && pnpm run depcruise && pnpm run i18n:check",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "depcruise": "depcruise packages apps/pwa/src catalog-builder/src --config .dependency-cruiser.cjs",
+    "i18n:check": "node scripts/check-i18n.ts",
+    "test": "vitest run",
+    "build": "pnpm --filter @cuplog/pwa run build",
+    "preview": "pnpm --filter @cuplog/pwa run preview",
+    "dev": "pnpm --filter @cuplog/pwa run dev",
+    "test:e2e": "playwright test",
+    "catalog:build": "pnpm --filter @cuplog/catalog-builder run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "1.64.1",
+    "@types/node": "^26.6.5",
+    "dependency-cruiser": "^18.6.0",
+    "eslint": "^10.12.0",
+    "eslint-plugin-svelte": "^3.23.1",
+    "fake-indexeddb": "^6.2.5",
+    "fast-check": "^4.10.2",
+    "globals": "^17.13.0",
+    "svelte": "^5.57.2",
+    "tsx": "^4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.5"
+  }
+}

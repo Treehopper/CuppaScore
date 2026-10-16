@@ -1,0 +1,12 @@
+packages:
+  - packages/*
+  - apps/*
+  - catalog-builder
+
+catalog:
+  zod: ^4.6.7
+  dexie: ^4.4.6
+  comlink: ^4.4.2
+
+allowBuilds:
+  esbuild: true

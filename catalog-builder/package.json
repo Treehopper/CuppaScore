@@ -1,0 +1,13 @@
+{
+  "name": "@cuplog/catalog-builder",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsx src/build.ts",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@cuplog/core": "workspace:*"
+  }
+}

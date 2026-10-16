@@ -25,3 +25,4 @@ STOP
 .env.*
 !.env.example
 .DS_Store
+dev-dist/

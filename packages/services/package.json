@@ -1,0 +1,13 @@
+{
+  "name": "@cuplog/services",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": { "@cuplog/core": "workspace:*" }
+}
