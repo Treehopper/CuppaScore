@@ -1,19 +1,22 @@
 <script lang="ts">
-  import type { PresetView, RatingDto } from '@cuplog/api';
+  import type { PresetView } from '@cuplog/api';
+  import BrewDetails from '../components/BrewDetails.svelte';
+  import DetailInput from '../components/DetailInput.svelte';
   import Icon from '../components/Icon.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import StarInput from '../components/StarInput.svelte';
+  import SwipeCard from '../components/SwipeCard.svelte';
+  import { fmtTime } from '../i18n/format';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
   import { MEAL_CHOICES, RATING_LEVELS, type BrewMethod, type MealType, type RatingLevel } from '../lib/domain';
   import { showError } from '../lib/errors';
   import { bagTitle } from '../lib/labels';
+  import { brewToForm, detailFields, emptyDetail, formToBrew, type BrewForm } from '../lib/logForm';
   import { prefs, type LogMode } from '../lib/prefs.svelte';
   import { query } from '../lib/query.svelte';
   import { router } from '../lib/router.svelte';
   import { toasts } from '../lib/toast.svelte';
-
-  type Brew = NonNullable<RatingDto['brew']>;
 
   const NEW_BAG = '__new__';
   const MAX_CHIPS = 4;
@@ -41,7 +44,7 @@
     method: null,
     level: null,
   });
-  let stars = $state<number | null>(null);
+  let detail = $state(emptyDetail());
   let meal = $state<MealType>('unspecified');
   let saving = $state(false);
 
@@ -58,6 +61,19 @@
   // remembered per preset (B3b), else the default level
   const level = $derived<RatingLevel>(picked.level ?? preset?.preset.lastLevel ?? settings.data?.defaultLevel ?? 'stars');
   const chips = $derived((presets.data ?? []).slice(0, MAX_CHIPS));
+  const bagView = $derived(bags.data?.find((b) => b.bag.id === bagId));
+
+  // brew details are copied from the preset (README §9.2); edits apply to this preset only
+  let brewEdits = $state<{ key: string | null; form: BrewForm } | null>(null);
+  const brewForm = $derived(
+    brewEdits && brewEdits.key === presetKey ? brewEdits.form : brewToForm(preset?.preset.lastBrew),
+  );
+
+  const swipeSubtitle = $derived.by(() => {
+    const days = bagView?.freshness.daysSinceRoast;
+    const time = fmtTime(Date.now());
+    return days === null || days === undefined ? time : `${time} · ${t('log.afterRoast', { days })}`;
+  });
 
   function choosePreset(p: PresetView): void {
     picked = { bagId: p.preset.bagId, method: p.preset.method, level: null };
@@ -73,27 +89,22 @@
     return `${t(`brew.${p.preset.method}`)} · ${bag}`;
   }
 
-  const canSave = $derived(
-    !!bagId && !!method && !saving && (level !== 'stars' && level !== 'advanced' ? true : stars !== null),
-  );
+  const canSave = $derived(!!bagId && !!method && !saving && detail.stars !== null);
 
-  async function save(extra: Partial<RatingDto> = {}): Promise<void> {
+  async function save(swipe?: 'more' | 'less'): Promise<void> {
     if (!bagId || !method) return;
     saving = true;
-    // all parameters are copied from the preset (README §9.2)
-    const brew: Brew = { ...(preset?.preset.lastBrew ?? {}), method };
-    if (brew.methodParams && brew.methodParams.kind !== method) delete brew.methodParams;
     try {
       const r = await api().logRating({
         level,
         source: 'home',
         bagId,
-        brew,
+        brew: formToBrew(method, brewForm),
         meal: { type: meal },
-        ...(level === 'swipe' ? {} : { overall: stars ?? undefined }),
-        ...extra,
+        ...(level === 'swipe' ? { swipe } : detailFields(level, detail)),
       });
-      stars = null;
+      detail = emptyDetail();
+      brewEdits = null;
       meal = 'unspecified';
       picked = { bagId, method, level: picked.level };
       if (navigator.vibrate) navigator.vibrate(15);
@@ -210,16 +221,42 @@
 
     <section class="card stack rating">
       {#if level === 'swipe'}
+        {#if method && bagView}
+          <SwipeCard
+            title={`${t(`brew.${method}`)} · ${bagTitle(bagView)}`}
+            subtitle={swipeSubtitle}
+            disabled={saving}
+            onswipe={(dir) => save(dir)}
+          />
+        {/if}
         <div class="thumbs">
-          <button type="button" class="thumb" disabled={saving} onclick={() => save({ swipe: 'less' })} aria-label={t('swipe.less')}>
+          <button type="button" class="thumb" disabled={saving} onclick={() => save('less')} aria-label={t('swipe.less')}>
             <Icon name="thumbDown" size={32} /><span>{t('swipe.less')}</span>
           </button>
-          <button type="button" class="thumb" disabled={saving} onclick={() => save({ swipe: 'more' })} aria-label={t('swipe.more')}>
+          <button type="button" class="thumb" disabled={saving} onclick={() => save('more')} aria-label={t('swipe.more')}>
             <Icon name="thumbUp" size={32} /><span>{t('swipe.more')}</span>
           </button>
         </div>
       {:else}
-        <StarInput bind:value={stars} label={t('log.stars')} />
+        <StarInput bind:value={detail.stars} label={t('log.stars')} />
+        {#if level === 'advanced'}
+          <DetailInput bind:value={detail} />
+        {/if}
+        <div class="field">
+          <span id="buy-again">{t('log.wouldBuyAgain')}</span>
+          <div class="chips" role="radiogroup" aria-labelledby="buy-again">
+            {#each [true, false] as v (v)}
+              <button
+                type="button"
+                class="chip"
+                role="radio"
+                aria-checked={detail.wouldBuyAgain === v}
+                onclick={() => (detail.wouldBuyAgain = detail.wouldBuyAgain === v ? null : v)}
+                >{v ? t('common.yes') : t('common.no')}</button
+              >
+            {/each}
+          </div>
+        </div>
       {/if}
 
       <div class="field">
@@ -236,6 +273,10 @@
           {/each}
         </div>
       </div>
+
+      {#if method}
+        <BrewDetails {method} form={brewForm} onchange={(form) => (brewEdits = { key: presetKey, form })} />
+      {/if}
 
       {#if level !== 'swipe'}
         <button type="button" class="btn-primary btn-block" disabled={!canSave} onclick={() => save()}>{t('common.save')}</button>

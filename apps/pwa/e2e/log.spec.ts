@@ -53,3 +53,58 @@ test('quick log: stars with undo, swipe, presets remember level', async ({ page 
   await expect(page.getByTestId('stats')).toContainText('2 cups: 1 swipes · 1 stars · 0 detailed');
   await expect(page.getByTestId('rating-row')).toHaveCount(2);
 });
+
+test('quick log levels: drag swipe, detail rating and brew details copied from the preset', async ({ page }) => {
+  await addBag(page);
+  await page.getByRole('link', { name: 'Log' }).click();
+
+  // a short drag springs back, a long one saves "more of this"
+  await page.getByRole('radio', { name: 'Swipe' }).click();
+  const card = page.getByTestId('swipe-card');
+  const box = (await card.boundingBox())!;
+  const y = box.y + box.height / 2;
+  await page.mouse.move(box.x + box.width / 2, y);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + box.width * 0.1, y, { steps: 5 });
+  await page.mouse.up();
+  await expect(page.getByText('Cup saved')).toHaveCount(0);
+  await page.mouse.move(box.x + box.width / 2, y);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + box.width * 0.45, y, { steps: 8 });
+  await page.mouse.up();
+  await expect(page.getByText('Cup saved')).toBeVisible();
+
+  // detail level with AeroPress brew details
+  await page.getByRole('radio', { name: 'Detail' }).click();
+  await page.locator('[data-star="5"]').click();
+  await page.getByRole('radiogroup', { name: 'Strength' }).getByRole('radio', { name: '4' }).click();
+  await page.getByRole('radio', { name: 'Sweetness 2' }).click();
+  await page.getByRole('group', { name: 'Wish for Sweetness' }).getByRole('button', { name: 'More' }).click();
+  await page.getByRole('button', { name: 'Berry' }).click();
+  await page.getByRole('radiogroup', { name: 'Would buy again?' }).getByRole('radio', { name: 'Yes' }).click();
+  await page.getByText('Brew details').click();
+  await page.getByLabel('Dose (g)').fill('15,5');
+  await page.getByLabel('Water (g)', { exact: true }).fill('230');
+  await page.getByLabel('Orientation').selectOption('inverted');
+  // the swipe's Undo toast still sits above the nav; centre the button like a user would scroll
+  const save = page.getByRole('button', { name: 'Save' });
+  await save.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await save.click();
+  await expect(page.getByText('Cup saved').last()).toBeVisible();
+
+  // the form resets, but the brew details come back from the preset
+  await expect(page.getByTestId('star-input')).not.toHaveAttribute('aria-valuenow', /./);
+  await expect(page.getByLabel('Dose (g)')).toHaveValue('15.5');
+  await expect(page.getByLabel('Orientation')).toHaveValue('inverted');
+  await expect(page.getByRole('radio', { name: 'Detail' })).toHaveAttribute('aria-checked', 'true');
+
+  // Flair NEO shows its own fields
+  await page.getByTestId('log-method').selectOption('flairNeo');
+  await expect(page.getByLabel('Basket')).toBeVisible();
+  await expect(page.getByLabel('Yield (g)')).toBeVisible();
+  await expect(page.getByLabel('Orientation')).toHaveCount(0);
+
+  await page.getByRole('link', { name: 'Bags' }).click();
+  await page.getByTestId('bag-card').click();
+  await expect(page.getByTestId('stats')).toContainText('2 cups: 1 swipes · 0 stars · 1 detailed');
+});

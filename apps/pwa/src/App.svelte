@@ -69,7 +69,8 @@
 
 <style>
   main {
-    padding: 0.75rem 1rem calc(var(--nav-h) + env(safe-area-inset-bottom) + 1.5rem);
+    /* room for the nav and a toast above it, so the last control can always be uncovered */
+    padding: 0.75rem 1rem calc(var(--nav-h) + env(safe-area-inset-bottom) + 5rem);
     max-width: 40rem;
     margin: 0 auto;
   }
