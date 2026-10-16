@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      # Same base path as the GitHub Pages project site, so path bugs show up in PRs
+      # Same base path as https://www.hohenegger.eu/CuppaScore/, so path bugs show up in PRs
       BASE_PATH: /${{ github.event.repository.name }}/
     steps:
       - uses: actions/checkout@v7

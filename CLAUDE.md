@@ -30,7 +30,7 @@ before implementing a feature; don't re-read all 900 lines every time.
   which CI calls (`.github/workflows/ci.yml`):
   - `check` — lint + typecheck + svelte-check + dependency-cruiser layer rules + i18n key check
   - `test` — Vitest unit/contract tests (all packages)
-  - `build` — production build; honours `BASE_PATH` env (e.g. `/cuplog/`) for Vite `base`,
+  - `build` — production build; honours `BASE_PATH` env (`/CuppaScore/` in production) for Vite `base`,
     manifest `start_url`/`scope`/`id` and `catalog.json` URL
   - `test:e2e` — Playwright against `vite preview` (use `webServer` in playwright.config)
   - `catalog:build` — catalog builder (§6.3)

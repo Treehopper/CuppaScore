@@ -1,3 +1,7 @@
+# Deploys the PWA as a project page of the user site treehopper.github.io, which has the
+# custom domain www.hohenegger.eu → https://www.hohenegger.eu/CuppaScore/
+# configure-pages reports the base path ("/CuppaScore"); the build derives Vite `base`,
+# manifest start_url/scope/id, service worker scope and catalog.json URL from it.
 name: deploy
 
 on:
@@ -18,46 +22,60 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      has_app: ${{ steps.app.outputs.has_app }}
     steps:
       - uses: actions/checkout@v7
 
+      # Until the monorepo is scaffolded there is nothing to build; skip instead of failing.
+      - id: app
+        run: echo "has_app=${{ hashFiles('package.json') != '' }}" >> "$GITHUB_OUTPUT"
+
       - id: pages
+        if: steps.app.outputs.has_app == 'true'
         uses: actions/configure-pages@v6
 
-      - uses: pnpm/action-setup@v6
+      - if: steps.app.outputs.has_app == 'true'
+        uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v7
+      - if: steps.app.outputs.has_app == 'true'
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run --if-present check
-      - run: pnpm run --if-present test
+      - if: steps.app.outputs.has_app == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.app.outputs.has_app == 'true'
+        run: pnpm run --if-present check
+      - if: steps.app.outputs.has_app == 'true'
+        run: pnpm run --if-present test
 
       - name: Build
+        if: steps.app.outputs.has_app == 'true'
         run: pnpm run build
         env:
-          # "/<repo>" for a project site, "" for a custom domain → normalise to "/…/" or "/"
           BASE_PATH: ${{ steps.pages.outputs.base_path }}/
           VITE_APP_VERSION: ${{ github.sha }}
 
       - name: Install Playwright browsers
-        if: hashFiles('**/playwright.config.*') != ''
+        if: steps.app.outputs.has_app == 'true' && hashFiles('**/playwright.config.*') != ''
         run: pnpm exec playwright install --with-deps chromium webkit
 
       - name: E2E tests
-        if: hashFiles('**/playwright.config.*') != ''
+        if: steps.app.outputs.has_app == 'true' && hashFiles('**/playwright.config.*') != ''
         run: pnpm run test:e2e
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}/
 
-      - uses: actions/upload-pages-artifact@v5
+      - if: steps.app.outputs.has_app == 'true'
+        uses: actions/upload-pages-artifact@v5
         with:
           path: apps/pwa/dist
 
   deploy:
     needs: build
+    if: needs.build.outputs.has_app == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

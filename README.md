@@ -793,7 +793,7 @@ This is a single-user repo with **one long-lived branch, `develop`** (there is n
 ```
 push to develop ──► deploy.yml: check → test → build → e2e → upload-pages-artifact → deploy-pages
                                                                                    │
-                                                          https://<user>.github.io/cuplog/
+                                                          https://www.hohenegger.eu/CuppaScore/
 bot PR to develop ──► ci.yml (lint · types · layer rules · i18n · contrast · tests · build · e2e · Lighthouse) ──► merge ──► deploy
 catalog.yml (weekly cron) ──► rebuild catalog.json ──► PR "Weekly catalog refresh" ──► merge ──► deploy
 ```
@@ -807,14 +807,14 @@ catalog.yml (weekly cron) ──► rebuild catalog.json ──► PR "Weekly ca
 | `dependabot.yml` | monthly / weekly | keeps action versions and npm dependencies current |
 
 ### 14.2 One-time repository setup
-1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions.** (done) The repo then publishes as a project page of the user site `treehopper.github.io`, whose custom domain is `www.hohenegger.eu`, so the app lives at **https://www.hohenegger.eu/CuppaScore/**. No CNAME is set on this repo.
 2. **Settings → Branches → rule for `develop`:** block force pushes and deletion. No required PRs (single user; pushes go straight to `develop`).
 3. **Settings → Environments → `github-pages`:** deployment branches limited to `develop` (the default branch).
 4. **Settings → Actions → General:** allow GitHub Actions to create pull requests (for the catalog PR). PRs opened with the default token don't trigger `ci.yml`; either run CI on them manually or give the catalog workflow a fine-grained PAT.
-5. Optional custom domain (e.g. `cuplog.example.de`): set it in Pages settings. `configure-pages` then reports base path `/` and the build adapts automatically.
+5. **HTTPS:** service workers and installation require it. Enable *Enforce HTTPS* on the user site (`treehopper.github.io` → Settings → Pages) so `http://` requests are redirected.
 
 ### 14.3 What the PWA build must get right on Pages
-- **Base path:** a project site lives under `/cuplog/`. `deploy.yml` passes `BASE_PATH` from `configure-pages`, and Vite's `base`, the manifest's `start_url`/`scope`/`id`, the service worker scope and `catalog.json` URLs all derive from it. Nothing is hard-coded to `/`.
+- **Base path:** the project page lives under `/CuppaScore/` (the repo name, case-sensitive). `deploy.yml` passes `BASE_PATH` from `configure-pages`, and Vite's `base`, the manifest's `start_url`/`scope`/`id`, the service worker scope and `catalog.json` URLs all derive from it. Nothing is hard-coded to `/`.
 - **Routing:** GitHub Pages has no server rewrites, so the app uses **hash routing** (`#/log`, `#/bags/…`). Deep links and reloads always work, with no `404.html` tricks.
 - **HTTPS** is provided by Pages, which is required for service workers, the camera (barcode) and installation.
 - **Updates of an installed app:** Workbox precaches hashed assets, and `index.html` and the service worker are revalidated on every open. A new deploy is detected on the next open; the user sees a small "New version — reload" banner (`registerType: "prompt"`), and the app never reloads mid-log.
