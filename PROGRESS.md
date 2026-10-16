@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 11 (i18n).
+- Task 12 (app shell + Settings).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -27,7 +27,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: bundle includes soft-deleted records; merge keeps higher `rev` (then later `updatedAt`); photos/media not in the bundle yet; CSV guards against formula injection
 - [x] 10. Themes: 4 themes + System (light/dark pairing), semantic tokens, runtime `theme-color`, WCAG AA contrast test in `check`
   - note: contrast rules: text/muted 4.5:1 on bg+surface, `--on-accent` 4.5:1 on accent, accent/accent-2/star/good/bad 3:1 (non-text, WCAG 1.4.11); several README colours nudged in lightness (see comments in `themes.css`); `scripts/svelte-autofix.sh` runs the svelte-autofixer CLI over all components; MCP previews via `scripts/mcp-preview.sh` (:4174)
-- [ ] 11. i18n: de/en/it/es + `en-XA` pseudo-locale, detection, ICU plurals, Intl formatting, missing-key check in `check`
+- [x] 11. i18n: de/en/it/es + `en-XA` pseudo-locale, detection, ICU plurals, Intl formatting, missing-key check in `check`
+  - note: own runes-based i18n on `intl-messageformat` (`src/i18n/`), not svelte-i18n (store-based, conflicts with the runes rule); pseudo-locale transforms the formatted output; `i18n:check` also validates ICU syntax and literal `t('…')` keys; add keys to all locales with `scripts/i18n-add.py` (`key | en | de | it | es` per line on stdin)
 - [ ] 12. App shell: nav, hash routes, Settings screen (theme, language, owned methods, default rating level, about/version)
 - [ ] 13. Products & bags UI: add product, add bag, bag list by status, bag detail (stats, timeline, excluded outliers), freshness/expiry badges, open/finish bag
 - [ ] 14. Quick Log (home): preset chips, Bag ▾ / Method ▾, Stars level, meal, Save + Undo toast
@@ -68,6 +69,7 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Decisions (README §17 and other gaps)
 - Theme colours: README §10 demands both the official Solarized values and WCAG AA for all text pairs, which conflict; kept hues, nudged lightness of failing tokens (themes.css), added `--on-accent`.
+- i18n library: README §11 suggests svelte-i18n; CLAUDE.md forbids Svelte 4 stores → small own runes wrapper over `intl-messageformat` (same ICU format, swappable).
 
 ## Blocked / needs owner
 _(none yet)_
