@@ -403,6 +403,10 @@
       "bags": "Confezioni",
       "ratings": "Tazze",
       "venues": "Bar"
-    }
+    },
+    "persisted": "I tuoi dati sono salvati in modo persistente su questo dispositivo. Esporta un backup ogni tanto.",
+    "notPersisted": "Il browser può cancellare i tuoi dati se lo spazio scarseggia.",
+    "persist": "Conserva i miei dati",
+    "persistDenied": "Il browser non l'ha consentito. Di solito aiuta installare l'app."
   }
 }

@@ -403,6 +403,10 @@
       "bags": "Packungen",
       "ratings": "Tassen",
       "venues": "Cafés"
-    }
+    },
+    "persisted": "Deine Daten sind dauerhaft auf diesem Gerät gespeichert. Exportiere ab und zu eine Sicherung.",
+    "notPersisted": "Der Browser darf deine Daten löschen, wenn der Speicher knapp wird.",
+    "persist": "Daten behalten",
+    "persistDenied": "Der Browser hat es nicht erlaubt. Die App zu installieren hilft meist."
   }
 }

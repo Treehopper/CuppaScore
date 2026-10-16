@@ -5,6 +5,7 @@
   import { todayIso } from '../lib/dates';
   import { downloadText } from '../lib/download';
   import { showError } from '../lib/errors';
+  import { storagePersistence } from '../lib/storage.svelte';
   import { toasts } from '../lib/toast.svelte';
 
   /** Backup: JSON bundle export/import (merge or replace) and ratings as CSV (README §3 E2). */
@@ -55,10 +56,24 @@
   }
 
   const KINDS = ['products', 'bags', 'ratings', 'venues'] as const;
+
+  void storagePersistence.refresh();
+
+  async function keep(): Promise<void> {
+    if (!(await storagePersistence.request())) toasts.show(t('data.persistDenied'));
+  }
 </script>
 
 <section class="card stack" aria-labelledby="s-data" data-testid="data">
   <h2 id="s-data">{t('data.title')}</h2>
+  {#if storagePersistence.supported}
+    <p class="small muted" data-testid="persist-status">
+      {storagePersistence.persisted ? t('data.persisted') : t('data.notPersisted')}
+    </p>
+    {#if storagePersistence.persisted === false}
+      <button type="button" onclick={keep}>{t('data.persist')}</button>
+    {/if}
+  {/if}
   <div class="row">
     <button type="button" onclick={exportJson}>{t('data.exportJson')}</button>
     <button type="button" onclick={exportCsv}>{t('data.exportCsv')}</button>

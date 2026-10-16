@@ -13,11 +13,14 @@
   const BEAN = 'M12 2.5c4.7 0 7.5 4.3 7.5 9.5s-2.8 9.5-7.5 9.5-7.5-4.3-7.5-9.5S7.3 2.5 12 2.5z';
   const SEAM = 'M12 3.5c-2.2 2.6-2.2 5.6 0 8.5s2.2 5.9 0 8.5';
 
-  function pick(i: number, e: MouseEvent): void {
-    const el = e.currentTarget as HTMLElement;
+  // one handler on the slider: the stars are plain spans, so no controls are nested in it
+  function pick(e: MouseEvent): void {
+    const el = (e.target as Element).closest<HTMLElement>('[data-star]');
+    if (!el) return;
+    const i = Number(el.dataset.star);
     const r = el.getBoundingClientRect();
     // left 40 % = half star, so a tap near the centre counts as a whole star
-    const half = e.clientX - r.left < r.width * 0.4 && e.detail !== 0;
+    const half = e.clientX - r.left < r.width * 0.4;
     value = half ? i - 0.5 : i;
   }
 
@@ -47,10 +50,11 @@
   aria-valuenow={value ?? undefined}
   aria-valuetext={value === null ? t('log.pickStars') : t('log.starsValue', { value: fmtNumber(value) })}
   onkeydown={onKey}
+  onclick={pick}
   data-testid="star-input"
 >
   {#each [1, 2, 3, 4, 5] as i (i)}
-    <button type="button" tabindex="-1" aria-hidden="true" onclick={(e) => pick(i, e)} data-star={i}>
+    <span class="star" aria-hidden="true" data-star={i}>
       <svg viewBox="0 0 24 24" width="40" height="40">
         <defs>
           <clipPath id={`${uid}-half-${i}`}><rect x="0" y="0" width={24 * fill(i)} height="24" /></clipPath>
@@ -59,7 +63,7 @@
         <path d={bean ? BEAN : STAR} class="full" clip-path={`url(#${uid}-half-${i})`} />
         {#if bean}<path d={SEAM} class="seam" />{/if}
       </svg>
-    </button>
+    </span>
   {/each}
   <span class="value" aria-hidden="true">{value === null ? '' : fmtNumber(value)}</span>
 </div>
@@ -71,13 +75,11 @@
     gap: 0.1rem;
     border-radius: var(--radius-sm);
     width: fit-content;
+    cursor: pointer;
   }
-  button {
-    border: none;
-    background: transparent;
+  .star {
+    display: inline-flex;
     padding: 0.15rem;
-    min-height: 0;
-    min-width: 0;
   }
   .empty {
     fill: none;

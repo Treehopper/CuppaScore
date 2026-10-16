@@ -403,6 +403,10 @@
       "bags": "Bags",
       "ratings": "Cups",
       "venues": "Cafés"
-    }
+    },
+    "persisted": "Your data is stored persistently on this device. Export a backup now and then.",
+    "notPersisted": "The browser may clear your data when space runs low.",
+    "persist": "Keep my data",
+    "persistDenied": "The browser didn't allow it. Installing the app usually helps."
   }
 }

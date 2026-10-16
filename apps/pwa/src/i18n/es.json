@@ -403,6 +403,10 @@
       "bags": "Bolsas",
       "ratings": "Tazas",
       "venues": "Cafeterías"
-    }
+    },
+    "persisted": "Tus datos se guardan de forma persistente en este dispositivo. Exporta una copia de vez en cuando.",
+    "notPersisted": "El navegador puede borrar tus datos si falta espacio.",
+    "persist": "Conservar mis datos",
+    "persistDenied": "El navegador no lo permitió. Instalar la app suele ayudar."
   }
 }

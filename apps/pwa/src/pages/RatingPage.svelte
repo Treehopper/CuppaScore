@@ -4,6 +4,7 @@
   import BrewDetails from '../components/BrewDetails.svelte';
   import CafeDetails from '../components/CafeDetails.svelte';
   import DetailInput from '../components/DetailInput.svelte';
+  import Icon from '../components/Icon.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import StarInput from '../components/StarInput.svelte';
   import { t } from '../i18n/i18n.svelte';
@@ -183,11 +184,15 @@
   </section>
 
   <button type="submit" class="btn-primary btn-block" disabled={!valid || saving}>{t('common.save')}</button>
-  <button type="button" class="btn-block danger" onclick={remove}>{t('common.delete')}</button>
+  <button type="button" class="btn-block danger" onclick={remove}><Icon name="trash" size={20} />{t('common.delete')}</button>
 </form>
 
 <style>
+  /* --bad is a non-text colour (3:1), so it marks the icon and border, not the label */
   .danger {
+    border-color: var(--bad);
+  }
+  .danger :global(svg) {
     color: var(--bad);
   }
 </style>
