@@ -220,5 +220,87 @@
   "page": {
     "notFound": "Pagina non trovata",
     "comingSoon": "In arrivo"
+  },
+  "bags": {
+    "title": "Sacchetti",
+    "add": "Aggiungi sacchetto",
+    "empty": "Ancora nessun sacchetto. Aggiungi il caffè che stai bevendo.",
+    "products": "Tutti i prodotti",
+    "cupsLeft": "ancora ~{count, plural, one {# tazza} other {# tazze}}",
+    "daysSinceRoast": "{days, plural, one {# giorno} other {# giorni}} dalla tostatura",
+    "expiresIn": "Scade tra {days, plural, one {# giorno} other {# giorni}}",
+    "openToday": "Aperto oggi",
+    "finish": "Segna come finito",
+    "reopen": "Riapri",
+    "editTitle": "Modifica sacchetto",
+    "unnamed": "Sacchetto"
+  },
+  "bag": {
+    "product": "Prodotto",
+    "newProduct": "Nuovo prodotto…",
+    "label": "Etichetta",
+    "labelHint": "es. Sacchetto n. 3",
+    "weightG": "Peso (g)",
+    "priceEur": "Prezzo (€)",
+    "shop": "Negozio",
+    "purchasedAt": "Acquistato",
+    "roastDate": "Data di tostatura",
+    "expiryDate": "Da consumarsi entro",
+    "openedAt": "Aperto",
+    "finishedAt": "Finito",
+    "form": "Formato",
+    "storage": "Conservazione",
+    "notes": "Note"
+  },
+  "products": {
+    "title": "Prodotti",
+    "add": "Aggiungi prodotto",
+    "editTitle": "Modifica prodotto",
+    "empty": "Ancora nessun prodotto.",
+    "bagsCount": "{count, plural, one {# sacchetto} other {# sacchetti}}"
+  },
+  "product": {
+    "roaster": "Torrefazione",
+    "name": "Nome",
+    "origin": "Origine",
+    "country": "Paese",
+    "region": "Regione",
+    "farm": "Fattoria",
+    "altitude": "Altitudine (m)",
+    "process": "Lavorazione",
+    "varietals": "Varietà",
+    "listHint": "separa con virgole",
+    "roastLevel": "Grado di tostatura",
+    "roastFor": "Tostato per",
+    "isBlend": "Miscela",
+    "decaf": "Decaffeinato",
+    "labelNotes": "Note di degustazione in etichetta",
+    "unknown": "Prodotto sconosciuto"
+  },
+  "stats": {
+    "score": "Punteggio «di più»",
+    "less": "meno",
+    "more": "di più",
+    "noScore": "Non ancora valutato",
+    "levelCounts": "{n, plural, one {# tazza} other {# tazze}}: {swipe} swipe · {stars} stelle · {advanced} dettagliate",
+    "starAvg": "Media stelle",
+    "median": "Mediana",
+    "trimmed": "Media troncata",
+    "spread": "Dispersione",
+    "byMethod": "Per metodo",
+    "byBag": "Sacchetto per sacchetto",
+    "trend": "Andamento",
+    "profile": "Profilo aromatico",
+    "excluded": "Tazze escluse",
+    "excludedManual": "segnata come non rappresentativa",
+    "excludedAuto": "automatico: z robusto = {z}",
+    "includeOutliers": "Includi valori anomali automatici",
+    "trimmedNote": "Troppe poche tazze per rilevare valori anomali; mostrata la media troncata.",
+    "wishMore": "Spesso vorresti più {attr}.",
+    "wishLess": "Spesso vorresti meno {attr}."
+  },
+  "ratings": {
+    "timeline": "Tazze",
+    "empty": "Ancora nessuna tazza registrata."
   }
 }

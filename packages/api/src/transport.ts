@@ -12,7 +12,9 @@ export function apiFromTransport(call: (method: ApiMethod, args: unknown[]) => P
     api[m] = async (...args: unknown[]) => {
       // drop trailing undefined so optional params survive structured cloning identically
       while (args.length && args[args.length - 1] === undefined) args.pop();
-      const res = await call(m, args);
+      // DTOs are plain JSON by contract; normalising also unwraps UI reactivity proxies,
+      // which structured cloning (postMessage) rejects
+      const res = await call(m, JSON.parse(JSON.stringify(args)) as unknown[]);
       if (!res.ok) throw new ApiError(res.error.code, res.error.details);
       const topics = COMMAND_TOPICS[m];
       if (topics) emitter.emit(topics);

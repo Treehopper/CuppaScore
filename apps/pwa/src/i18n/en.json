@@ -220,5 +220,87 @@
   "page": {
     "notFound": "Page not found",
     "comingSoon": "Coming soon"
+  },
+  "bags": {
+    "title": "Bags",
+    "add": "Add bag",
+    "empty": "No bags yet. Add the coffee you're drinking right now.",
+    "products": "All products",
+    "cupsLeft": "~{count, plural, one {# cup} other {# cups}} left",
+    "daysSinceRoast": "{days, plural, one {# day} other {# days}} after roast",
+    "expiresIn": "Expires in {days, plural, one {# day} other {# days}}",
+    "openToday": "Open today",
+    "finish": "Mark finished",
+    "reopen": "Reopen",
+    "editTitle": "Edit bag",
+    "unnamed": "Bag"
+  },
+  "bag": {
+    "product": "Product",
+    "newProduct": "New product…",
+    "label": "Label",
+    "labelHint": "e.g. Bag #3",
+    "weightG": "Weight (g)",
+    "priceEur": "Price (€)",
+    "shop": "Shop",
+    "purchasedAt": "Purchased",
+    "roastDate": "Roast date",
+    "expiryDate": "Best before",
+    "openedAt": "Opened",
+    "finishedAt": "Finished",
+    "form": "Form",
+    "storage": "Storage",
+    "notes": "Notes"
+  },
+  "products": {
+    "title": "Products",
+    "add": "Add product",
+    "editTitle": "Edit product",
+    "empty": "No products yet.",
+    "bagsCount": "{count, plural, one {# bag} other {# bags}}"
+  },
+  "product": {
+    "roaster": "Roaster",
+    "name": "Name",
+    "origin": "Origin",
+    "country": "Country",
+    "region": "Region",
+    "farm": "Farm",
+    "altitude": "Altitude (m)",
+    "process": "Process",
+    "varietals": "Varietals",
+    "listHint": "separate with commas",
+    "roastLevel": "Roast level",
+    "roastFor": "Roasted for",
+    "isBlend": "Blend",
+    "decaf": "Decaf",
+    "labelNotes": "Tasting notes on the label",
+    "unknown": "Unknown product"
+  },
+  "stats": {
+    "score": "More-of-this score",
+    "less": "less",
+    "more": "more",
+    "noScore": "Not rated yet",
+    "levelCounts": "{n, plural, one {# cup} other {# cups}}: {swipe} swipes · {stars} stars · {advanced} detailed",
+    "starAvg": "Star average",
+    "median": "Median",
+    "trimmed": "Trimmed mean",
+    "spread": "Spread",
+    "byMethod": "By method",
+    "byBag": "Bag by bag",
+    "trend": "Trend",
+    "profile": "Flavour profile",
+    "excluded": "Excluded cups",
+    "excludedManual": "marked not representative",
+    "excludedAuto": "auto: robust z = {z}",
+    "includeOutliers": "Include automatic outliers",
+    "trimmedNote": "Too few cups for outlier detection; showing the trimmed mean.",
+    "wishMore": "You often want more {attr}.",
+    "wishLess": "You often want less {attr}."
+  },
+  "ratings": {
+    "timeline": "Cups",
+    "empty": "No cups logged yet."
   }
 }

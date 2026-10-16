@@ -149,6 +149,7 @@ textarea {
   min-height: var(--tap);
   padding: 0.5rem 0.65rem;
   width: 100%;
+  min-width: 0;
 }
 
 input[type='checkbox'],
@@ -179,6 +180,7 @@ textarea {
 
 .row > * {
   flex: 1;
+  min-width: 0;
 }
 
 .check {

@@ -220,5 +220,87 @@
   "page": {
     "notFound": "Seite nicht gefunden",
     "comingSoon": "Bald verfügbar"
+  },
+  "bags": {
+    "title": "Tüten",
+    "add": "Tüte hinzufügen",
+    "empty": "Noch keine Tüten. Füge den Kaffee hinzu, den du gerade trinkst.",
+    "products": "Alle Produkte",
+    "cupsLeft": "noch ~{count, plural, one {# Tasse} other {# Tassen}}",
+    "daysSinceRoast": "{days, plural, one {# Tag} other {# Tage}} nach Röstung",
+    "expiresIn": "Läuft in {days, plural, one {# Tag} other {# Tagen}} ab",
+    "openToday": "Heute geöffnet",
+    "finish": "Als leer markieren",
+    "reopen": "Wieder öffnen",
+    "editTitle": "Tüte bearbeiten",
+    "unnamed": "Tüte"
+  },
+  "bag": {
+    "product": "Produkt",
+    "newProduct": "Neues Produkt…",
+    "label": "Bezeichnung",
+    "labelHint": "z. B. Tüte #3",
+    "weightG": "Gewicht (g)",
+    "priceEur": "Preis (€)",
+    "shop": "Geschäft",
+    "purchasedAt": "Gekauft",
+    "roastDate": "Röstdatum",
+    "expiryDate": "Mindestens haltbar bis",
+    "openedAt": "Geöffnet",
+    "finishedAt": "Leer seit",
+    "form": "Form",
+    "storage": "Aufbewahrung",
+    "notes": "Notizen"
+  },
+  "products": {
+    "title": "Produkte",
+    "add": "Produkt hinzufügen",
+    "editTitle": "Produkt bearbeiten",
+    "empty": "Noch keine Produkte.",
+    "bagsCount": "{count, plural, one {# Tüte} other {# Tüten}}"
+  },
+  "product": {
+    "roaster": "Rösterei",
+    "name": "Name",
+    "origin": "Herkunft",
+    "country": "Land",
+    "region": "Region",
+    "farm": "Farm",
+    "altitude": "Höhe (m)",
+    "process": "Aufbereitung",
+    "varietals": "Varietäten",
+    "listHint": "mit Kommas trennen",
+    "roastLevel": "Röstgrad",
+    "roastFor": "Geröstet für",
+    "isBlend": "Mischung",
+    "decaf": "Entkoffeiniert",
+    "labelNotes": "Geschmacksnoten auf dem Etikett",
+    "unknown": "Unbekanntes Produkt"
+  },
+  "stats": {
+    "score": "Mehr-davon-Wert",
+    "less": "weniger",
+    "more": "mehr",
+    "noScore": "Noch nicht bewertet",
+    "levelCounts": "{n, plural, one {# Tasse} other {# Tassen}}: {swipe} gewischt · {stars} Sterne · {advanced} detailliert",
+    "starAvg": "Sterne-Schnitt",
+    "median": "Median",
+    "trimmed": "Getrimmtes Mittel",
+    "spread": "Streuung",
+    "byMethod": "Nach Methode",
+    "byBag": "Tüte für Tüte",
+    "trend": "Verlauf",
+    "profile": "Geschmacksprofil",
+    "excluded": "Ausgeschlossene Tassen",
+    "excludedManual": "als nicht repräsentativ markiert",
+    "excludedAuto": "automatisch: robuster z = {z}",
+    "includeOutliers": "Automatische Ausreißer einbeziehen",
+    "trimmedNote": "Zu wenige Tassen für die Ausreißererkennung; getrimmter Mittelwert angezeigt.",
+    "wishMore": "Du wünschst dir oft mehr {attr}.",
+    "wishLess": "Du wünschst dir oft weniger {attr}."
+  },
+  "ratings": {
+    "timeline": "Tassen",
+    "empty": "Noch keine Tassen geloggt."
   }
 }

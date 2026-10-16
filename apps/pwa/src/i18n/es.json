@@ -220,5 +220,87 @@
   "page": {
     "notFound": "Página no encontrada",
     "comingSoon": "Próximamente"
+  },
+  "bags": {
+    "title": "Bolsas",
+    "add": "Añadir bolsa",
+    "empty": "Aún no hay bolsas. Añade el café que estás tomando.",
+    "products": "Todos los productos",
+    "cupsLeft": "quedan ~{count, plural, one {# taza} other {# tazas}}",
+    "daysSinceRoast": "{days, plural, one {# día} other {# días}} tras el tueste",
+    "expiresIn": "Caduca en {days, plural, one {# día} other {# días}}",
+    "openToday": "Abierta hoy",
+    "finish": "Marcar como terminada",
+    "reopen": "Reabrir",
+    "editTitle": "Editar bolsa",
+    "unnamed": "Bolsa"
+  },
+  "bag": {
+    "product": "Producto",
+    "newProduct": "Nuevo producto…",
+    "label": "Etiqueta",
+    "labelHint": "p. ej. Bolsa n.º 3",
+    "weightG": "Peso (g)",
+    "priceEur": "Precio (€)",
+    "shop": "Tienda",
+    "purchasedAt": "Comprado",
+    "roastDate": "Fecha de tueste",
+    "expiryDate": "Consumir preferentemente antes de",
+    "openedAt": "Abierta",
+    "finishedAt": "Terminada",
+    "form": "Formato",
+    "storage": "Conservación",
+    "notes": "Notas"
+  },
+  "products": {
+    "title": "Productos",
+    "add": "Añadir producto",
+    "editTitle": "Editar producto",
+    "empty": "Aún no hay productos.",
+    "bagsCount": "{count, plural, one {# bolsa} other {# bolsas}}"
+  },
+  "product": {
+    "roaster": "Tostador",
+    "name": "Nombre",
+    "origin": "Origen",
+    "country": "País",
+    "region": "Región",
+    "farm": "Finca",
+    "altitude": "Altitud (m)",
+    "process": "Proceso",
+    "varietals": "Variedades",
+    "listHint": "separa con comas",
+    "roastLevel": "Nivel de tueste",
+    "roastFor": "Tostado para",
+    "isBlend": "Mezcla",
+    "decaf": "Descafeinado",
+    "labelNotes": "Notas de cata de la etiqueta",
+    "unknown": "Producto desconocido"
+  },
+  "stats": {
+    "score": "Puntuación «más de esto»",
+    "less": "menos",
+    "more": "más",
+    "noScore": "Sin valorar",
+    "levelCounts": "{n, plural, one {# taza} other {# tazas}}: {swipe} deslizadas · {stars} estrellas · {advanced} detalladas",
+    "starAvg": "Media de estrellas",
+    "median": "Mediana",
+    "trimmed": "Media recortada",
+    "spread": "Dispersión",
+    "byMethod": "Por método",
+    "byBag": "Bolsa a bolsa",
+    "trend": "Tendencia",
+    "profile": "Perfil de sabor",
+    "excluded": "Tazas excluidas",
+    "excludedManual": "marcada como no representativa",
+    "excludedAuto": "automático: z robusto = {z}",
+    "includeOutliers": "Incluir valores atípicos automáticos",
+    "trimmedNote": "Muy pocas tazas para detectar valores atípicos; se muestra la media recortada.",
+    "wishMore": "A menudo quieres más {attr}.",
+    "wishLess": "A menudo quieres menos {attr}."
+  },
+  "ratings": {
+    "timeline": "Tazas",
+    "empty": "Aún no hay tazas registradas."
   }
 }
