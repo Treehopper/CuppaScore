@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 19 (core reminders: `dueReminders`, `nextDueAt`, `applyAction`; read README §4.7 + §12).
+- Task 20 (services/API reminders: config in settings, activity, state, `checkReminders`, `ackReminder`, `getNextReminders`).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -45,7 +45,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: `e2e/a11y.spec.ts` runs axe (WCAG 2.x A/AA) on every screen in all 4 themes; persistence is requested after the first saved cup (Firefox may prompt) and shown/requestable in Settings → Backup; products ranking + bag-to-bag comparison already came with task 13; Lighthouse in CI is still task 38. **M1 complete.**
 
 ## M1b — Reminders & install
-- [ ] 19. Core reminders: `dueReminders`, `nextDueAt`, `applyAction` with table-driven tests (TZ, DST, quiet hours, pause, snooze)
+- [x] 19. Core reminders: `dueReminders`, `nextDueAt`, `applyAction` with table-driven tests (TZ, DST, quiet hours, pause, snooze)
+  - note: `core/reminders.ts`; instants are epoch ms, `applyAction(state, ruleId, action, nowMs, tz)`; per-rule state `{snoozedUntil, dismissedOn, handledAt}` (`handledAt` silences unconditional rules after logging; README's `shownOn` dropped); `nextDueAt` rounds up to whole seconds (timer would otherwise spin); `mergeDue` builds the one-banner view
 - [ ] 20. Services/API reminders: rules config, activity, state, `checkReminders`, `ackReminder`, `getNextReminders`
 - [ ] 21. Welcome flow (hello, install guidance Android/iOS, gear & rating style, reminders, skip) + `onboardingCompletedAt`
 - [ ] 22. Reminder banner (merge, Log now / Later / Not today), timer + foreground checks, reminders in Settings, `.ics` export
@@ -75,6 +76,7 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 - [ ] 38. Final polish: Lighthouse config, pseudo-locale overflow pass, a11y
 
 ## Decisions (README §17 and other gaps)
+- Reminders: `pausedUntil` is the date reminders *resume* (exclusive); `bagExpiring` is due every day from N days before through the expiry date (soonest bag shown); `afterLastLog` fires at max(last+hours, window start) on the same local day and only inside its window; a rule pushed past midnight by quiet hours is dropped (today-only catch-up).
 - Theme colours: README §10 demands both the official Solarized values and WCAG AA for all text pairs, which conflict; kept hues, nudged lightness of failing tokens (themes.css), added `--on-accent`.
 - i18n library: README §11 suggests svelte-i18n; CLAUDE.md forbids Svelte 4 stores → small own runes wrapper over `intl-messageformat` (same ICU format, swappable).
 
