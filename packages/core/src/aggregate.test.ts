@@ -92,4 +92,15 @@ describe('aggregate', () => {
       }),
     );
   });
+
+  it('can detect outliers against a reference set (bag → product fallback)', () => {
+    const product = [4, 4.5, 4, 3.5, 4.5, 3.5].map((overall, i) => makeRating({ id: `p${i}`, overall, bagId: 'other' }));
+    const bad = makeRating({ id: 'bad', overall: 0.5 });
+    const bagRatings = [bad, makeRating({ id: 'ok', overall: 4 })];
+    const alone = aggregate(bagRatings, { nowMs: NOW });
+    expect(alone.excluded).toEqual([]);
+    const withRef = aggregate(bagRatings, { nowMs: NOW, outlierReference: [...product, ...bagRatings] });
+    expect(withRef.excluded.map((e) => e.ratingId)).toEqual(['bad']);
+    expect(withRef.robustMethod).toBe('mad');
+  });
 });

@@ -174,9 +174,9 @@ export const LEVEL_FIELDS = {
 const ALL_LEVEL_FIELDS = ['swipe', 'overall', 'wouldBuyAgain', 'strength', 'profile', 'flavourTags', 'wish'] as const;
 
 /** Removes fields that don't belong to the rating's level (README §4.3: absent, not zero). */
-export function stripForLevel<T extends Partial<RatingFields> & { level: RatingLevel }>(r: T): T {
+export function stripForLevel<T extends { level: RatingLevel }>(r: T): T {
   const keep = new Set<string>(LEVEL_FIELDS[r.level]);
-  const out = { ...r };
+  const out: Record<string, unknown> = { ...r };
   for (const f of ALL_LEVEL_FIELDS) if (!keep.has(f)) delete out[f];
-  return out;
+  return out as T;
 }

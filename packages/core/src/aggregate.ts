@@ -22,6 +22,11 @@ export interface AggregateOptions {
   includeOutliers?: boolean;
   calibration?: Calibration;
   confidence?: ConfidenceWeights;
+  /**
+   * Superset used to detect automatic outliers (README §5.2: per bag, falling back to the
+   * product when the bag has < 5 ratings). Defaults to `ratings`.
+   */
+  outlierReference?: readonly Rating[];
 }
 
 export interface StarStats {
@@ -72,10 +77,28 @@ export function aggregate(ratings: readonly Rating[], opts: AggregateOptions): S
     if (pref) prefs.set(r.id, pref);
   }
   const withP = live.filter((r) => prefs.has(r.id));
-  const outl = detectOutliers(
-    withP.map((r) => ({ id: r.id, x: prefs.get(r.id)!.p, excluded: r.excluded })),
-    opts.outlierMethod ?? 'mad',
-  );
+  const ref = opts.outlierReference
+    ? opts.outlierReference.filter((r) => !r.deletedAt)
+    : withP;
+  const refItems = ref.flatMap((r) => {
+    const pref = prefs.get(r.id) ?? preferenceOf(r, cal, weights);
+    return pref ? [{ id: r.id, x: pref.p, excluded: r.excluded }] : [];
+  });
+  const own = new Set(withP.map((r) => r.id));
+  const refResult = detectOutliers(refItems, opts.outlierMethod ?? 'mad');
+  // ratings missing from the reference are kept (they were never assessed)
+  const assessed = new Set(refItems.map((i) => i.id));
+  const outl = {
+    method: refResult.method,
+    excluded: [
+      ...refResult.excluded.filter((e) => own.has(e.id)),
+      ...withP.filter((r) => !assessed.has(r.id) && r.excluded).map((r) => ({ id: r.id, reason: { kind: 'manual' as const } })),
+    ],
+    keptIds: [
+      ...refResult.keptIds.filter((id) => own.has(id)),
+      ...withP.filter((r) => !assessed.has(r.id) && !r.excluded).map((r) => r.id),
+    ],
+  };
   const counted = new Set(outl.keptIds);
   if (opts.includeOutliers) for (const e of outl.excluded) if (e.reason.kind === 'auto') counted.add(e.id);
 
