@@ -13,6 +13,9 @@ import {
   ProductFields,
   Rating,
   RatingFields,
+  applyAction,
+  dueReminders,
+  nextDueAt,
   parseDateTimeInZone,
   stripForLevel,
   timeOfDayOf,
@@ -20,7 +23,12 @@ import {
   validateRatingShape,
   Venue,
   VenueFields,
+  type Activity,
   type AggregateOptions,
+  type DueReminder,
+  type ReminderAction,
+  type ReminderConfig,
+  type RuleKind,
   type BagFreshness,
   type BagInput,
   type BagStatus,
@@ -129,6 +137,19 @@ export interface StatsView {
 export interface ProductStatsView extends StatsView {
   /** bag-to-bag comparison */
   byBag: GroupScore[];
+}
+
+export interface ReminderCheck {
+  /** highest priority first (README §12.3) */
+  due: DueReminder[];
+  /** for arming the in-app timer */
+  nextDueAt: string | null;
+}
+
+export interface NextReminder {
+  ruleId: string;
+  kind: RuleKind;
+  at: string;
 }
 
 export interface MethodUsage {
@@ -430,6 +451,8 @@ export class CupLogService {
   async logRating(cmd: LogRatingCmd): Promise<Rating> {
     const fields = await this.buildRating(cmd);
     const rec = Rating.parse({ ...(await this.meta()), ...fields });
+    // reminders due right now are satisfied by this cup (README §12.3)
+    const { due } = await this.checkReminders();
     await this.repos.uow.run(async () => {
       await this.repos.ratings.put(rec);
       if (rec.bagId) {
@@ -444,6 +467,7 @@ export class CupLogService {
         if (v && v.lastDrink !== rec.cafe.drink) await this.repos.venues.put(await this.bump({ ...v, lastDrink: rec.cafe.drink }));
       }
     });
+    if (due.length) await this.ackReminders(due.map((d) => d.ruleId), 'logged');
     return rec;
   }
 
@@ -493,6 +517,74 @@ export class CupLogService {
     const rs = await this.repos.ratings.find(this.owner, q);
     rs.sort((a, b) => Date.parse(b.ratedAt) - Date.parse(a.ratedAt) || b.id.localeCompare(a.id));
     return q.limit ? rs.slice(0, q.limit) : rs;
+  }
+
+  // ---------- reminders (README §12) ----------
+
+  /** Rules are evaluated in the settings (device) time zone, so they follow you when travelling. */
+  private reminderConfig(s: DomainSettings): ReminderConfig {
+    return { ...s.reminders, timeZone: s.timeZone };
+  }
+
+  private async reminderActivity(tz: string): Promise<Activity> {
+    const [ratings, bags] = await Promise.all([this.repos.ratings.list(this.owner), this.repos.bags.list(this.owner)]);
+    const today = toZonedIso(this.ctx.clock.now(), tz).slice(0, 10);
+    let last: Rating | undefined;
+    let cupsToday = 0;
+    for (const r of ratings) {
+      if (!last || Date.parse(r.ratedAt) > Date.parse(last.ratedAt)) last = r;
+      if (toZonedIso(Date.parse(r.ratedAt), tz).slice(0, 10) === today) cupsToday++;
+    }
+    return {
+      lastLoggedAt: last?.ratedAt,
+      cupsToday,
+      expiringBags: bags
+        .filter((b) => b.expiryDate && bagStatus(b) !== 'finished')
+        .map((b) => ({ bagId: b.id, expiryDate: b.expiryDate! })),
+    };
+  }
+
+  /** What to show now and when to check again (app start, foreground, timer). */
+  async checkReminders(): Promise<ReminderCheck> {
+    const s = await this.getSettings();
+    const cfg = this.reminderConfig(s);
+    const act = await this.reminderActivity(cfg.timeZone);
+    const now = this.ctx.clock.now();
+    return {
+      due: dueReminders(cfg, act, s.reminderState, now),
+      nextDueAt: nextDueAt(cfg, act, s.reminderState, now),
+    };
+  }
+
+  private async ackReminders(ruleIds: string[], action: ReminderAction): Promise<void> {
+    const s = await this.getSettings();
+    const known = new Set(s.reminders.rules.map((r) => r.id));
+    let state = Object.fromEntries(Object.entries(s.reminderState).filter(([id]) => known.has(id)));
+    for (const id of ruleIds) state = applyAction(state, id, action, this.ctx.clock.now(), s.timeZone);
+    await this.updateSettings({ reminderState: state });
+  }
+
+  /** Banner action: Log now (= logged) / Later / Not today. */
+  async ackReminder(ruleId: string, action: ReminderAction): Promise<ReminderCheck> {
+    const s = await this.getSettings();
+    if (!s.reminders.rules.some((r) => r.id === ruleId)) throw new DomainError('NOT_FOUND', { kind: 'reminderRule', id: ruleId });
+    await this.ackReminders([ruleId], action);
+    return this.checkReminders();
+  }
+
+  /** Next time of each enabled rule, soonest first (Settings: "next reminder: tomorrow 10:00"). */
+  async getNextReminders(): Promise<NextReminder[]> {
+    const s = await this.getSettings();
+    const cfg = this.reminderConfig(s);
+    const act = await this.reminderActivity(cfg.timeZone);
+    const now = this.ctx.clock.now();
+    const out: NextReminder[] = [];
+    for (const rule of cfg.rules) {
+      if (!rule.enabled) continue;
+      const at = nextDueAt({ ...cfg, rules: [rule] }, act, s.reminderState, now);
+      if (at) out.push({ ruleId: rule.id, kind: rule.kind, at });
+    }
+    return out.sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
   }
 
   // ---------- presets & log options ----------

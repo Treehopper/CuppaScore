@@ -81,6 +81,29 @@ export function describeApiContract(name: string, make: () => Promise<CupLogApi>
       expect((await api.setPresetPinned('home:x:v60', true)).pinnedPresets).toEqual(['home:x:v60']);
     });
 
+    it('reminders: configure, check, ack (state stored in settings)', async () => {
+      const api = await make();
+      expect(await api.checkReminders()).toEqual({ due: [], nextDueAt: null });
+      await api.updateSettings({
+        reminders: {
+          enabled: true,
+          timeZone: 'Europe/Berlin',
+          quietHours: null,
+          pausedUntil: null,
+          rules: [{ id: 'r1', kind: 'fixedDaily', time: '07:00', days: 'all', enabled: true }],
+        },
+      });
+      const c = await api.checkReminders();
+      expect(c.due).toEqual([expect.objectContaining({ ruleId: 'r1', kind: 'fixedDaily', time: '07:00' })]);
+      expect(c.nextDueAt).toBe('2026-10-17T07:00:00+02:00');
+      const seen: string[] = [];
+      api.subscribe('settings', () => seen.push('settings'));
+      expect((await api.ackReminder('r1', 'notToday')).due).toEqual([]);
+      expect(seen).toEqual(['settings']);
+      expect(await api.getNextReminders()).toEqual([{ ruleId: 'r1', kind: 'fixedDaily', at: '2026-10-17T07:00:00+02:00' }]);
+      expect(await codeOf(api.ackReminder('nope', 'later'))).toBe('NOT_FOUND');
+    });
+
     it('notifies subscribers after commands only', async () => {
       const api = await make();
       const seen: string[] = [];

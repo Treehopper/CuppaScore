@@ -185,3 +185,74 @@ describe('presets, stats & settings', () => {
     expect((await svc.methodUsage()).map((m) => m.method)).toEqual(['aeropress', 'flairNeo']);
   });
 });
+
+describe('reminders', () => {
+  const rules = [
+    { id: 'wd', kind: 'nothingLoggedBy' as const, time: '10:00', days: 'all' as const, enabled: true },
+    { id: 'daily', kind: 'fixedDaily' as const, time: '10:30', days: 'all' as const, enabled: true },
+    { id: 'bag', kind: 'bagExpiring' as const, daysBefore: 2, time: '09:00', enabled: true },
+  ];
+
+  async function withRules() {
+    const t = await setup(); // clock: 2026-10-16 08:00 Berlin
+    await t.svc.updateSettings({ reminders: { enabled: true, timeZone: 'Europe/Berlin', quietHours: null, pausedUntil: null, rules } });
+    return t;
+  }
+
+  it('checks due rules and the next time from history', async () => {
+    const { svc, clock } = await withRules();
+    expect(await svc.checkReminders()).toEqual({ due: [], nextDueAt: '2026-10-16T10:00:00+02:00' });
+    clock.set('2026-10-16T10:45:00+02:00');
+    const c = await svc.checkReminders();
+    expect(c.due.map((d) => d.ruleId)).toEqual(['wd', 'daily']);
+    expect(await svc.getNextReminders()).toEqual([
+      { ruleId: 'wd', kind: 'nothingLoggedBy', at: '2026-10-17T10:00:00+02:00' },
+      { ruleId: 'daily', kind: 'fixedDaily', at: '2026-10-17T10:30:00+02:00' },
+    ]);
+  });
+
+  it('logging a cup satisfies every due rule, including unconditional ones', async () => {
+    const { svc, clock, bag } = await withRules();
+    clock.set('2026-10-16T10:45:00+02:00');
+    await svc.logRating({ level: 'swipe', swipe: 'more', source: 'home', bagId: bag.id, brew: { method: 'aeropress' } });
+    expect((await svc.checkReminders()).due).toEqual([]);
+    expect((await svc.getSettings()).reminderState.daily?.handledAt).toBe('2026-10-16T10:45:00+02:00');
+  });
+
+  it('later / not today / unknown rule', async () => {
+    const { svc, clock } = await withRules();
+    clock.set('2026-10-16T10:45:00+02:00');
+    const later = await svc.ackReminder('wd', 'later');
+    expect(later.due.map((d) => d.ruleId)).toEqual(['daily']);
+    expect(later.nextDueAt).toBe('2026-10-16T11:15:00+02:00');
+    expect((await svc.ackReminder('daily', 'notToday')).due).toEqual([]);
+    clock.set('2026-10-16T11:15:00+02:00');
+    expect((await svc.checkReminders()).due.map((d) => d.ruleId)).toEqual(['wd']);
+    await expectCode(svc.ackReminder('nope', 'later'), 'NOT_FOUND');
+  });
+
+  it('expiring bags come from open/unopened bags', async () => {
+    const { svc, clock, bag } = await withRules();
+    await svc.updateBag(bag.id, { expiryDate: '2026-10-18' });
+    clock.set('2026-10-16T09:00:00+02:00');
+    expect((await svc.checkReminders()).due).toEqual([
+      expect.objectContaining({ ruleId: 'bag', payload: { bagId: bag.id, daysLeft: 2 } }),
+    ]);
+    await svc.updateBag(bag.id, { finishedAt: '2026-10-16' });
+    expect((await svc.checkReminders()).due).toEqual([]);
+  });
+
+  it('follows the device time zone (travel)', async () => {
+    const { svc, clock } = await withRules();
+    clock.set('2026-10-16T12:00:00Z'); // 14:00 Berlin, 08:00 New York
+    expect((await svc.checkReminders()).due.length).toBeGreaterThan(0);
+    await svc.updateSettings({ timeZone: 'America/New_York' });
+    expect(await svc.checkReminders()).toEqual({ due: [], nextDueAt: '2026-10-16T10:00:00-04:00' });
+  });
+
+  it('off by default', async () => {
+    const { svc, clock } = await setup();
+    clock.set('2026-10-16T23:00:00+02:00');
+    expect(await svc.checkReminders()).toEqual({ due: [], nextDueAt: null });
+  });
+});

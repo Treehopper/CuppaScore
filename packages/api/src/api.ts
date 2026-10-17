@@ -1,4 +1,17 @@
-import type { Bag, DomainSettings, ExportBundle, Product, Rating, RatingSource, Venue } from '@cuplog/core';
+import type {
+  Bag,
+  DomainSettings,
+  DueReminder,
+  ExportBundle,
+  Product,
+  Rating,
+  RatingSource,
+  ReminderAction,
+  ReminderConfig,
+  ReminderRule,
+  RuleKind,
+  Venue,
+} from '@cuplog/core';
 import type {
   AddBagCmd,
   AddProductCmd,
@@ -10,11 +23,13 @@ import type {
   ImportReport,
   LogRatingCmd,
   MethodUsage,
+  NextReminder,
   PresetView,
   ProductPatch,
   ProductStatsView,
   ProductView,
   RatingPatch,
+  ReminderCheck,
   StatsOptions,
   StatsView,
   VenuePatch,
@@ -28,6 +43,7 @@ export type BagDto = Bag;
 export type VenueDto = Venue;
 export type RatingDto = Rating;
 export type DomainSettingsDto = DomainSettings;
+export type { DueReminder, ReminderAction, ReminderConfig, ReminderRule, RuleKind };
 export type {
   AddBagCmd,
   AddProductCmd,
@@ -39,11 +55,13 @@ export type {
   ImportReport,
   LogRatingCmd,
   MethodUsage,
+  NextReminder,
   PresetView,
   ProductPatch,
   ProductStatsView,
   ProductView,
   RatingPatch,
+  ReminderCheck,
   StatsOptions,
   StatsView,
   VenuePatch,
@@ -79,6 +97,8 @@ export interface CupLogApi {
   restoreRating(id: string): Promise<RatingDto>;
   updateSettings(patch: Partial<DomainSettingsDto>): Promise<DomainSettingsDto>;
   setPresetPinned(key: string, pinned: boolean): Promise<DomainSettingsDto>;
+  /** Reminder banner action (README §12.3). */
+  ackReminder(ruleId: string, action: ReminderAction): Promise<ReminderCheck>;
 
   // queries
   getSettings(): Promise<DomainSettingsDto>;
@@ -93,6 +113,9 @@ export interface CupLogApi {
   methodUsage(): Promise<MethodUsage[]>;
   getBagStats(bagId: string, opts?: StatsOptions): Promise<StatsView>;
   getProductStats(productId: string, opts?: StatsOptions): Promise<ProductStatsView>;
+  /** Due reminders + next due time; call on start, foreground and timer (README §12.1). */
+  checkReminders(): Promise<ReminderCheck>;
+  getNextReminders(): Promise<NextReminder[]>;
 
   // data
   exportAll(): Promise<ExportBundle>;
@@ -114,13 +137,15 @@ export const COMMAND_TOPICS: Partial<Record<ApiMethod, Topic[]>> = {
   updateBag: ['bags'],
   addVenue: ['venues'],
   updateVenue: ['venues'],
-  logRating: ['ratings', 'bags', 'venues'],
+  // logging acks due reminders, whose state lives in settings
+  logRating: ['ratings', 'bags', 'venues', 'settings'],
   updateRating: ['ratings'],
   setRatingExcluded: ['ratings'],
   deleteRating: ['ratings'],
   restoreRating: ['ratings'],
   updateSettings: ['settings'],
   setPresetPinned: ['settings'],
+  ackReminder: ['settings'],
   importAll: ['ratings', 'bags', 'products', 'venues', 'settings'],
 };
 
@@ -138,6 +163,7 @@ export const API_METHODS: readonly ApiMethod[] = [
   'restoreRating',
   'updateSettings',
   'setPresetPinned',
+  'ackReminder',
   'getSettings',
   'getProduct',
   'listProducts',
@@ -150,6 +176,8 @@ export const API_METHODS: readonly ApiMethod[] = [
   'methodUsage',
   'getBagStats',
   'getProductStats',
+  'checkReminders',
+  'getNextReminders',
   'exportAll',
   'importAll',
   'exportRatingsCsv',

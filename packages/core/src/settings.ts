@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { BREW_METHODS, BrewMethod, OutlierMethod, RatingLevel } from './enums';
 import { IsoDateTime } from './record';
+import { ReminderConfig, ReminderState } from './reminders';
 import { DEFAULT_TIME_ZONE } from './time';
 
 export const ConfidenceWeights = z.object({
@@ -12,7 +13,7 @@ export type ConfidenceWeights = z.infer<typeof ConfidenceWeights>;
 
 export const DEFAULT_CONFIDENCE: ConfidenceWeights = { swipe: 0.5, stars: 1.0, advanced: 1.2 };
 
-/** Domain settings (README §4.6). Reminders are added in M1b. */
+/** Domain settings (README §4.6) incl. reminder rules (§4.7) and their per-rule state. */
 export const DomainSettings = z.object({
   halfLifeDays: z.number().min(1).max(3650).default(60),
   outlierMethod: OutlierMethod.default('mad'),
@@ -25,6 +26,9 @@ export const DomainSettings = z.object({
   /** preset keys pinned to the top of the quick log */
   pinnedPresets: z.array(z.string().max(200)).default([]),
   onboardingCompletedAt: IsoDateTime.nullable().default(null),
+  /** evaluated in `timeZone` above (the device zone, so rules follow you when travelling — F7) */
+  reminders: ReminderConfig.default(ReminderConfig.parse({})),
+  reminderState: ReminderState.default({}),
   updatedAt: IsoDateTime.nullable().default(null),
   rev: z.number().int().nonnegative().default(0),
 });

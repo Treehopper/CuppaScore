@@ -29,8 +29,12 @@ async function seed(page: Page): Promise<void> {
   await expect(page.getByText('Cup saved')).toBeVisible();
 }
 
+// the service worker's precache download only slows these scans down
+test.use({ serviceWorkers: 'block' });
+
 async function scan(page: Page, where: string): Promise<void> {
-  await page.waitForLoadState('networkidle');
+  // every screen renders a page heading once its first query has resolved
+  await expect(page.locator('main h1')).toBeVisible();
   const { violations } = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze();
