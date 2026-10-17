@@ -12,6 +12,8 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${port}${base}`,
     trace: 'retain-on-failure',
+    // Same zone in the container and on CI runners (UTC), so displayed times are stable
+    timezoneId: 'Europe/Berlin',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Pixel 7'] } },
