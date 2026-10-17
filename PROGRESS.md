@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 23 (core: time-weighted score §5.3 + personal star centring & swipe calibration §5.1 — check what `aggregate()` already does first).
+- Task 24 (core: context model — weighted ridge §5.4 — and freshness curve).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -55,7 +55,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: banner is global (above every page except welcome), not only on Quick Log, so F5b works anywhere; "Log now" hides the banner and opens Quick Log — saving acks; timer capped at 1 h; app syncs `settings.timeZone` to the device zone on start; the API worker's clock follows the page clock per call (`followerClock`), which lets e2e use `page.clock`; `.ics` uses floating local time; Settings edits the 6 suggested rules (no add/delete yet) — quiet hours/pause UI = task 36. **M1b complete.**
 
 ## M2 — Insights
-- [ ] 23. Core: time-weighted score (§5.3), personal star centring + swipe calibration (§5.1)
+- [x] 23. Core: time-weighted score (§5.3), personal star centring + swipe calibration (§5.1)
+  - note: `computeCalibration` (core/calibration.ts); star sd floored at 0.5★ (decision); `aggOpts()` computes it over all ratings for every score; recency weighting already lived in `aggregate()`
 - [ ] 24. Core: context model (weighted ridge, §5.4) + freshness curve
 - [ ] 25. Services/API: `getInsights`, richer stats DTOs (per method, sparkline data, best meal pairing)
 - [ ] 26. Stats screen + bag trend chart, meal & time-of-day analysis, cost per cup, venue ranking
@@ -79,6 +80,7 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 - [ ] 38. Final polish: Lighthouse config, pseudo-locale overflow pass, a11y
 
 ## Decisions (README §17 and other gaps)
+- Personal star spread is floored at 0.5★ so a very consistent rater's half star doesn't jump to the full ±1.
 - Reminder banner sits above every screen (README says top of Quick Log) so a reminder that comes due while another screen is open still shows (F5b).
 - Welcome flow appears only on a root launch (homescreen `start_url`, plain URL) without `onboardingCompletedAt`; deep links never redirect, so shortcuts and shared links open what they point to.
 - Reminders: `pausedUntil` is the date reminders *resume* (exclusive); `bagExpiring` is due every day from N days before through the expiry date (soonest bag shown); `afterLastLog` fires at max(last+hours, window start) on the same local day and only inside its window; a rule pushed past midnight by quiet hours is dropped (today-only catch-up).
