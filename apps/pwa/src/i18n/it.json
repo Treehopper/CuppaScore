@@ -408,5 +408,33 @@
     "notPersisted": "Il browser può cancellare i tuoi dati se lo spazio scarseggia.",
     "persist": "Conserva i miei dati",
     "persistDenied": "Il browser non l'ha consentito. Di solito aiuta installare l'app."
+  },
+  "welcome": {
+    "step": "Passo {n} di {total}",
+    "hello": "Benvenuto in CupLog",
+    "helloText": "Valuta il tuo caffè con uno o due tocchi e scopri cosa ti piace davvero. Scegli prima lingua e aspetto.",
+    "install": "Metti CupLog nella schermata Home",
+    "installWhy": "L'app installata si apre con un tocco, conserva i dati in modo più affidabile e mostra i promemoria quando la apri.",
+    "ios1": "Tocca Condividi nella barra di Safari",
+    "ios2": "Scegli «Aggiungi alla schermata Home»",
+    "ios3": "Apri CupLog dalla nuova icona",
+    "installButton": "Installa CupLog",
+    "installMenu": "Usa il menu del browser: «Installa app» o «Aggiungi a schermata Home».",
+    "notNow": "Non ora",
+    "gear": "La tua attrezzatura e il tuo stile",
+    "level": {
+      "swipe": "Swipe: il più rapido, un gesto per tazza.",
+      "stars": "Stelle: da 0,5 a 5 stelle, l'equilibrio per tutti i giorni.",
+      "advanced": "Dettaglio: stelle più intensità, profilo e aromi."
+    },
+    "reminders": "Promemoria?",
+    "remindersText": "CupLog deve ricordarti di valutare il caffè quando apri l'app?",
+    "remWeekdays": "Nei giorni feriali, se non hai ancora registrato nulla",
+    "remWeekends": "Nel weekend, se non c'è nulla",
+    "remFewer": "Se hai registrato meno di {count} tazze",
+    "remBag": "Quando una confezione aperta scade entro {days, plural, one {# giorno} other {# giorni}}",
+    "time": "Dalle",
+    "remindersNote": "I promemoria compaiono in CupLog quando lo apri. Ad app chiusa il telefono non ti avvisa.",
+    "enableReminders": "Attiva promemoria"
   }
 }

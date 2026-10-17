@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { IsoDate, IsoDateTime } from './record';
+import { SUGGESTED_REMINDER_RULES } from './vocab';
 import { addDays, DEFAULT_TIME_ZONE, localParts, parseHm, toZonedIso, WEEKDAYS, zonedTimeToMs, type Weekday } from './time';
 
 /**
@@ -38,15 +39,8 @@ export const ReminderConfig = z.object({
 });
 export type ReminderConfig = z.infer<typeof ReminderConfig>;
 
-/** The README §4.7 suggestion offered on the welcome screen. */
-export const suggestedReminderRules = (): ReminderRule[] => [
-  { id: 'rem_1', kind: 'nothingLoggedBy', time: '10:00', days: ['MO', 'TU', 'WE', 'TH', 'FR'], enabled: true },
-  { id: 'rem_2', kind: 'nothingLoggedBy', time: '11:30', days: ['SA', 'SU'], enabled: true },
-  { id: 'rem_3', kind: 'fewerThanBy', count: 2, time: '15:30', days: 'all', enabled: false },
-  { id: 'rem_4', kind: 'afterLastLog', hours: 2, window: { from: '08:00', to: '18:00' }, days: 'all', enabled: false },
-  { id: 'rem_5', kind: 'fixedDaily', time: '20:00', days: 'all', enabled: false },
-  { id: 'rem_6', kind: 'bagExpiring', daysBefore: 2, time: '09:00', enabled: true },
-];
+/** The README §4.7 / §9.1 suggestion offered on the welcome screen (only the weekday rule on). */
+export const suggestedReminderRules = (): ReminderRule[] => z.array(ReminderRule).parse(SUGGESTED_REMINDER_RULES);
 
 export interface Activity {
   /** latest cup, ISO */

@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 
 test('app shell loads under the base path with navigation', async ({ page }) => {
   await page.goto('./');
+  // first launch at the root opens the welcome flow
+  await page.getByRole('button', { name: 'Skip' }).click();
   await expect(page.getByRole('navigation')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Log' })).toHaveAttribute('aria-current', 'page');
   await page.getByRole('link', { name: 'Settings' }).click();

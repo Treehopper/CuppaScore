@@ -19,6 +19,10 @@
     pin: 'M12 17v5M5 17h14l-2-4V6h1V3H6v3h1v7z',
     trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
     edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+    share: 'M12 3v12M8 7l4-4 4 4M6 11H5v10h14V11h-1',
+    addBox: 'M5 4h14v16H5zM12 8v8M8 12h8',
+    download: 'M12 4v11M8 11l4 4 4-4M5 20h14',
+    bell: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0',
   } as const;
   export type IconName = keyof typeof PATHS;
 </script>

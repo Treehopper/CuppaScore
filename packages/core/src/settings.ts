@@ -29,6 +29,8 @@ export const DomainSettings = z.object({
   /** evaluated in `timeZone` above (the device zone, so rules follow you when travelling — F7) */
   reminders: ReminderConfig.default(ReminderConfig.parse({})),
   reminderState: ReminderState.default({}),
+  /** "Not now" on the welcome reminders card; one later prompt follows (README §9.1) */
+  remindersDeclinedAt: IsoDateTime.nullable().default(null),
   updatedAt: IsoDateTime.nullable().default(null),
   rev: z.number().int().nonnegative().default(0),
 });

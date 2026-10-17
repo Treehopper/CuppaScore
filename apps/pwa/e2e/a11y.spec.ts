@@ -13,6 +13,7 @@ const ROUTES = [
   '#/products/new',
   '#/venues',
   '#/settings',
+  '#/welcome',
 ];
 
 async function seed(page: Page): Promise<void> {
@@ -52,6 +53,12 @@ for (const theme of THEMES) {
     for (const route of ROUTES) {
       await page.goto(`./${route}`);
       await scan(page, `${route} (${theme})`);
+    }
+    // every welcome card
+    await page.goto('./#/welcome');
+    for (const [i, name] of ['Next', 'Not now', 'Next'].entries()) {
+      await page.getByRole('button', { name }).click();
+      await scan(page, `welcome card ${i + 2} (${theme})`);
     }
     // detail screens and expanded forms
     await page.goto('./#/bags');

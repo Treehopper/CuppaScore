@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('device language detection', () => {
   test.use({ locale: 'de-DE' });
   test('German device gets German UI', async ({ page }) => {
-    await page.goto('./');
+    await page.goto('./#/log');
     await expect(page.getByRole('link', { name: 'Loggen' })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', 'de');
   });

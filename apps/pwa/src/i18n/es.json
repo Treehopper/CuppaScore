@@ -408,5 +408,33 @@
     "notPersisted": "El navegador puede borrar tus datos si falta espacio.",
     "persist": "Conservar mis datos",
     "persistDenied": "El navegador no lo permitió. Instalar la app suele ayudar."
+  },
+  "welcome": {
+    "step": "Paso {n} de {total}",
+    "hello": "Bienvenido a CupLog",
+    "helloText": "Valora tu café con uno o dos toques y descubre lo que de verdad te gusta. Elige primero idioma y aspecto.",
+    "install": "Pon CupLog en tu pantalla de inicio",
+    "installWhy": "La app instalada se abre con un toque, guarda tus datos de forma más fiable y muestra recordatorios al abrirla.",
+    "ios1": "Toca Compartir en la barra de Safari",
+    "ios2": "Elige «Añadir a pantalla de inicio»",
+    "ios3": "Abre CupLog desde el nuevo icono",
+    "installButton": "Instalar CupLog",
+    "installMenu": "Usa el menú del navegador: «Instalar app» o «Añadir a pantalla de inicio».",
+    "notNow": "Ahora no",
+    "gear": "Tu equipo y tu forma de valorar",
+    "level": {
+      "swipe": "Deslizar: lo más rápido, un gesto por taza.",
+      "stars": "Estrellas: de 0,5 a 5, el equilibrio para el día a día.",
+      "advanced": "Detalle: estrellas más intensidad, perfil y sabores."
+    },
+    "reminders": "¿Recordatorios?",
+    "remindersText": "¿Quieres que CupLog te recuerde valorar tu café al abrir la app?",
+    "remWeekdays": "Entre semana, si aún no has registrado nada",
+    "remWeekends": "El fin de semana, si no hay nada registrado",
+    "remFewer": "Si has registrado menos de {count} tazas",
+    "remBag": "Cuando una bolsa abierta caduca en {days, plural, one {# día} other {# días}}",
+    "time": "Desde",
+    "remindersNote": "Los recordatorios aparecen en CupLog al abrirla. Con la app cerrada, el móvil no te avisará.",
+    "enableReminders": "Activar recordatorios"
   }
 }

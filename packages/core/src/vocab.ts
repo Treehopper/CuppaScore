@@ -70,3 +70,15 @@ export const BAG_FORMS = ['beans', 'ground', 'capsules', 'pods'] as const;
 export const OUTLIER_METHODS = ['mad', 'trimmed', 'off'] as const;
 
 export const TIMES_OF_DAY_KEYS = ['early', 'morning', 'midday', 'afternoon', 'evening'] as const;
+
+export const WEEKDAY_KEYS = ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'] as const;
+
+/** The README §4.7 / §9.1 reminder suggestion (plain data; validated by `ReminderRule` in core). */
+export const SUGGESTED_REMINDER_RULES = [
+  { id: 'rem_1', kind: 'nothingLoggedBy', time: '10:00', days: ['MO', 'TU', 'WE', 'TH', 'FR'], enabled: true },
+  { id: 'rem_2', kind: 'nothingLoggedBy', time: '11:30', days: ['SA', 'SU'], enabled: false },
+  { id: 'rem_3', kind: 'fewerThanBy', count: 2, time: '15:30', days: 'all', enabled: false },
+  { id: 'rem_4', kind: 'afterLastLog', hours: 2, window: { from: '08:00', to: '18:00' }, days: 'all', enabled: false },
+  { id: 'rem_5', kind: 'fixedDaily', time: '20:00', days: 'all', enabled: false },
+  { id: 'rem_6', kind: 'bagExpiring', daysBefore: 2, time: '09:00', enabled: false },
+] as const;

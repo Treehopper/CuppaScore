@@ -408,5 +408,33 @@
     "notPersisted": "Der Browser darf deine Daten löschen, wenn der Speicher knapp wird.",
     "persist": "Daten behalten",
     "persistDenied": "Der Browser hat es nicht erlaubt. Die App zu installieren hilft meist."
+  },
+  "welcome": {
+    "step": "Schritt {n} von {total}",
+    "hello": "Willkommen bei CupLog",
+    "helloText": "Bewerte deinen Kaffee mit ein, zwei Tipps und finde heraus, was dir wirklich schmeckt. Wähle zuerst Sprache und Aussehen.",
+    "install": "CupLog auf den Startbildschirm",
+    "installWhy": "Die installierte App öffnet mit einem Tipp, hält deine Daten zuverlässiger und zeigt Erinnerungen beim Öffnen.",
+    "ios1": "Tippe in Safari auf „Teilen“",
+    "ios2": "Wähle „Zum Home-Bildschirm“",
+    "ios3": "Öffne CupLog über das neue Symbol",
+    "installButton": "CupLog installieren",
+    "installMenu": "Nutze das Browsermenü: „App installieren“ oder „Zum Startbildschirm hinzufügen“.",
+    "notNow": "Jetzt nicht",
+    "gear": "Deine Ausrüstung & Bewertungsart",
+    "level": {
+      "swipe": "Wischen: am schnellsten – eine Geste pro Tasse.",
+      "stars": "Sterne: 0,5–5 Sterne, gut für jeden Tag.",
+      "advanced": "Detail: Sterne plus Stärke, Profil und Aromen."
+    },
+    "reminders": "Erinnerungen?",
+    "remindersText": "Soll CupLog dich beim Öffnen ans Bewerten erinnern?",
+    "remWeekdays": "An Werktagen, wenn du noch nichts eingetragen hast",
+    "remWeekends": "Am Wochenende, wenn nichts eingetragen ist",
+    "remFewer": "Wenn du weniger als {count} Tassen eingetragen hast",
+    "remBag": "Wenn eine offene Packung in {days, plural, one {# Tag} other {# Tagen}} abläuft",
+    "time": "Ab",
+    "remindersNote": "Erinnerungen erscheinen in CupLog, wenn du es öffnest. Ist die App geschlossen, meldet sich dein Handy nicht.",
+    "enableReminders": "Erinnerungen aktivieren"
   }
 }

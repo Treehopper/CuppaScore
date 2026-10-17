@@ -408,5 +408,33 @@
     "notPersisted": "The browser may clear your data when space runs low.",
     "persist": "Keep my data",
     "persistDenied": "The browser didn't allow it. Installing the app usually helps."
+  },
+  "welcome": {
+    "step": "Step {n} of {total}",
+    "hello": "Welcome to CupLog",
+    "helloText": "Rate your coffee in one or two taps and find out what you really like. Pick your language and look first.",
+    "install": "Put CupLog on your home screen",
+    "installWhy": "The installed app opens in one tap, keeps your data more reliably and shows reminders when you open it.",
+    "ios1": "Tap Share in Safari's toolbar",
+    "ios2": "Choose “Add to Home Screen”",
+    "ios3": "Open CupLog from the new icon",
+    "installButton": "Install CupLog",
+    "installMenu": "Use your browser's menu: “Install app” or “Add to Home screen”.",
+    "notNow": "Not now",
+    "gear": "Your gear & rating style",
+    "level": {
+      "swipe": "Swipe: fastest — one gesture per cup.",
+      "stars": "Stars: 0.5–5 stars, a good everyday balance.",
+      "advanced": "Detail: stars plus strength, profile and flavours."
+    },
+    "reminders": "Reminders?",
+    "remindersText": "Should CupLog nudge you to rate your coffee when you open the app?",
+    "remWeekdays": "On weekdays, if you haven't logged anything yet",
+    "remWeekends": "On weekends, if nothing is logged",
+    "remFewer": "If you've logged fewer than {count} cups",
+    "remBag": "When an open bag expires within {days, plural, one {# day} other {# days}}",
+    "time": "From",
+    "remindersNote": "Reminders appear inside CupLog when you open it. Your phone won't notify you while the app is closed.",
+    "enableReminders": "Enable reminders"
   }
 }

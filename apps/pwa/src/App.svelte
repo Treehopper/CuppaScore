@@ -17,11 +17,21 @@
   import RatingPage from './pages/RatingPage.svelte';
   import RatingsPage from './pages/RatingsPage.svelte';
   import VenuesPage from './pages/VenuesPage.svelte';
+  import WelcomePage from './pages/WelcomePage.svelte';
   import SettingsPage from './pages/SettingsPage.svelte';
   import { applyThemeEffect } from './themes/apply.svelte';
 
   applyThemeEffect();
   applyLangEffect();
+
+  // first launch from the home screen / root URL opens the welcome flow; deep links skip it
+  if (router.current.segments.length === 0) {
+    void api()
+      .getSettings()
+      .then((s) => {
+        if (!s.onboardingCompletedAt && router.current.segments.length === 0) router.go('/welcome', { replace: true });
+      });
+  }
 
   const route = $derived(router.current);
   const section = $derived(route.segments[0] ?? 'log');
@@ -57,6 +67,8 @@
     {:else}
       {#key sub}<ProductDetailPage id={sub} />{/key}
     {/if}
+  {:else if section === 'welcome'}
+    <WelcomePage />
   {:else if section === 'ratings'}
     {#if !sub}
       <RatingsPage />
@@ -78,7 +90,7 @@
   {/if}
 </main>
 <Toasts />
-<Nav />
+{#if section !== 'welcome'}<Nav />{/if}
 
 <style>
   main {
