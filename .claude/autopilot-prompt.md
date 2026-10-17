@@ -4,7 +4,10 @@ You are building CupLog autonomously. The spec is README.md; working rules are i
    derived from README §16 milestones M1, M1b, M2, M3, M4, M5 (skip M6/M7), broken into
    tasks small enough to finish and verify in about an hour each. Start with the monorepo
    scaffold, root scripts, and CI passing on an empty app.
-2. Pick the first unchecked task. Read only the README sections it needs.
+   If `git status` shows uncommitted changes, they are a task a previous session didn't
+   finish: complete and verify it first.
+2. Pick the first unchecked task — items under "Owner feedback" in PROGRESS.md always come
+   before the milestone list. Read only the README sections it needs.
 3. Implement it with tests (unit tests for core/services, Playwright e2e for user flows).
 4. Run the full verification in CLAUDE.md. Fix failures until green. For UI tasks, look at
    the result through the playwright MCP server.
