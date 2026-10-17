@@ -284,3 +284,64 @@ describe('personal calibration (README §5.1)', () => {
     expect(score(other.id)).toBeGreaterThan(0.3);
   });
 });
+
+describe('insights & richer stats (README §3 C5–C10, §5.4/5.5)', () => {
+  async function history() {
+    const t = await setup();
+    const { svc, clock, bag } = t;
+    const other = await svc.addProduct({ roaster: 'Man versus Machine', name: 'Colombia' });
+    const otherBag = await svc.addBag({ productId: other.id, label: 'Bag #1', priceEur: 16, weightG: 250 });
+    await svc.updateBag(bag.id, { priceEur: 12 });
+    const vits = await svc.addVenue({ name: 'Vits' });
+    const mvm = await svc.addVenue({ name: 'MvM' });
+    const log = async (cmd: Parameters<typeof svc.logRating>[0]) => {
+      clock.advance(3_600_000);
+      return svc.logRating(cmd);
+    };
+    for (let i = 0; i < 4; i++) {
+      await log({ level: 'advanced', overall: 4.5, source: 'home', bagId: bag.id, brew: { method: 'aeropress', doseG: 15 }, meal: { type: 'sweet' }, flavourTags: ['berry', 'floral'], wish: { sweetness: 'more' } });
+      await log({ level: 'stars', overall: 3, source: 'home', bagId: bag.id, brew: { method: 'v60' }, meal: { type: 'savory' } });
+      await log({ level: 'stars', overall: 2, source: 'home', bagId: otherBag.id, brew: { method: 'v60' }, meal: { type: 'none' } });
+    }
+    await log({ level: 'swipe', swipe: 'more', source: 'cafe', venueId: vits.id, cafe: { drink: 'cappuccino', milk: 'dairy', size: 'regular', priceEur: 3.9 } });
+    await log({ level: 'stars', overall: 2, source: 'cafe', venueId: mvm.id, cafe: { drink: 'cappuccino', milk: 'dairy', size: 'regular', priceEur: 4.1 } });
+    return { ...t, other, otherBag, vits, mvm };
+  }
+
+  it('bag stats: best method and food pairing, cost per cup', async () => {
+    const { svc, bag } = await history();
+    const s = await svc.getBagStats(bag.id);
+    expect(s.best.method?.key).toBe('aeropress');
+    expect(s.best.meal?.key).toBe('sweet');
+    // open bag, 250 g at 15 g a cup → 12 € / 16.7 cups
+    expect(s.costPerCup).toBeCloseTo(12 / (250 / 15), 6);
+  });
+
+  it('insights: distribution, products by bean score, profile, café ranking', async () => {
+    const { svc, product, other, vits, mvm } = await history();
+    const ins = await svc.getInsights();
+    expect(ins.cups).toBe(14);
+    expect(ins.byLevel).toEqual({ swipe: 1, stars: 9, advanced: 4 });
+    expect(ins.distribution.swipe).toEqual({ more: 1, less: 0 });
+    expect(ins.distribution.stars.find((b) => b.value === 4.5)?.n).toBe(4);
+    expect(ins.context).not.toBeNull();
+    expect(ins.context!.effects.some((e) => e.group === 'meal' && e.level === 'sweet')).toBe(true);
+    expect(ins.products.map((p) => p.productId)).toEqual([product.id, other.id]);
+    expect(ins.products[0]!.beanScore).toBeGreaterThan(ins.products[1]!.beanScore!);
+    expect(ins.products[1]!.costPerCup).toBeCloseTo(16 / (250 / 15), 6);
+    expect(ins.profile.likedTags.map((t) => t.tag)).toEqual(['berry', 'floral']);
+    expect(ins.profile.wishes).toEqual([{ attr: 'sweetness', more: 4, justRight: 0, less: 0 }]);
+    expect(ins.cafe.ranking).toEqual([
+      { drink: 'cappuccino', venues: [expect.objectContaining({ venueId: vits.id, n: 1 }), expect.objectContaining({ venueId: mvm.id, n: 1 })] },
+    ]);
+    expect(ins.cafe.avgPriceEur).toBeCloseTo(4.0, 6);
+  });
+
+  it('no context model with too little data', async () => {
+    const { svc, bag } = await setup();
+    await svc.logRating({ level: 'stars', overall: 4, source: 'home', bagId: bag.id, brew: { method: 'aeropress' } });
+    const ins = await svc.getInsights();
+    expect(ins.context).toBeNull();
+    expect(ins.products[0]).toMatchObject({ beanScore: null, cups: 1 });
+  });
+});

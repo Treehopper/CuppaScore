@@ -21,6 +21,7 @@ import type {
   BagView,
   ImportMode,
   ImportReport,
+  InsightsView,
   LogRatingCmd,
   MethodUsage,
   NextReminder,
@@ -53,6 +54,7 @@ export type {
   BagView,
   ImportMode,
   ImportReport,
+  InsightsView,
   LogRatingCmd,
   MethodUsage,
   NextReminder,
@@ -116,6 +118,8 @@ export interface CupLogApi {
   /** Due reminders + next due time; call on start, foreground and timer (README §12.1). */
   checkReminders(): Promise<ReminderCheck>;
   getNextReminders(): Promise<NextReminder[]>;
+  /** Stats screen: context effects, distribution, taste profile, cost, venue ranking. */
+  getInsights(): Promise<InsightsView>;
   /** Calendar file for one fixed-time rule (F8). */
   exportReminderIcs(ruleId: string, text: { title: string; description?: string }): Promise<string>;
 
@@ -180,6 +184,7 @@ export const API_METHODS: readonly ApiMethod[] = [
   'getProductStats',
   'checkReminders',
   'getNextReminders',
+  'getInsights',
   'exportReminderIcs',
   'exportAll',
   'importAll',

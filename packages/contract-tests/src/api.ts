@@ -104,6 +104,16 @@ export function describeApiContract(name: string, make: () => Promise<CupLogApi>
       expect(await codeOf(api.ackReminder('nope', 'later'))).toBe('NOT_FOUND');
     });
 
+    it('insights cross the transport', async () => {
+      const api = await make();
+      const p = await api.addProduct({ roaster: 'R', name: 'N' });
+      const b = await api.addBag({ productId: p.id, priceEur: 10, weightG: 200 });
+      await api.logRating({ level: 'stars', overall: 4, source: 'home', bagId: b.id, brew: { method: 'v60', doseG: 20 } });
+      const ins = await api.getInsights();
+      expect(ins).toMatchObject({ cups: 1, context: null, products: [{ productId: p.id, cups: 1, costPerCup: 1 }] });
+      expect((await api.getBagStats(b.id)).costPerCup).toBe(1);
+    });
+
     it('notifies subscribers after commands only', async () => {
       const api = await make();
       const seen: string[] = [];

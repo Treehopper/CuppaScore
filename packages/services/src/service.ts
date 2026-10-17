@@ -5,7 +5,9 @@ import {
   bagFreshness,
   bagStatus,
   bagWarnings,
+  bagCostPerCup,
   computeCalibration,
+  DEFAULT_DOSE_G,
   computeDerived,
   derivePresets,
   DomainSettings,
@@ -51,6 +53,7 @@ import {
 import type { z } from 'zod';
 import { exportAll, exportRatingsCsv, importAll, type ImportMode, type ImportReport } from './data';
 import { DomainError } from './errors';
+import { buildInsights, type InsightsView } from './insights';
 import type { Ctx, Repositories } from './ports';
 
 // ---------- commands ----------
@@ -134,6 +137,10 @@ export interface StatsView {
   byTimeOfDay: GroupScore[];
   /** café-made cups counted (C10) */
   cafeCups: number;
+  /** best method / food pairing with at least 2 cups (README §5.5) */
+  best: { method: GroupScore | null; meal: GroupScore | null };
+  /** mean cost per cup over the bags involved (C8); null without prices */
+  costPerCup: number | null;
 }
 
 export interface ProductStatsView extends StatsView {
@@ -159,7 +166,6 @@ export interface MethodUsage {
   uses: number;
 }
 
-const DEFAULT_DOSE_G = 15;
 
 function parseOrThrow<S extends z.ZodType>(schema: S, input: unknown): z.infer<S> {
   const res = schema.safeParse(input);
@@ -660,28 +666,58 @@ export class CupLogService {
     if (rs.filter((r) => !r.excluded).length < 5) {
       aopts.outlierReference = await this.repos.ratings.find(this.owner, { productId: bag.productId });
     }
-    return this.statsView(rs, aopts);
+    return this.statsView(rs, aopts, [bag]);
   }
 
   async getProductStats(productId: string, opts: StatsOptions = {}): Promise<ProductStatsView> {
     await this.mustGet(this.repos.products, productId, 'product');
-    const rs = await this.repos.ratings.find(this.owner, { productId });
+    const [rs, bags] = await Promise.all([
+      this.repos.ratings.find(this.owner, { productId }),
+      this.repos.bags.list(this.owner),
+    ]);
     const aopts = await this.aggOpts(opts);
-    const view = this.statsView(rs, aopts);
+    const view = this.statsView(rs, aopts, bags.filter((b) => b.productId === productId));
     const counted = countedRatings(rs, view.summary);
     return { ...view, byBag: groupScores(counted.filter((r) => r.bagId), (r) => r.bagId!, aopts) };
   }
 
-  private statsView(rs: Rating[], aopts: AggregateOptions): StatsView {
+  private statsView(rs: Rating[], aopts: AggregateOptions, bags: Bag[]): StatsView {
     const summary = aggregate(rs, aopts);
     const counted = countedRatings(rs, summary);
+    const byMethod = groupScores(counted, (r) => (r.brew?.method ?? r.cafe?.drink ?? 'other') as BrewMethod | Drink, aopts);
+    const byMeal = groupScores(counted, (r) => r.meal.type as MealType, aopts);
+    const costs: number[] = [];
+    for (const b of bags) {
+      const cups = rs.filter((r) => r.bagId === b.id && !r.deletedAt);
+      const doses = cups.map((r) => r.brew?.doseG).filter((d): d is number => typeof d === 'number');
+      const c = bagCostPerCup(b, cups.length, doses.length ? doses.reduce((a, d) => a + d, 0) / doses.length : DEFAULT_DOSE_G);
+      if (c !== null) costs.push(c);
+    }
     return {
       summary,
-      byMethod: groupScores(counted, (r) => (r.brew?.method ?? r.cafe?.drink ?? 'other') as BrewMethod | Drink, aopts),
-      byMeal: groupScores(counted, (r) => r.meal.type as MealType, aopts),
+      byMethod,
+      byMeal,
       byTimeOfDay: groupScores(counted, (r) => r.timeOfDay, aopts),
       cafeCups: counted.filter((r) => r.source === 'cafe').length,
+      best: {
+        method: byMethod.find((g) => g.n >= 2 && g.score !== null) ?? null,
+        // a pairing means food: "none" and "unspecified" don't count
+        meal: byMeal.find((g) => g.n >= 2 && g.score !== null && g.key !== 'none' && g.key !== 'unspecified') ?? null,
+      },
+      costPerCup: costs.length ? costs.reduce((a, c) => a + c, 0) / costs.length : null,
     };
+  }
+
+  /** Stats screen (README §9.3 item 3): context effects, distribution, profile, café ranking. */
+  async getInsights(): Promise<InsightsView> {
+    const [ratings, bags, products, venues, aopts] = await Promise.all([
+      this.repos.ratings.list(this.owner),
+      this.repos.bags.list(this.owner),
+      this.repos.products.list(this.owner),
+      this.repos.venues.list(this.owner),
+      this.aggOpts(),
+    ]);
+    return buildInsights({ ratings, bags, products, venues, aopts });
   }
 }
 

@@ -66,3 +66,21 @@ export function bagWarnings(bag: Pick<Bag, 'roastDate' | 'openedAt' | 'expiryDat
   if (f.daysSinceRoast !== null && f.daysSinceRoast > staleAfterDays) out.push('staleRoast');
   return out;
 }
+
+/** Typical dose when a bag's cups don't record one (grams). */
+export const DEFAULT_DOSE_G = 15;
+
+/**
+ * Cost per cup of a bag (README §3 C8): price / cups for a finished bag, otherwise estimated from
+ * weight and the average dose. Null without a price (or without cups and weight).
+ */
+export function bagCostPerCup(
+  bag: Pick<Bag, 'priceEur' | 'weightG' | 'openedAt' | 'finishedAt'>,
+  cups: number,
+  avgDoseG: number = DEFAULT_DOSE_G,
+): number | null {
+  if (bag.priceEur === null || bag.priceEur === undefined) return null;
+  if (bagStatus(bag) === 'finished' && cups > 0) return bag.priceEur / cups;
+  if (bag.weightG && avgDoseG > 0) return bag.priceEur / Math.max(1, bag.weightG / avgDoseG);
+  return null;
+}
