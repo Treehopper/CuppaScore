@@ -58,10 +58,10 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    background: var(--good);
+    background: var(--more);
   }
   .bar.neg {
-    background: var(--bad);
+    background: var(--less);
   }
   .num {
     min-width: 2.6rem;

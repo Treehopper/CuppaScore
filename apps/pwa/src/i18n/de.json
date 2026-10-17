@@ -297,7 +297,9 @@
     "includeOutliers": "Automatische Ausreißer einbeziehen",
     "trimmedNote": "Zu wenige Tassen für die Ausreißererkennung; getrimmter Mittelwert angezeigt.",
     "wishMore": "Du wünschst dir oft mehr {attr}.",
-    "wishLess": "Du wünschst dir oft weniger {attr}."
+    "wishLess": "Du wünschst dir oft weniger {attr}.",
+    "bestMethod": "Beste Zubereitung: {method}",
+    "bestMeal": "Passt am besten zu: {meal}"
   },
   "ratings": {
     "timeline": "Tassen",
@@ -462,5 +464,37 @@
     "icsTitle": "Kaffee in CupLog bewerten ☕",
     "icsText": "Öffne CupLog und trage deine Tasse ein.",
     "everyDay": "täglich"
+  },
+  "chart": {
+    "table": "Als Tabelle anzeigen",
+    "effect": "Effekt",
+    "cups": "Tassen"
+  },
+  "insights": {
+    "empty": "Trag ein paar Tassen ein, dann erscheinen hier deine Auswertungen.",
+    "cups": "Tassen eingetragen",
+    "levels": "{swipe} gewischt · {stars} Sterne · {advanced} detailliert",
+    "homeCost": "Zu Hause",
+    "cafeCost": "Im Café",
+    "perCup": "pro Tasse",
+    "context": "Was deine Wertung beeinflusst",
+    "contextHint": "Bereinigt um Bohne und Frische: + heißt, dir schmeckt der Kaffee in dieser Situation besser.",
+    "byMeal": "Zum Essen",
+    "byTime": "Tageszeit",
+    "byMethod": "Zubereitung",
+    "byDrink": "Café-Getränke",
+    "needMore": "Trag mindestens {n} Tassen ein, um zu sehen, was deine Wertung beeinflusst.",
+    "freshness": "Frische",
+    "peak": "Dein Kaffee schmeckt dir am besten etwa {days, plural, one {# Tag} other {# Tage}} nach der Röstung.",
+    "dayTick": "{days} T",
+    "daysAfterRoast": "{days, plural, one {# Tag} other {# Tage}} nach Röstung",
+    "daysCol": "Tage nach Röstung",
+    "beans": "Deine Bohnen",
+    "beanHint": "Bohnenwertungen rechnen Essen, Tageszeit, Zubereitung und Frische heraus.",
+    "costPerCup": "{cost} pro Tasse",
+    "distribution": "Wie du bewertest",
+    "profile": "Dein Geschmack",
+    "likedTags": "Aromen in Tassen, die dir geschmeckt haben",
+    "venues": "Beste Cafés je Getränk"
   }
 }

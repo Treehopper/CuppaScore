@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { RatingDto, StatsView } from '@cuplog/api';
-  import { fmtDateTime, fmtNumber } from '../i18n/format';
+  import { fmtDate, fmtDateTime, fmtMoney, fmtNumber } from '../i18n/format';
   import { t } from '../i18n/i18n.svelte';
   import { PROFILE_ATTRS } from '../lib/domain';
   import ScoreGauge from './ScoreGauge.svelte';
-  import Sparkline from './Sparkline.svelte';
+  import LineChart from './charts/LineChart.svelte';
 
   let {
     stats,
@@ -25,6 +25,10 @@
   };
 
   const s = $derived(stats.summary);
+  const signed = (p: number): string => {
+    const n = Math.round(p * 100);
+    return n > 0 ? `+${n}` : String(n);
+  };
   const showTrimmed = $derived(s.robustMethod === 'trimmed' && s.nCounted >= 3);
   const wishHints = $derived(
     PROFILE_ATTRS.flatMap((a) => {
@@ -47,7 +51,29 @@
     </p>
     {#if showTrimmed}<p class="small muted">{t('stats.trimmedNote')}</p>{/if}
     {#if s.series.length > 1}
-      <Sparkline values={s.series.map((x) => x.p)} label={t('stats.trend')} />
+      {@const pts = s.series.map((x) => ({ x: Date.parse(x.ratedAt), y: x.p }))}
+      <h3 class="small muted">{t('stats.trend')}</h3>
+      <LineChart
+        points={pts}
+        label={t('stats.trend')}
+        height={140}
+        xTicks={[pts[0]!.x, ...(pts.at(-1)!.x !== pts[0]!.x ? [pts.at(-1)!.x] : [])].map((x) => ({
+          value: x,
+          label: fmtDate(x, { day: 'numeric', month: 'short' }),
+        }))}
+        tooltip={(p, i) => ({ value: signed(p.y), detail: `${fmtDateTime(s.series[i]!.ratedAt)} · ${t(`level.${s.series[i]!.level}`)}` })}
+        table={{
+          head: [t('rating.when'), t('stats.score')],
+          rows: s.series.map((x) => [fmtDateTime(x.ratedAt), signed(x.p)]),
+        }}
+      />
+    {/if}
+    {#if stats.best.method || stats.best.meal || stats.costPerCup !== null}
+      <ul class="list small facts" data-testid="best">
+        {#if stats.best.method}<li>{t('stats.bestMethod', { method: groupLabel(stats.best.method.key) })}</li>{/if}
+        {#if stats.best.meal}<li>{t('stats.bestMeal', { meal: t(`meal.${stats.best.meal.key}`) })}</li>{/if}
+        {#if stats.costPerCup !== null}<li>{t('insights.costPerCup', { cost: fmtMoney(stats.costPerCup) })}</li>{/if}
+      </ul>
     {/if}
   </section>
 

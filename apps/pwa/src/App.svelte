@@ -21,6 +21,7 @@
   import VenuesPage from './pages/VenuesPage.svelte';
   import WelcomePage from './pages/WelcomePage.svelte';
   import SettingsPage from './pages/SettingsPage.svelte';
+  import StatsPage from './pages/StatsPage.svelte';
   import { applyThemeEffect } from './themes/apply.svelte';
 
   applyThemeEffect();
@@ -84,7 +85,7 @@
   {:else if section === 'venues'}
     <VenuesPage />
   {:else if section === 'stats'}
-    <Placeholder title={t('nav.stats')} />
+    <StatsPage />
   {:else if section === 'discover'}
     <Placeholder title={t('nav.discover')} />
   {:else if section === 'settings' || section === 'about'}

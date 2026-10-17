@@ -297,7 +297,9 @@
     "includeOutliers": "Includi valori anomali automatici",
     "trimmedNote": "Troppe poche tazze per rilevare valori anomali; mostrata la media troncata.",
     "wishMore": "Spesso vorresti più {attr}.",
-    "wishLess": "Spesso vorresti meno {attr}."
+    "wishLess": "Spesso vorresti meno {attr}.",
+    "bestMethod": "Metodo migliore: {method}",
+    "bestMeal": "Abbinamento migliore: {meal}"
   },
   "ratings": {
     "timeline": "Tazze",
@@ -462,5 +464,37 @@
     "icsTitle": "Valuta il tuo caffè in CupLog ☕",
     "icsText": "Apri CupLog e registra la tazza che hai bevuto.",
     "everyDay": "ogni giorno"
+  },
+  "chart": {
+    "table": "Mostra come tabella",
+    "effect": "Effetto",
+    "cups": "Tazze"
+  },
+  "insights": {
+    "empty": "Registra qualche tazza e qui compariranno le tue statistiche.",
+    "cups": "Tazze registrate",
+    "levels": "{swipe} swipe · {stars} stelle · {advanced} dettagliate",
+    "homeCost": "A casa",
+    "cafeCost": "Al bar",
+    "perCup": "a tazza",
+    "context": "Cosa influenza il tuo voto",
+    "contextHint": "Corretto per chicco e freschezza: + significa che in quella situazione il caffè ti piace di più.",
+    "byMeal": "Con il cibo",
+    "byTime": "Momento della giornata",
+    "byMethod": "Metodo",
+    "byDrink": "Bevande al bar",
+    "needMore": "Registra almeno {n} tazze per vedere cosa influenza il tuo voto.",
+    "freshness": "Freschezza",
+    "peak": "Il tuo caffè ti piace di più circa {days, plural, one {# giorno} other {# giorni}} dopo la tostatura.",
+    "dayTick": "{days} g",
+    "daysAfterRoast": "{days, plural, one {# giorno} other {# giorni}} dalla tostatura",
+    "daysCol": "Giorni dalla tostatura",
+    "beans": "I tuoi chicchi",
+    "beanHint": "I voti dei chicchi escludono cibo, ora, metodo e freschezza.",
+    "costPerCup": "{cost} a tazza",
+    "distribution": "Come valuti",
+    "profile": "Il tuo gusto",
+    "likedTags": "Aromi nelle tazze che ti sono piaciute",
+    "venues": "I bar migliori per bevanda"
   }
 }

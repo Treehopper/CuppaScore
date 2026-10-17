@@ -21,6 +21,9 @@
   --star: #b57129; /* README #c47a2c → 3:1 */
   --good: #5f8b4c;
   --bad: #b23a2a;
+  /* chart polarity pair: "more of this" / "less of this" (CVD-safe, validated by the dataviz checks) */
+  --more: #2f6f9f;
+  --less: #c0571e;
 }
 
 :root[data-theme='espresso'] {
@@ -36,6 +39,9 @@
   --star: #e0a24e;
   --good: #8fb573;
   --bad: #e06c5a;
+  /* chart polarity pair: "more of this" / "less of this" (CVD-safe, validated by the dataviz checks) */
+  --more: #4f98d8;
+  --less: #d9772f;
 }
 
 :root[data-theme='solarized-light'] {
@@ -51,6 +57,9 @@
   --star: #cb4b16;
   --good: #7a8c00; /* green #859900 → 3:1 */
   --bad: #dc322f;
+  /* chart polarity pair: "more of this" / "less of this" (CVD-safe, validated by the dataviz checks) */
+  --more: #268bd2;
+  --less: #cb4b16;
 }
 
 :root[data-theme='solarized-dark'] {
@@ -66,4 +75,7 @@
   --star: #d44e17; /* orange #cb4b16 → 3:1 */
   --good: #859900;
   --bad: #de3f3c; /* red #dc322f → 3:1 */
+  /* chart polarity pair: "more of this" / "less of this" (CVD-safe, validated by the dataviz checks) */
+  --more: #3a9be0;
+  --less: #e0662a;
 }

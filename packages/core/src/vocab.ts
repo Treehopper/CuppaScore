@@ -82,3 +82,6 @@ export const SUGGESTED_REMINDER_RULES = [
   { id: 'rem_5', kind: 'fixedDaily', time: '20:00', days: 'all', enabled: false },
   { id: 'rem_6', kind: 'bagExpiring', daysBefore: 2, time: '09:00', enabled: false },
 ] as const;
+
+/** The context model (README §5.4) needs at least this many cups to say anything. */
+export const MIN_CONTEXT_CUPS = 8;

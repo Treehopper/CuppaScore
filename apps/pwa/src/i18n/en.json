@@ -297,7 +297,9 @@
     "includeOutliers": "Include automatic outliers",
     "trimmedNote": "Too few cups for outlier detection; showing the trimmed mean.",
     "wishMore": "You often want more {attr}.",
-    "wishLess": "You often want less {attr}."
+    "wishLess": "You often want less {attr}.",
+    "bestMethod": "Best method: {method}",
+    "bestMeal": "Best food pairing: {meal}"
   },
   "ratings": {
     "timeline": "Cups",
@@ -462,5 +464,37 @@
     "icsTitle": "Rate your coffee in CupLog ☕",
     "icsText": "Open CupLog and log the cup you had.",
     "everyDay": "every day"
+  },
+  "chart": {
+    "table": "Show as table",
+    "effect": "Effect",
+    "cups": "Cups"
+  },
+  "insights": {
+    "empty": "Log a few cups and your insights appear here.",
+    "cups": "Cups logged",
+    "levels": "{swipe} swipes · {stars} stars · {advanced} detailed",
+    "homeCost": "At home",
+    "cafeCost": "At cafés",
+    "perCup": "per cup",
+    "context": "What moves your score",
+    "contextHint": "Adjusted for bean and freshness: + means you like your coffee more in that situation.",
+    "byMeal": "With food",
+    "byTime": "Time of day",
+    "byMethod": "Brew method",
+    "byDrink": "Café drinks",
+    "needMore": "Log at least {n} cups to see what moves your score.",
+    "freshness": "Freshness",
+    "peak": "Your coffee tastes best around {days, plural, one {# day} other {# days}} after roasting.",
+    "dayTick": "{days} d",
+    "daysAfterRoast": "{days, plural, one {# day} other {# days}} after roast",
+    "daysCol": "Days after roast",
+    "beans": "Your beans",
+    "beanHint": "Bean scores leave out food, time of day, method and freshness.",
+    "costPerCup": "{cost} per cup",
+    "distribution": "How you rate",
+    "profile": "Your taste",
+    "likedTags": "Flavours in cups you liked",
+    "venues": "Best cafés by drink"
   }
 }

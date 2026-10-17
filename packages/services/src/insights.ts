@@ -16,9 +16,10 @@ import {
   type Venue,
   type Wish,
 } from '@cuplog/core';
+import { MIN_CONTEXT_CUPS } from '@cuplog/core/vocab';
 
-/** The context model needs at least this many cups to say anything (README §5.4). */
-export const MIN_CONTEXT_CUPS = 8;
+export { MIN_CONTEXT_CUPS };
+
 
 export interface ProductInsight {
   productId: string;

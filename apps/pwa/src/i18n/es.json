@@ -297,7 +297,9 @@
     "includeOutliers": "Incluir valores atípicos automáticos",
     "trimmedNote": "Muy pocas tazas para detectar valores atípicos; se muestra la media recortada.",
     "wishMore": "A menudo quieres más {attr}.",
-    "wishLess": "A menudo quieres menos {attr}."
+    "wishLess": "A menudo quieres menos {attr}.",
+    "bestMethod": "Mejor método: {method}",
+    "bestMeal": "Mejor maridaje: {meal}"
   },
   "ratings": {
     "timeline": "Tazas",
@@ -462,5 +464,37 @@
     "icsTitle": "Valora tu café en CupLog ☕",
     "icsText": "Abre CupLog y registra la taza que tomaste.",
     "everyDay": "cada día"
+  },
+  "chart": {
+    "table": "Ver como tabla",
+    "effect": "Efecto",
+    "cups": "Tazas"
+  },
+  "insights": {
+    "empty": "Registra algunas tazas y aquí aparecerán tus estadísticas.",
+    "cups": "Tazas registradas",
+    "levels": "{swipe} deslizadas · {stars} estrellas · {advanced} detalladas",
+    "homeCost": "En casa",
+    "cafeCost": "En cafeterías",
+    "perCup": "por taza",
+    "context": "Qué influye en tu puntuación",
+    "contextHint": "Ajustado por grano y frescura: + significa que en esa situación te gusta más.",
+    "byMeal": "Con comida",
+    "byTime": "Momento del día",
+    "byMethod": "Método",
+    "byDrink": "Bebidas en cafetería",
+    "needMore": "Registra al menos {n} tazas para ver qué influye en tu puntuación.",
+    "freshness": "Frescura",
+    "peak": "Tu café te gusta más unos {days, plural, one {# día} other {# días}} después del tueste.",
+    "dayTick": "{days} d",
+    "daysAfterRoast": "{days, plural, one {# día} other {# días}} tras el tueste",
+    "daysCol": "Días tras el tueste",
+    "beans": "Tus granos",
+    "beanHint": "Las puntuaciones de grano descuentan comida, hora, método y frescura.",
+    "costPerCup": "{cost} por taza",
+    "distribution": "Cómo valoras",
+    "profile": "Tu gusto",
+    "likedTags": "Sabores en las tazas que te gustaron",
+    "venues": "Las mejores cafeterías por bebida"
   }
 }

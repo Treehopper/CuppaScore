@@ -39,7 +39,7 @@ export interface ContrastRule {
 export const CONTRAST_RULES: readonly ContrastRule[] = [
   ...['--text', '--muted'].flatMap((fg) => ['--bg', '--surface'].map((bg) => ({ fg, bg, min: 4.5 }))),
   { fg: '--on-accent', bg: '--accent', min: 4.5 },
-  ...['--accent', '--accent-2', '--star', '--good', '--bad'].flatMap((fg) =>
+  ...['--accent', '--accent-2', '--star', '--good', '--bad', '--more', '--less'].flatMap((fg) =>
     ['--bg', '--surface'].map((bg) => ({ fg, bg, min: 3 })),
   ),
 ];

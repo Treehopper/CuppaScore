@@ -14,6 +14,7 @@ const ROUTES = [
   '#/venues',
   '#/settings',
   '#/welcome',
+  '#/stats',
 ];
 
 async function seed(page: Page): Promise<void> {
