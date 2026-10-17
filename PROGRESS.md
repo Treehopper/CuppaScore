@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 22 (reminder banner on Quick Log: merge, Log now / Later / Not today; timer + foreground checks; reminders in Settings; `.ics` export; keep `settings.timeZone` = device zone). Read README §12.3.
+- Task 23 (core: time-weighted score §5.3 + personal star centring & swipe calibration §5.1 — check what `aggregate()` already does first).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -51,7 +51,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: `DomainSettings.reminders` (+ `reminderState`), evaluated in `settings.timeZone` (the UI should keep it = device zone for travel, F7 — task 22); `logRating` acks every rule due at that moment (`logged`), so it also emits `settings`; `getNextReminders` = per-rule next time; a11y e2e blocks the SW (was flaky under load with `networkidle`)
 - [x] 21. Welcome flow (hello, install guidance Android/iOS, gear & rating style, reminders, skip) + `onboardingCompletedAt`
   - note: `#/welcome` (nav hidden); redirect only when the app opens at the root route and onboarding isn't complete — deep links/shortcuts/e2e skip it; `lib/install.svelte.ts` captures `beforeinstallprompt` in main.ts; "Not now" on reminders sets `remindersDeclinedAt` (later prompt = task 36); the `.ics` link on the reminders card comes with task 22; taste quiz card = task 37
-- [ ] 22. Reminder banner (merge, Log now / Later / Not today), timer + foreground checks, reminders in Settings, `.ics` export
+- [x] 22. Reminder banner (merge, Log now / Later / Not today), timer + foreground checks, reminders in Settings, `.ics` export
+  - note: banner is global (above every page except welcome), not only on Quick Log, so F5b works anywhere; "Log now" hides the banner and opens Quick Log — saving acks; timer capped at 1 h; app syncs `settings.timeZone` to the device zone on start; the API worker's clock follows the page clock per call (`followerClock`), which lets e2e use `page.clock`; `.ics` uses floating local time; Settings edits the 6 suggested rules (no add/delete yet) — quiet hours/pause UI = task 36. **M1b complete.**
 
 ## M2 — Insights
 - [ ] 23. Core: time-weighted score (§5.3), personal star centring + swipe calibration (§5.1)
@@ -78,6 +79,7 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 - [ ] 38. Final polish: Lighthouse config, pseudo-locale overflow pass, a11y
 
 ## Decisions (README §17 and other gaps)
+- Reminder banner sits above every screen (README says top of Quick Log) so a reminder that comes due while another screen is open still shows (F5b).
 - Welcome flow appears only on a root launch (homescreen `start_url`, plain URL) without `onboardingCompletedAt`; deep links never redirect, so shortcuts and shared links open what they point to.
 - Reminders: `pausedUntil` is the date reminders *resume* (exclusive); `bagExpiring` is due every day from N days before through the expiry date (soonest bag shown); `afterLastLog` fires at max(last+hours, window start) on the same local day and only inside its window; a rule pushed past midnight by quiet hours is dropped (today-only catch-up).
 - Theme colours: README §10 demands both the official Solarized values and WCAG AA for all text pairs, which conflict; kept hues, nudged lightness of failing tokens (themes.css), added `--on-accent`.
