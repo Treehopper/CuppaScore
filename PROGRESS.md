@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 20 (services/API reminders: config in settings, activity, state, `checkReminders`, `ackReminder`, `getNextReminders`).
+- Task 21 (Welcome flow: hello, install guidance Android/iOS, gear & rating style, reminders, skip; `onboardingCompletedAt`). Read README §9.1.
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -47,7 +47,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 ## M1b — Reminders & install
 - [x] 19. Core reminders: `dueReminders`, `nextDueAt`, `applyAction` with table-driven tests (TZ, DST, quiet hours, pause, snooze)
   - note: `core/reminders.ts`; instants are epoch ms, `applyAction(state, ruleId, action, nowMs, tz)`; per-rule state `{snoozedUntil, dismissedOn, handledAt}` (`handledAt` silences unconditional rules after logging; README's `shownOn` dropped); `nextDueAt` rounds up to whole seconds (timer would otherwise spin); `mergeDue` builds the one-banner view
-- [ ] 20. Services/API reminders: rules config, activity, state, `checkReminders`, `ackReminder`, `getNextReminders`
+- [x] 20. Services/API reminders: rules config, activity, state, `checkReminders`, `ackReminder`, `getNextReminders`
+  - note: `DomainSettings.reminders` (+ `reminderState`), evaluated in `settings.timeZone` (the UI should keep it = device zone for travel, F7 — task 22); `logRating` acks every rule due at that moment (`logged`), so it also emits `settings`; `getNextReminders` = per-rule next time; a11y e2e blocks the SW (was flaky under load with `networkidle`)
 - [ ] 21. Welcome flow (hello, install guidance Android/iOS, gear & rating style, reminders, skip) + `onboardingCompletedAt`
 - [ ] 22. Reminder banner (merge, Log now / Later / Not today), timer + foreground checks, reminders in Settings, `.ics` export
 
