@@ -264,3 +264,23 @@ describe('reminders', () => {
     expect(await svc.checkReminders()).toEqual({ due: [], nextDueAt: null });
   });
 });
+
+describe('personal calibration (README §5.1)', () => {
+  it('a habitual 4-star rater: 4 ★ is neutral, 4.5 ★ is "more of this"', async () => {
+    const { svc, product, bag, clock } = await setup();
+    const other = await svc.addBag({ productId: product.id, label: 'Bag #4' });
+    const log = (bagId: string, overall: number) =>
+      svc.logRating({ level: 'stars', overall, source: 'home', bagId, brew: { method: 'aeropress' } });
+    for (let i = 0; i < 10; i++) {
+      clock.advance(3_600_000);
+      await log(bag.id, 4);
+    }
+    // 11 star ratings centred on 4 ★ (the fixed mapping would score 4 ★ as +0.5)
+    clock.advance(3_600_000);
+    await log(other.id, 4.5);
+    const bags = await svc.listBags();
+    const score = (id: string) => bags.find((b) => b.bag.id === id)!.score!;
+    expect(score(bag.id)).toBeCloseTo(0, 1);
+    expect(score(other.id)).toBeGreaterThan(0.3);
+  });
+});

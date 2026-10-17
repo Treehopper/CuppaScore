@@ -5,6 +5,7 @@ import {
   bagFreshness,
   bagStatus,
   bagWarnings,
+  computeCalibration,
   computeDerived,
   derivePresets,
   DomainSettings,
@@ -212,13 +213,16 @@ export class CupLogService {
   }
 
   private async aggOpts(extra: StatsOptions = {}): Promise<AggregateOptions> {
-    const s = await this.getSettings();
+    const [s, all] = await Promise.all([this.getSettings(), this.repos.ratings.list(this.owner)]);
+    const nowMs = this.ctx.clock.now();
     return {
-      nowMs: this.ctx.clock.now(),
+      nowMs,
       halfLifeDays: s.halfLifeDays,
       outlierMethod: s.outlierMethod,
       confidence: s.confidence,
       includeOutliers: extra.includeOutliers ?? false,
+      // personal star centring + swipe calibration over your whole history (README §5.1)
+      calibration: computeCalibration(all, { nowMs, halfLifeDays: s.halfLifeDays }),
     };
   }
 
