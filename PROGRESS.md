@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 21 (Welcome flow: hello, install guidance Android/iOS, gear & rating style, reminders, skip; `onboardingCompletedAt`). Read README §9.1.
+- Task 22 (reminder banner on Quick Log: merge, Log now / Later / Not today; timer + foreground checks; reminders in Settings; `.ics` export; keep `settings.timeZone` = device zone). Read README §12.3.
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -49,7 +49,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: `core/reminders.ts`; instants are epoch ms, `applyAction(state, ruleId, action, nowMs, tz)`; per-rule state `{snoozedUntil, dismissedOn, handledAt}` (`handledAt` silences unconditional rules after logging; README's `shownOn` dropped); `nextDueAt` rounds up to whole seconds (timer would otherwise spin); `mergeDue` builds the one-banner view
 - [x] 20. Services/API reminders: rules config, activity, state, `checkReminders`, `ackReminder`, `getNextReminders`
   - note: `DomainSettings.reminders` (+ `reminderState`), evaluated in `settings.timeZone` (the UI should keep it = device zone for travel, F7 — task 22); `logRating` acks every rule due at that moment (`logged`), so it also emits `settings`; `getNextReminders` = per-rule next time; a11y e2e blocks the SW (was flaky under load with `networkidle`)
-- [ ] 21. Welcome flow (hello, install guidance Android/iOS, gear & rating style, reminders, skip) + `onboardingCompletedAt`
+- [x] 21. Welcome flow (hello, install guidance Android/iOS, gear & rating style, reminders, skip) + `onboardingCompletedAt`
+  - note: `#/welcome` (nav hidden); redirect only when the app opens at the root route and onboarding isn't complete — deep links/shortcuts/e2e skip it; `lib/install.svelte.ts` captures `beforeinstallprompt` in main.ts; "Not now" on reminders sets `remindersDeclinedAt` (later prompt = task 36); the `.ics` link on the reminders card comes with task 22; taste quiz card = task 37
 - [ ] 22. Reminder banner (merge, Log now / Later / Not today), timer + foreground checks, reminders in Settings, `.ics` export
 
 ## M2 — Insights
@@ -77,6 +78,7 @@ Tick a task only after the full verification (CLAUDE.md) is green.
 - [ ] 38. Final polish: Lighthouse config, pseudo-locale overflow pass, a11y
 
 ## Decisions (README §17 and other gaps)
+- Welcome flow appears only on a root launch (homescreen `start_url`, plain URL) without `onboardingCompletedAt`; deep links never redirect, so shortcuts and shared links open what they point to.
 - Reminders: `pausedUntil` is the date reminders *resume* (exclusive); `bagExpiring` is due every day from N days before through the expiry date (soonest bag shown); `afterLastLog` fires at max(last+hours, window start) on the same local day and only inside its window; a rule pushed past midnight by quiet hours is dropped (today-only catch-up).
 - Theme colours: README §10 demands both the official Solarized values and WCAG AA for all text pairs, which conflict; kept hues, nudged lightness of failing tokens (themes.css), added `--on-accent`.
 - i18n library: README §11 suggests svelte-i18n; CLAUDE.md forbids Svelte 4 stores → small own runes wrapper over `intl-messageformat` (same ICU format, swappable).
