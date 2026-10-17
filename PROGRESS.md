@@ -4,7 +4,7 @@ Autopilot memory between sessions. The spec is `README.md`, the working rules ar
 Tick a task only after the full verification (CLAUDE.md) is green.
 
 ## Next up
-- Task 25 (services/API: `getInsights` incl. context model, richer stats DTOs — per method, sparkline data, best meal pairing).
+- Task 26 (Stats screen: insights UI + bag trend chart, meal & time-of-day analysis, cost per cup, venue ranking). Read README §9.3 item 3 and use the dataviz skill for charts.
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -59,7 +59,8 @@ Tick a task only after the full verification (CLAUDE.md) is green.
   - note: `computeCalibration` (core/calibration.ts); star sd floored at 0.5★ (decision); `aggOpts()` computes it over all ratings for every score; recency weighting already lived in `aggregate()`
 - [x] 24. Core: context model (weighted ridge, §5.4) + freshness curve
   - note: `fitContextModel` (core/context.ts), Cholesky normal equations, λ = 2, only μ unpenalised; freshness = hat basis at knots 0/7/21/42/63 days (`freshnessAt` interpolates); effects are raw ridge coefficients (compare within a group); interaction terms (≥ 50 ratings) not implemented yet
-- [ ] 25. Services/API: `getInsights`, richer stats DTOs (per method, sparkline data, best meal pairing)
+- [x] 25. Services/API: `getInsights`, richer stats DTOs (per method, sparkline data, best meal pairing)
+  - note: `services/insights.ts` (`buildInsights`, pure); context model only from 8 cups; `StatsView.best` = top method / food pairing with ≥ 2 cups (none/unspecified aren't pairings); `bagCostPerCup` in core (finished: price/cups, else weight/avg dose); sparkline data = existing `summary.series`
 - [ ] 26. Stats screen + bag trend chart, meal & time-of-day analysis, cost per cup, venue ranking
 
 ## M3 — Catalog
