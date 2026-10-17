@@ -116,6 +116,8 @@ export interface CupLogApi {
   /** Due reminders + next due time; call on start, foreground and timer (README §12.1). */
   checkReminders(): Promise<ReminderCheck>;
   getNextReminders(): Promise<NextReminder[]>;
+  /** Calendar file for one fixed-time rule (F8). */
+  exportReminderIcs(ruleId: string, text: { title: string; description?: string }): Promise<string>;
 
   // data
   exportAll(): Promise<ExportBundle>;
@@ -178,6 +180,7 @@ export const API_METHODS: readonly ApiMethod[] = [
   'getProductStats',
   'checkReminders',
   'getNextReminders',
+  'exportReminderIcs',
   'exportAll',
   'importAll',
   'exportRatingsCsv',

@@ -6,6 +6,7 @@
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
   import { BREW_METHODS, RATING_LEVELS, SUGGESTED_REMINDER_RULES, type BrewMethod, type RatingLevel } from '../lib/domain';
+  import { downloadText } from '../lib/download';
   import { showError } from '../lib/errors';
   import { install } from '../lib/install.svelte';
   import { query } from '../lib/query.svelte';
@@ -67,11 +68,25 @@
     go(Math.min(index + 1, steps.length - 1));
   }
 
-  async function enableReminders(): Promise<void> {
+  const reminderCfg = () => {
     const cur = settings.data?.reminders;
-    await finish({
-      reminders: { enabled: true, timeZone: cur?.timeZone ?? 'Europe/Berlin', quietHours: cur?.quietHours ?? null, pausedUntil: null, rules },
-    });
+    return { enabled: true, timeZone: cur?.timeZone ?? 'Europe/Berlin', quietHours: cur?.quietHours ?? null, pausedUntil: null, rules };
+  };
+
+  async function enableReminders(): Promise<void> {
+    await finish({ reminders: reminderCfg() });
+  }
+
+  /** F8: the only nudge while the app is closed — saves the rules, then exports the first timed one. */
+  async function addToCalendar(): Promise<void> {
+    const rule = rules.find((r) => r.enabled && r.kind !== 'bagExpiring' && 'time' in r);
+    if (!rule || !(await save({ reminders: reminderCfg() }))) return;
+    try {
+      const ics = await api().exportReminderIcs(rule.id, { title: t('reminderRule.icsTitle'), description: t('reminderRule.icsText') });
+      downloadText(`cuplog-reminder-${rule.id}.ics`, ics, 'text/calendar');
+    } catch (e) {
+      showError(e);
+    }
   }
 
   function ruleLabel(r: ReminderRule): string {
@@ -164,6 +179,7 @@
         {/each}
       </ul>
       <p class="small muted">{t('welcome.remindersNote')}</p>
+      <button type="button" class="btn-ghost small cal" onclick={addToCalendar} disabled={busy}>{t('welcome.calendar')}</button>
     </section>
   {/if}
 
@@ -223,6 +239,10 @@
     gap: 0.5rem;
     align-items: center;
     justify-content: space-between;
+  }
+  .cal {
+    justify-self: start;
+    text-decoration: underline;
   }
   .time input {
     /* room for 12-hour formats ("10:00 AM") */

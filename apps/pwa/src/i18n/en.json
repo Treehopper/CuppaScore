@@ -435,6 +435,32 @@
     "remBag": "When an open bag expires within {days, plural, one {# day} other {# days}}",
     "time": "From",
     "remindersNote": "Reminders appear inside CupLog when you open it. Your phone won't notify you while the app is closed.",
-    "enableReminders": "Enable reminders"
+    "enableReminders": "Enable reminders",
+    "calendar": "Also add a daily reminder to my calendar"
+  },
+  "reminder": {
+    "label": "Reminder",
+    "nothingLoggedBy": "No coffee logged yet today ☕ — your {time} reminder",
+    "fewerThanBy": "{cups, plural, =0 {No cups} one {Only # cup} other {Only # cups}} so far today — your {time} reminder",
+    "afterLastLog": "How was the cup you just had?",
+    "fixedDaily": "Time to rate a coffee ☕ — your {time} reminder",
+    "bagExpiring": "{days, plural, =0 {expires today} one {expires tomorrow} other {expires in # days}}",
+    "logNow": "Log now",
+    "notToday": "Not today"
+  },
+  "reminderRule": {
+    "title": "Reminders",
+    "enabled": "Remind me when I open CupLog",
+    "next": "Next reminder: {when}",
+    "nothingLoggedBy": "If nothing is logged yet",
+    "fewerThanBy": "If fewer than {count} cups are logged",
+    "afterLastLog": "{hours} h after a cup, {from}–{to} (while the app is open)",
+    "fixedDaily": "At a fixed time, no condition",
+    "bagExpiring": "When an open bag expires within {days, plural, one {# day} other {# days}}",
+    "days": "Days",
+    "calendar": "Add to my calendar (.ics)",
+    "icsTitle": "Rate your coffee in CupLog ☕",
+    "icsText": "Open CupLog and log the cup you had.",
+    "everyDay": "every day"
   }
 }

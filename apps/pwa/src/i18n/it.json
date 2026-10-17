@@ -435,6 +435,32 @@
     "remBag": "Quando una confezione aperta scade entro {days, plural, one {# giorno} other {# giorni}}",
     "time": "Dalle",
     "remindersNote": "I promemoria compaiono in CupLog quando lo apri. Ad app chiusa il telefono non ti avvisa.",
-    "enableReminders": "Attiva promemoria"
+    "enableReminders": "Attiva promemoria",
+    "calendar": "Aggiungi anche un promemoria quotidiano al calendario"
+  },
+  "reminder": {
+    "label": "Promemoria",
+    "nothingLoggedBy": "Ancora nessun caffè registrato oggi ☕ — il tuo promemoria delle {time}",
+    "fewerThanBy": "{cups, plural, =0 {Nessuna tazza} one {Solo # tazza} other {Solo # tazze}} finora oggi — il tuo promemoria delle {time}",
+    "afterLastLog": "Com'era la tazza di prima?",
+    "fixedDaily": "È ora di valutare un caffè ☕ — il tuo promemoria delle {time}",
+    "bagExpiring": "{days, plural, =0 {scade oggi} one {scade domani} other {scade tra # giorni}}",
+    "logNow": "Registra ora",
+    "notToday": "Non oggi"
+  },
+  "reminderRule": {
+    "title": "Promemoria",
+    "enabled": "Ricordamelo quando apro CupLog",
+    "next": "Prossimo promemoria: {when}",
+    "nothingLoggedBy": "Se non hai ancora registrato nulla",
+    "fewerThanBy": "Se hai registrato meno di {count} tazze",
+    "afterLastLog": "{hours} h dopo una tazza, {from}–{to} (ad app aperta)",
+    "fixedDaily": "A un orario fisso, senza condizioni",
+    "bagExpiring": "Quando una confezione aperta scade entro {days, plural, one {# giorno} other {# giorni}}",
+    "days": "Giorni",
+    "calendar": "Aggiungi al calendario (.ics)",
+    "icsTitle": "Valuta il tuo caffè in CupLog ☕",
+    "icsText": "Apri CupLog e registra la tazza che hai bevuto.",
+    "everyDay": "ogni giorno"
   }
 }

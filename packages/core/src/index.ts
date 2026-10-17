@@ -16,3 +16,4 @@ export * from './aggregate';
 export * from './presets';
 export * from './bundle';
 export * from './reminders';
+export * from './ics';

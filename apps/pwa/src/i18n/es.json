@@ -435,6 +435,32 @@
     "remBag": "Cuando una bolsa abierta caduca en {days, plural, one {# día} other {# días}}",
     "time": "Desde",
     "remindersNote": "Los recordatorios aparecen en CupLog al abrirla. Con la app cerrada, el móvil no te avisará.",
-    "enableReminders": "Activar recordatorios"
+    "enableReminders": "Activar recordatorios",
+    "calendar": "Añadir también un recordatorio diario a mi calendario"
+  },
+  "reminder": {
+    "label": "Recordatorio",
+    "nothingLoggedBy": "Hoy aún no has registrado ningún café ☕ — tu recordatorio de las {time}",
+    "fewerThanBy": "{cups, plural, =0 {Ninguna taza} one {Solo # taza} other {Solo # tazas}} hoy — tu recordatorio de las {time}",
+    "afterLastLog": "¿Qué tal la taza de antes?",
+    "fixedDaily": "Hora de valorar un café ☕ — tu recordatorio de las {time}",
+    "bagExpiring": "{days, plural, =0 {caduca hoy} one {caduca mañana} other {caduca en # días}}",
+    "logNow": "Registrar ahora",
+    "notToday": "Hoy no"
+  },
+  "reminderRule": {
+    "title": "Recordatorios",
+    "enabled": "Recuérdamelo al abrir CupLog",
+    "next": "Próximo recordatorio: {when}",
+    "nothingLoggedBy": "Si aún no hay nada registrado",
+    "fewerThanBy": "Si hay menos de {count} tazas registradas",
+    "afterLastLog": "{hours} h después de una taza, {from}–{to} (con la app abierta)",
+    "fixedDaily": "A una hora fija, sin condición",
+    "bagExpiring": "Cuando una bolsa abierta caduca en {days, plural, one {# día} other {# días}}",
+    "days": "Días",
+    "calendar": "Añadir al calendario (.ics)",
+    "icsTitle": "Valora tu café en CupLog ☕",
+    "icsText": "Abre CupLog y registra la taza que tomaste.",
+    "everyDay": "cada día"
   }
 }

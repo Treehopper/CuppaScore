@@ -435,6 +435,32 @@
     "remBag": "Wenn eine offene Packung in {days, plural, one {# Tag} other {# Tagen}} abläuft",
     "time": "Ab",
     "remindersNote": "Erinnerungen erscheinen in CupLog, wenn du es öffnest. Ist die App geschlossen, meldet sich dein Handy nicht.",
-    "enableReminders": "Erinnerungen aktivieren"
+    "enableReminders": "Erinnerungen aktivieren",
+    "calendar": "Zusätzlich eine tägliche Erinnerung in meinen Kalender"
+  },
+  "reminder": {
+    "label": "Erinnerung",
+    "nothingLoggedBy": "Heute noch kein Kaffee eingetragen ☕ – deine Erinnerung um {time}",
+    "fewerThanBy": "{cups, plural, =0 {Noch keine Tasse} one {Erst # Tasse} other {Erst # Tassen}} heute – deine Erinnerung um {time}",
+    "afterLastLog": "Wie war die Tasse eben?",
+    "fixedDaily": "Zeit, einen Kaffee zu bewerten ☕ – deine Erinnerung um {time}",
+    "bagExpiring": "{days, plural, =0 {läuft heute ab} one {läuft morgen ab} other {läuft in # Tagen ab}}",
+    "logNow": "Jetzt eintragen",
+    "notToday": "Heute nicht"
+  },
+  "reminderRule": {
+    "title": "Erinnerungen",
+    "enabled": "Erinnere mich, wenn ich CupLog öffne",
+    "next": "Nächste Erinnerung: {when}",
+    "nothingLoggedBy": "Wenn noch nichts eingetragen ist",
+    "fewerThanBy": "Wenn weniger als {count} Tassen eingetragen sind",
+    "afterLastLog": "{hours} h nach einer Tasse, {from}–{to} (bei offener App)",
+    "fixedDaily": "Zu fester Zeit, ohne Bedingung",
+    "bagExpiring": "Wenn eine offene Packung in {days, plural, one {# Tag} other {# Tagen}} abläuft",
+    "days": "Tage",
+    "calendar": "Zum Kalender hinzufügen (.ics)",
+    "icsTitle": "Kaffee in CupLog bewerten ☕",
+    "icsText": "Öffne CupLog und trage deine Tasse ein.",
+    "everyDay": "täglich"
   }
 }

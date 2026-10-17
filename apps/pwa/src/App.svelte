@@ -1,10 +1,12 @@
 <script lang="ts">
   import Nav from './components/Nav.svelte';
+  import ReminderBanner from './components/ReminderBanner.svelte';
   import Toasts from './components/Toasts.svelte';
   import UpdateBanner from './components/UpdateBanner.svelte';
   import { applyLangEffect, t } from './i18n/i18n.svelte';
   import { router } from './lib/router.svelte';
   import { api } from './lib/api';
+  import { reminders } from './lib/reminders.svelte';
   import BagDetailPage from './pages/BagDetailPage.svelte';
   import BagFormPage from './pages/BagFormPage.svelte';
   import BagsPage from './pages/BagsPage.svelte';
@@ -23,6 +25,7 @@
 
   applyThemeEffect();
   applyLangEffect();
+  reminders.start();
 
   // first launch from the home screen / root URL opens the welcome flow; deep links skip it
   if (router.current.segments.length === 0) {
@@ -40,6 +43,7 @@
 </script>
 
 <UpdateBanner />
+{#if section !== 'welcome'}<ReminderBanner />{/if}
 <main>
   {#if section === 'log'}
     <LogPage />

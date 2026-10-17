@@ -6,6 +6,20 @@ import { ApiError, type Result } from './errors';
 
 export const systemClock: Clock = { now: () => Date.now() };
 
+/**
+ * The worker's clock follows the UI's: each call carries the caller's `Date.now()`, so "now" is
+ * the same on both sides (offset ≈ 0 in practice; it also lets e2e tests fake the time).
+ */
+export function followerClock(): Clock & { sync(callerNow: number): void } {
+  let offset = 0;
+  return {
+    now: () => Date.now() + offset,
+    sync: (callerNow) => {
+      offset = callerNow - Date.now();
+    },
+  };
+}
+
 /** Cryptographically strong rng where available (ids must not collide across devices). */
 export const systemRng: Rng = () => {
   const c = (globalThis as { crypto?: Crypto }).crypto;

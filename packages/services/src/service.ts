@@ -14,6 +14,7 @@ import {
   Rating,
   RatingFields,
   applyAction,
+  reminderIcs,
   dueReminders,
   nextDueAt,
   parseDateTimeInZone,
@@ -585,6 +586,16 @@ export class CupLogService {
       if (at) out.push({ ruleId: rule.id, kind: rule.kind, at });
     }
     return out.sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
+  }
+
+  /** `.ics` for one fixed-time rule (F8); the UI passes the localised text. */
+  async exportReminderIcs(ruleId: string, text: { title: string; description?: string }): Promise<string> {
+    const s = await this.getSettings();
+    const rule = s.reminders.rules.find((r) => r.id === ruleId);
+    if (!rule) throw new DomainError('NOT_FOUND', { kind: 'reminderRule', id: ruleId });
+    if (!('time' in rule)) throw new DomainError('VALIDATION', { field: 'ruleId', reason: 'noFixedTime' });
+    const now = this.ctx.clock.now();
+    return reminderIcs(rule, { uid: `${rule.id}@cuplog`, now, startDate: toZonedIso(now, s.timeZone).slice(0, 10), ...text });
   }
 
   // ---------- presets & log options ----------

@@ -38,3 +38,24 @@ export function fmtRelative(iso: string | number, nowMs: number): string {
   for (const [unit, s] of UNITS) if (Math.abs(diffS) >= s) return rtf.format(Math.round(diffS / s), unit);
   return rtf.format(0, 'minute');
 }
+
+const WEEKDAY_INDEX = { MO: 0, TU: 1, WE: 2, TH: 3, FR: 4, SA: 5, SU: 6 } as const;
+
+/** "Mo", "Lun", "Mon" … for a weekday key (2026-10-12 is a Monday). */
+export function fmtWeekday(key: keyof typeof WEEKDAY_INDEX, style: 'short' | 'long' = 'short'): string {
+  return new Intl.DateTimeFormat(i18n.intl, { weekday: style, timeZone: 'UTC' }).format(
+    Date.UTC(2026, 9, 12 + WEEKDAY_INDEX[key]),
+  );
+}
+
+/** "Sat 11:30" / "today 10:00"-style next time: weekday + time unless it is today. */
+export function fmtNextTime(iso: string, nowMs: number): string {
+  const d = new Date(iso);
+  const sameDay = d.toDateString() === new Date(nowMs).toDateString();
+  return new Intl.DateTimeFormat(i18n.intl, {
+    ...(sameDay ? {} : { weekday: 'short', day: 'numeric', month: 'short' }),
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).format(d);
+}

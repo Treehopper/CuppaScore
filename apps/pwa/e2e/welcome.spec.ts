@@ -28,6 +28,11 @@ test('welcome flow: theme preview, gear & level, reminders; shown only once', as
   await expect(page.getByLabel('On weekends, if nothing is logged')).not.toBeChecked();
   await page.getByLabel('From').first().fill('09:30');
   await page.getByLabel('When an open bag expires within 2 days').check();
+  const [ics] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: 'Also add a daily reminder to my calendar' }).click(),
+  ]);
+  expect(await readFile(await ics.path(), 'utf8')).toContain('T093000');
   await page.getByRole('button', { name: 'Enable reminders' }).click();
 
   await expect(page).toHaveURL(/#\/log$/);

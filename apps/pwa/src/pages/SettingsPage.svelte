@@ -3,6 +3,7 @@
   import DataSection from '../components/DataSection.svelte';
   import LanguagePicker from '../components/LanguagePicker.svelte';
   import PageHeader from '../components/PageHeader.svelte';
+  import ReminderSettings from '../components/ReminderSettings.svelte';
   import ThemePicker from '../components/ThemePicker.svelte';
   import { fmtDateTime } from '../i18n/format';
   import { t } from '../i18n/i18n.svelte';
@@ -68,6 +69,8 @@
         </div>
       </div>
     </section>
+
+    <ReminderSettings settings={s} />
 
     <details class="card">
       <summary><h2>{t('settings.advanced')}</h2></summary>

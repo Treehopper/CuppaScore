@@ -250,6 +250,14 @@ describe('reminders', () => {
     expect(await svc.checkReminders()).toEqual({ due: [], nextDueAt: '2026-10-16T10:00:00-04:00' });
   });
 
+  it('exports a fixed-time rule as .ics', async () => {
+    const { svc } = await withRules();
+    const ics = await svc.exportReminderIcs('wd', { title: 'Rate your coffee' });
+    expect(ics).toContain('DTSTART:20261016T100000\r\n');
+    expect(ics).toContain('SUMMARY:Rate your coffee\r\n');
+    await expectCode(svc.exportReminderIcs('nope', { title: 'x' }), 'NOT_FOUND');
+  });
+
   it('off by default', async () => {
     const { svc, clock } = await setup();
     clock.set('2026-10-16T23:00:00+02:00');

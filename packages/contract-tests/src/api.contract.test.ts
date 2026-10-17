@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
 import { fixedClock, seededRng } from '@cuplog/core';
 import { connectApi } from '@cuplog/api';
-import { createDexieRepos, createLocalApi, createMemoryRepos, createService, exposeService } from '@cuplog/api/local';
+import { createDexieRepos, createLocalApi, createMemoryRepos, createService, exposeService, followerClock } from '@cuplog/api/local';
 import { describeApiContract } from './api';
 
 const NOW = '2026-10-16T08:00:00+02:00';
@@ -27,5 +27,14 @@ describe('worker transport', () => {
     const roastFor = new Proxy(['filter'], {});
     const p = await api.addProduct({ roaster: 'R', name: 'N', roastFor: roastFor as ('filter' | 'espresso' | 'omni')[] });
     expect(p.roastFor).toEqual(['filter']);
+  });
+});
+
+describe('followerClock', () => {
+  it('follows the caller’s clock', () => {
+    const clock = followerClock();
+    expect(Math.abs(clock.now() - Date.now())).toBeLessThan(50);
+    clock.sync(Date.now() + 3_600_000);
+    expect(Math.abs(clock.now() - Date.now() - 3_600_000)).toBeLessThan(50);
   });
 });
