@@ -21,3 +21,4 @@ export * from './calibration';
 export * from './context';
 export * from './catalog';
 export * from './catalogCsv';
+export * from './flavour';
