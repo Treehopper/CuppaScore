@@ -23,7 +23,7 @@ Owner tested the live M1 build on a phone. These take priority over the mileston
   - note: core `catalogCsv.ts` (RFC 4180 parser, `parseCatalogCsv` → skip issues as codes, `searchCatalog` with caller-supplied localised origin names); Dexie v3 `catalog` table + `CatalogRepo` (not owner-scoped) + `CatalogSource` port (`catalog-static`, fetch in the worker; page passes its base URL as the worker name `cuplog-api|<base>`); meta in device state key `catalog`; `settings.catalogRegion` defaults to `munich` (also for existing installs); app re-imports the region file on start after onboarding; picker creates the user product on bag Save (not on pick); old JSON `searchCatalog` removed, JSON schema kept
 
 ## Next up
-- Owner feedback F1–F4 done. Continue with M4 task 33 (services/API: `getRecommendations`, wishlist, dismiss, filters) wiring `core/vector.ts` + `core/recommend.ts` to repos.
+- Owner feedback F1–F4 done. Continue with M4 task 34 (Discover screen: list + explanations + filters + wishlist/dismiss + where to buy, D1–D7) on `api().getRecommendations`.
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -100,7 +100,8 @@ _**M3 complete.**_
   - note: `core/vector.ts`: `FEATURE_DIMS` (26), `featureVector`, `cosine`, `catalogProductFeatures`, `userProductFeatures(product, {catalog, flavourTags, profile, advancedCount})`, `countryCodes` (free-text origin → ISO), `wishShift`, `tasteProfile`, `sharedDims`; sensory is centred (0.5 → 0) and roast is light −1 / medium 0 / dark +1 so dislikes push away; per-context profiles are task 35
 - [x] 32. Core: recommender scoring, explanations, exploration slot (§7.3–7.4)
   - note: `core/recommend.ts` `recommend({candidates, mine, profile, preferredRoastFor, usualPricePerKg, dismissed, rng})`; liked = p ≥ 0.2, disliked = p ≤ −0.2; price penalty 0 up to 125 % of usual €/kg, −0.2 at 200 %; explanation dims are `FEATURE_DIMS` keys (UI translates); cold start (no profile) ranks by method fit — quiz is task 37
-- [ ] 33. Services/API: `getRecommendations`, wishlist, dismiss, filters
+- [x] 33. Services/API: `getRecommendations`, wishlist, dismiss, filters
+  - note: `services/recommendations.ts` (`buildRecommendations`, `preferredRoastFor` = espresso/filter methods ≥ 30 % of home cups, `usualPricePerKg` = p75); decaf hidden unless you own a decaf product or `includeDecaf`; recent wishes = last 90 days; `coldStart` = < 5 rated products (quiz task 37); API also has `listWishlist`, `restoreDismissed`, `listCatalogRoasters`
 - [ ] 34. Discover screen
 
 ## M5 — Polish
