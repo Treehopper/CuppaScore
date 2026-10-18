@@ -187,6 +187,18 @@ textarea {
   min-width: 0;
 }
 
+/* side-by-side selects can't wrap their text: such rows stack once the widest options no
+   longer fit next to each other (a select's intrinsic width is its widest option) (F1) */
+.row:has(select) {
+  flex-wrap: wrap;
+  align-items: end;
+  row-gap: 0; /* fields bring their own bottom margin */
+}
+
+.row:has(select) > * {
+  flex: 1 1 auto;
+}
+
 .check {
   display: flex;
   align-items: center;

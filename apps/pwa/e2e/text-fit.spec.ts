@@ -23,6 +23,19 @@ async function textProblems(page: Page, width = 360): Promise<string[]> {
       range.selectNodeContents(n);
       for (const r of range.getClientRects()) if (r.width >= 1 && r.height >= 1) boxes.push({ r, node: n, fixed, text });
     }
+    // a closed select shows only as much of the chosen option as fits
+    const ruler = document.createElement('span');
+    ruler.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap';
+    document.body.append(ruler);
+    for (const sel of document.querySelectorAll('select')) {
+      if (!sel.checkVisibility() || sel.selectedIndex < 0) continue;
+      const cs = getComputedStyle(sel);
+      ruler.style.font = cs.font;
+      ruler.textContent = sel.options[sel.selectedIndex]!.text;
+      const room = sel.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 16; // arrow
+      if (ruler.offsetWidth > room) problems.push(`select clipped: "${ruler.textContent}"`);
+    }
+    ruler.remove();
     const outside = (r: DOMRect, c: DOMRect) => r.left < c.left - 1 || r.right > c.right + 1;
     for (const { r, node, text } of boxes) {
       if (r.left < -1 || r.right > width + 1) problems.push(`off-screen: "${text}"`);
