@@ -19,3 +19,4 @@ export * from './reminders';
 export * from './ics';
 export * from './calibration';
 export * from './context';
+export * from './catalog';

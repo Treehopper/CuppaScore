@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsx src/build.ts",
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p .",
+    "schema": "tsx src/schema.ts"
   },
   "dependencies": {
     "@cuplog/core": "workspace:*"
