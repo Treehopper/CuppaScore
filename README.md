@@ -70,12 +70,12 @@ Products, bags and brews are separate entities on purpose. The same product can 
   - no dose, grind, temperature or bag. Rating, strength, profile, meal and time of day work the same as at home.
 - **B2c** As a user, I want **"Same as last time here"** when I'm back at a café, so a repeat visit is one tap.
 - **B3** As a user, I want to choose a **rating level** for each cup, depending on how much time and attention I have:
-  - **Very simple – Swipe:** swipe **right = "more of this"**, **left = "less of this"**. One gesture, done.
+  - **Very simple – Swipe:** one tap on **👍 "more of this"** or **👎 "less of this"**, done. (The level keeps its name; a drag gesture was dropped because it was unreliable on phones.)
   - **Simple – Stars:** 0.5–5 stars (half steps).
   - **Advanced – Detail:** stars plus **strength/intensity** (1–5), **flavour profile** sliders (acidity, sweetness, bitterness, body, aftertaste), flavour tags (chocolate, nutty, berry, citrus, floral, caramel, earthy, …) and optionally, per attribute, **"wish: more / just right / less"** (e.g. "sweetness 2, I'd like more").
 - **B3a** As a user, I want to **mix levels freely**: the same bag and brew method can get a swipe on Monday, stars on Tuesday and a detailed rating on Saturday. All of them count.
 - **B3b** As a user, I want a **default level** (set on the welcome screen and in Settings) and a one-tap switch on the log screen. The app remembers the last level used per preset, so my quick weekday AeroPress stays a swipe and my weekend Flair shot opens in Detail.
-- **B3c** As a user, I want swipes to have **button alternatives** (👎 / 👍) for accessibility and one-handed use, and an **Undo** after every swipe.
+- **B3c** As a user, I want the swipe level as **two big buttons** (👎 / 👍) that work one-handed, and an **Undo** after every swipe.
 - **B4** As a user, I want each product and bag to show **one combined "more of this" score**, no matter which levels I used, plus the star average and flavour profile where I gave that much detail.
 - **B5** As a user, I want **time of day** recorded automatically (with manual override) so I can see if I prefer different coffees in the morning vs afternoon.
 - **B6** As a user, I want to tag the **accompanying meal**: none / sweet / savory / mixed, with an optional free-text note ("Brezn", "Croissant").
@@ -208,7 +208,7 @@ Swipe (very simple):
   "excluded": false
 }
 ```
-`swipe`: `"more"` (right) / `"less"` (left). `meal.type` may be `"unspecified"` at the swipe level, because swipes don't require any extra tap.
+`swipe`: `"more"` (👍) / `"less"` (👎). `meal.type` may be `"unspecified"` at the swipe level, because swipes don't require any extra tap.
 
 Advanced (home-made cup):
 ```json

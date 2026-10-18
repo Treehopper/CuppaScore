@@ -54,24 +54,14 @@ test('quick log: stars with undo, swipe, presets remember level', async ({ page 
   await expect(page.getByTestId('rating-row')).toHaveCount(2);
 });
 
-test('quick log levels: drag swipe, detail rating and brew details copied from the preset', async ({ page }) => {
+test('quick log levels: swipe buttons, detail rating and brew details copied from the preset', async ({ page }) => {
   await addBag(page);
   await page.getByRole('link', { name: 'Log' }).click();
 
-  // a short drag springs back, a long one saves "more of this"
+  // the swipe level is two big buttons; one tap saves (no drag gesture, F2)
   await page.getByRole('radio', { name: 'Swipe' }).click();
-  const card = page.getByTestId('swipe-card');
-  const box = (await card.boundingBox())!;
-  const y = box.y + box.height / 2;
-  await page.mouse.move(box.x + box.width / 2, y);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + box.width * 0.1, y, { steps: 5 });
-  await page.mouse.up();
-  await expect(page.getByText('Cup saved')).toHaveCount(0);
-  await page.mouse.move(box.x + box.width / 2, y);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + box.width * 0.45, y, { steps: 8 });
-  await page.mouse.up();
+  await expect(page.getByTestId('swipe-subject')).toContainText('AeroPress');
+  await page.getByRole('button', { name: 'More of this' }).click();
   await expect(page.getByText('Cup saved')).toBeVisible();
 
   // detail level with AeroPress brew details

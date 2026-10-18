@@ -7,7 +7,6 @@
   import DetailInput from './DetailInput.svelte';
   import Icon from './Icon.svelte';
   import StarInput from './StarInput.svelte';
-  import SwipeCard from './SwipeCard.svelte';
 
   type RatingPart = Pick<LogCmd, 'swipe' | 'overall' | 'wouldBuyAgain' | 'strength' | 'profile' | 'wish' | 'flavourTags' | 'meal'>;
 
@@ -70,14 +69,17 @@
 <section class="card stack rating">
   {#if level === 'swipe'}
     {#if ready}
-      <SwipeCard title={swipeTitle} subtitle={swipeSubtitle} disabled={saving} onswipe={(dir) => save(dir)} />
+      <p class="subject" data-testid="swipe-subject">
+        <strong>{swipeTitle}</strong>
+        <span class="muted small">{swipeSubtitle}</span>
+      </p>
     {/if}
     <div class="thumbs">
       <button type="button" class="thumb" disabled={saving || !ready} onclick={() => save('less')} aria-label={t('swipe.less')}>
-        <Icon name="thumbDown" size={32} /><span>{t('swipe.less')}</span>
+        <Icon name="thumbDown" size={40} /><span>{t('swipe.less')}</span>
       </button>
       <button type="button" class="thumb" disabled={saving || !ready} onclick={() => save('more')} aria-label={t('swipe.more')}>
-        <Icon name="thumbUp" size={32} /><span>{t('swipe.more')}</span>
+        <Icon name="thumbUp" size={40} /><span>{t('swipe.more')}</span>
       </button>
     </div>
   {:else}
@@ -130,9 +132,16 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--gap);
   }
+  /* one tap saves; no drag gesture (unreliable on phones, owner feedback F2) */
   .thumb {
     flex-direction: column;
-    min-height: 5.5rem;
+    min-height: 7rem;
     font-weight: 600;
+  }
+  .subject {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    text-align: center;
   }
 </style>
