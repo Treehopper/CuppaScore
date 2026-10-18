@@ -46,7 +46,8 @@ module.exports = {
       name: 'not-to-unresolvable',
       severity: 'error',
       from: {},
-      to: { couldNotResolve: true, pathNot: '^virtual:' },
+      // Vite virtual modules and asset queries (`…?url`) are resolved by the bundler
+      to: { couldNotResolve: true, pathNot: ['^virtual:', '\\?(url|raw)$'] },
     },
   ],
   options: {

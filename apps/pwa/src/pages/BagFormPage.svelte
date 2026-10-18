@@ -1,7 +1,10 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import type { BagDto, CatalogProductDto } from '@cuplog/api';
+  import { sameGtin } from '@cuplog/api';
+  import BarcodeScanner from '../components/BarcodeScanner.svelte';
   import CatalogPicker from '../components/CatalogPicker.svelte';
+  import { toasts } from '../lib/toast.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
@@ -62,6 +65,19 @@
   async function productForPick(c: CatalogProductDto): Promise<string> {
     const mine = products.data?.find((p) => p.product.catalogId === c.id && !p.product.deletedAt);
     return mine ? mine.product.id : (await api().addProduct(productFromCatalog(c))).id;
+  }
+
+  /** A scanned bag: your product with that barcode, otherwise add the coffee once (A2). */
+  function onScan(code: string): void {
+    const mine = products.data?.find((p) => p.product.barcode && sameGtin(p.product.barcode, code));
+    if (mine) {
+      picked = null;
+      form.productId = mine.product.id;
+      toasts.show(t('barcode.found', { title: productTitle(mine.product) }));
+    } else {
+      toasts.show(t('barcode.unknown'));
+      router.go(`/products/new?then=bag&barcode=${code}`);
+    }
   }
 
   function onProductChange(e: Event & { currentTarget: HTMLSelectElement }): void {
@@ -128,6 +144,7 @@
           <option value={NEW_PRODUCT}>{t('bag.newProduct')}</option>
         </select>
       </label>
+      <BarcodeScanner onresult={onScan} />
     {/if}
     <label class="field">
       <span>{t('bag.label')}</span>

@@ -22,6 +22,7 @@
     share: 'M12 3v12M8 7l4-4 4 4M6 11H5v10h14V11h-1',
     addBox: 'M5 4h14v16H5zM12 8v8M8 12h8',
     download: 'M12 4v11M8 11l4 4 4-4M5 20h14',
+    barcode: 'M4 6v12M7 6v12M10 6v12M14 6v12M17 6v12M20 6v12M3 4h3M18 4h3M3 20h3M18 20h3',
     bell: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0',
   } as const;
   export type IconName = keyof typeof PATHS;

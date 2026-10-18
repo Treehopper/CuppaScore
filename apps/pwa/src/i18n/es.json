@@ -536,5 +536,16 @@
     "picked": "Del catálogo: {title}",
     "unpick": "Quitar",
     "updatedToast": "Catálogo actualizado: {added} nuevos, {updated} cambiados"
+  },
+  "barcode": {
+    "scan": "Escanear código de barras",
+    "title": "Escanea el código de la bolsa",
+    "hint": "Mantén el código en el encuadre.",
+    "denied": "Acceso a la cámara denegado. Permítelo en los ajustes del navegador o escribe el número.",
+    "failed": "No se pudo iniciar la cámara. Escribe el número.",
+    "label": "Código de barras (EAN)",
+    "invalid": "No es un número EAN/UPC válido.",
+    "unknown": "Código nuevo: añade el café una vez y el próximo escaneo lo encontrará.",
+    "found": "Encontrado: {title}"
   }
 }

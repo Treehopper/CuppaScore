@@ -1,6 +1,8 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import type { AddProductCmd, CatalogProductDto, ProductDto } from '@cuplog/api';
+  import { normaliseGtin } from '@cuplog/api';
+  import BarcodeScanner from '../components/BarcodeScanner.svelte';
   import CatalogPicker from '../components/CatalogPicker.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import { t } from '../i18n/i18n.svelte';
@@ -10,6 +12,7 @@
   import { showError } from '../lib/errors';
   import { splitList } from '../lib/labels';
   import { router } from '../lib/router.svelte';
+  import { toasts } from '../lib/toast.svelte';
 
   /** `initial` → edit; otherwise create. `?then=bag` returns to "Add bag" with the new product. */
   let { initial }: { initial?: ProductDto } = $props();
@@ -32,6 +35,8 @@
       isBlend: p?.isBlend ?? false,
       decaf: p?.decaf ?? false,
       labelNotes: p?.labelNotes?.join(', ') ?? '',
+      // a scan in "Add bag" that found nothing arrives as ?barcode=
+      barcode: p?.barcode ?? router.current.query.barcode ?? '',
     };
   }
 
@@ -43,12 +48,17 @@
 
   function pick(c: CatalogProductDto): void {
     picked = c;
-    form = fromProduct(productFromCatalog(c));
+    form = { ...fromProduct(productFromCatalog(c)), barcode: form.barcode };
   }
   let saving = $state(false);
 
   async function submit(e: SubmitEvent): Promise<void> {
     e.preventDefault();
+    const barcode = form.barcode.trim() ? normaliseGtin(form.barcode) : null;
+    if (form.barcode.trim() && !barcode) {
+      toasts.show(t('barcode.invalid'), { kind: 'error' });
+      return;
+    }
     saving = true;
     const alt = form.altitude.trim() === '' ? null : Math.round(Number(form.altitude));
     const cmd = {
@@ -68,6 +78,7 @@
       isBlend: form.isBlend,
       decaf: form.decaf,
       labelNotes: splitList(form.labelNotes),
+      barcode,
     };
     try {
       if (id) {
@@ -167,6 +178,13 @@
       <span>{t('product.labelNotes')} <span class="small">({t('product.listHint')})</span></span>
       <input bind:value={form.labelNotes} />
     </label>
+    <div class="barcode">
+      <label class="field">
+        <span>{t('barcode.label')}</span>
+        <input bind:value={form.barcode} inputmode="numeric" autocomplete="off" data-testid="product-barcode" />
+      </label>
+      <BarcodeScanner onresult={(code) => (form.barcode = code)} />
+    </div>
     <div class="row">
       <label class="check"><input type="checkbox" bind:checked={form.isBlend} />{t('product.isBlend')}</label>
       <label class="check"><input type="checkbox" bind:checked={form.decaf} />{t('product.decaf')}</label>
@@ -177,6 +195,15 @@
 </form>
 
 <style>
+  .barcode {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    column-gap: var(--gap);
+  }
+  .barcode > .field {
+    flex: 1 1 10rem;
+  }
   .roast {
     flex-direction: column;
     gap: 0.15rem;

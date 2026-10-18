@@ -536,5 +536,16 @@
     "picked": "Aus dem Katalog: {title}",
     "unpick": "Entfernen",
     "updatedToast": "Katalog aktualisiert: {added} neu, {updated} geändert"
+  },
+  "barcode": {
+    "scan": "Barcode scannen",
+    "title": "Barcode der Tüte scannen",
+    "hint": "Halte den Barcode ins Bild.",
+    "denied": "Kamerazugriff verweigert. Erlaube ihn in den Browser-Einstellungen oder tippe die Nummer ein.",
+    "failed": "Die Kamera ließ sich nicht starten. Tippe die Nummer ein.",
+    "label": "Barcode (EAN)",
+    "invalid": "Keine gültige EAN/UPC-Nummer.",
+    "unknown": "Neuer Barcode: Trag den Kaffee einmal ein, beim nächsten Scan wird er gefunden.",
+    "found": "Gefunden: {title}"
   }
 }

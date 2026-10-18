@@ -536,5 +536,16 @@
     "picked": "From the catalog: {title}",
     "unpick": "Clear",
     "updatedToast": "Catalog updated: {added} new, {updated} changed"
+  },
+  "barcode": {
+    "scan": "Scan barcode",
+    "title": "Scan the bag's barcode",
+    "hint": "Hold the barcode in the frame.",
+    "denied": "Camera access was denied. Allow it in your browser settings or type the number.",
+    "failed": "The camera couldn't be started. Type the number instead.",
+    "label": "Barcode (EAN)",
+    "invalid": "Not a valid EAN/UPC number.",
+    "unknown": "New barcode: add the coffee once, next time the scan finds it.",
+    "found": "Found: {title}"
   }
 }

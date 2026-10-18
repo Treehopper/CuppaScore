@@ -536,5 +536,16 @@
     "picked": "Dal catalogo: {title}",
     "unpick": "Rimuovi",
     "updatedToast": "Catalogo aggiornato: {added} nuovi, {updated} modificati"
+  },
+  "barcode": {
+    "scan": "Scansiona codice a barre",
+    "title": "Scansiona il codice del sacchetto",
+    "hint": "Inquadra il codice a barre.",
+    "denied": "Accesso alla fotocamera negato. Consentilo nelle impostazioni del browser o digita il numero.",
+    "failed": "Impossibile avviare la fotocamera. Digita il numero.",
+    "label": "Codice a barre (EAN)",
+    "invalid": "Numero EAN/UPC non valido.",
+    "unknown": "Nuovo codice: inserisci il caffè una volta, la prossima scansione lo troverà.",
+    "found": "Trovato: {title}"
   }
 }

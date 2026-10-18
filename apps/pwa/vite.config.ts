@@ -45,12 +45,13 @@ export default defineConfig({
         // region catalogs (catalog/*.csv, F4) are precached so they load offline after the first visit
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,csv}'],
         navigateFallback: `${base}index.html`,
-        // catalog.json changes independently of the app shell: serve fresh when online (README §6.1, E3)
         runtimeCaching: [
+          // the barcode reader's wasm (~1 MB, only when there's no native BarcodeDetector): cached on first scan;
+          // file names are content-hashed, so cache-first is safe
           {
-            urlPattern: ({ url }) => /\/catalog(\.min)?\.json$/.test(url.pathname),
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'catalog' },
+            urlPattern: ({ url }) => url.pathname.endsWith('.wasm'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'wasm', expiration: { maxEntries: 4 } },
           },
         ],
       },

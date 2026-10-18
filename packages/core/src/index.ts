@@ -22,3 +22,4 @@ export * from './context';
 export * from './catalog';
 export * from './catalogCsv';
 export * from './flavour';
+export * from './barcode';
