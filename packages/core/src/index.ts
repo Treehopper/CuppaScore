@@ -24,3 +24,4 @@ export * from './catalogCsv';
 export * from './flavour';
 export * from './barcode';
 export * from './vector';
+export * from './recommend';
