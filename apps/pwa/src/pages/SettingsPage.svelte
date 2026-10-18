@@ -43,7 +43,7 @@
       <h2 id="s-brewing">{t('settings.brewing')}</h2>
       <fieldset>
         <legend class="label">{t('settings.ownedMethods')}</legend>
-        <div class="methods">
+        <div class="choice-grid">
           {#each BREW_METHODS as m (m)}
             <label class="check">
               <input
@@ -51,7 +51,7 @@
                 checked={s.ownedMethods.includes(m)}
                 onchange={(e) => toggleMethod(s, m, e.currentTarget.checked)}
               />
-              {t(`brew.${m}`)}
+              <span>{t(`brew.${m}`)}</span>
             </label>
           {/each}
         </div>
@@ -130,11 +130,6 @@
     border: none;
     padding: 0;
     margin: 0 0 var(--gap);
-  }
-  .methods {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
-    column-gap: 0.75rem;
   }
   summary {
     cursor: pointer;

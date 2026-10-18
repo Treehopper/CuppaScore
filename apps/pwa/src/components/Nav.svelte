@@ -43,13 +43,14 @@
     color: var(--muted);
     text-decoration: none;
     font-size: 0.7rem;
-    overflow: hidden;
   }
+  /* long labels (de "Einstellungen", pseudo-locale) wrap instead of being clipped (F1) */
   a span {
     max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    text-align: center;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
   a[aria-current='page'] {
     color: var(--text);

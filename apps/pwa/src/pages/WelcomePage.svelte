@@ -139,7 +139,7 @@
       <h1 id="w-gear">{t('welcome.gear')}</h1>
       <fieldset class="stack">
         <legend class="label">{t('settings.ownedMethods')}</legend>
-        <div class="methods">
+        <div class="choice-grid">
           {#each BREW_METHODS as m (m)}
             <label class="check">
               <input type="checkbox" checked={ownedNow.includes(m)} onchange={(e) => toggleMethod(m, e.currentTarget.checked)} />
@@ -195,7 +195,7 @@
         {t('welcome.enableReminders')}
       </button>
     {:else}
-      <button type="button" class="btn-primary" onclick={next} disabled={busy}>
+      <button type="button" class="btn-primary" onclick={next} disabled={busy} data-testid="welcome-next">
         {step === 'install' ? t('welcome.notNow') : t('common.next')}
       </button>
     {/if}
@@ -220,11 +220,6 @@
     border: none;
     padding: 0;
     margin: 0;
-  }
-  .methods {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
-    gap: 0.25rem 0.75rem;
   }
   .ios li {
     display: flex;
