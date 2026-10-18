@@ -534,6 +534,7 @@
     "soldOut": "Agotado",
     "manualHint": "¿No aparece? Rellena tú los campos.",
     "picked": "Del catálogo: {title}",
-    "unpick": "Quitar"
+    "unpick": "Quitar",
+    "updatedToast": "Catálogo actualizado: {added} nuevos, {updated} cambiados"
   }
 }

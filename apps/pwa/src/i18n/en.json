@@ -534,6 +534,7 @@
     "soldOut": "Sold out",
     "manualHint": "Not listed? Fill in the fields yourself.",
     "picked": "From the catalog: {title}",
-    "unpick": "Clear"
+    "unpick": "Clear",
+    "updatedToast": "Catalog updated: {added} new, {updated} changed"
   }
 }

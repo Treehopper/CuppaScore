@@ -1,6 +1,7 @@
 import type { AddProductCmd, CatalogProductDto, CatalogRowIssue } from '@cuplog/api';
 import { i18n, t } from '../i18n/i18n.svelte';
 import { api } from './api';
+import { toasts } from './toast.svelte';
 
 /** Coffee-growing countries (ISO 3166 alpha-2) whose localised names make the catalog searchable. */
 const ORIGINS = [
@@ -43,13 +44,19 @@ export function issueText(i: CatalogRowIssue): string {
 }
 
 /**
- * On start: refresh the region catalog in the background (upserts only newer rows). Skipped
- * before onboarding; the welcome flow loads it when the region is chosen.
+ * On start: refresh the region catalog in the background (upserts only newer rows) and say so
+ * when that changed anything. Skipped before onboarding; the welcome flow loads it then.
  */
 export async function syncRegionCatalog(): Promise<void> {
   try {
     const s = await api().getSettings();
-    if (s.catalogRegion && s.onboardingCompletedAt) await api().loadRegionCatalog();
+    if (!s.catalogRegion || !s.onboardingCompletedAt) return;
+    const before = await api().getCatalogInfo();
+    const r = await api().loadRegionCatalog();
+    // E3: tell the user when a newer published catalog brought changes (not on the first load)
+    if (before.count > 0 && r.added + r.updated > 0) {
+      toasts.show(t('catalog.updatedToast', { added: r.added, updated: r.updated }));
+    }
   } catch (e) {
     // offline before the first load: try again next start
     console.warn('catalog sync failed', e);

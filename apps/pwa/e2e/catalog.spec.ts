@@ -111,3 +111,35 @@ test('Add bag from the catalog: prefill, product created once and reused; sold-o
   await page.goto('./#/products');
   await expect(page.getByTestId('product-card')).toHaveCount(1);
 });
+
+test.describe('catalog update on start (E3)', () => {
+  // the test serves its own "newer" CSV; a service worker would answer from its precache
+  test.use({ serviceWorkers: 'block' });
+
+  test('a newer published catalog is imported on start and announced', async ({ page }) => {
+    await page.goto('./#/welcome');
+    await page.getByRole('button', { name: 'Skip' }).click();
+    await expect(page).toHaveURL(/#\/log$/);
+    await loadCatalog(page);
+
+    const original = await (await page.request.get('./catalog/munich.csv')).text();
+    const [header, first, ...rest] = original.trimEnd().split('\n');
+    const newer = [
+      header,
+      first!.replace(/,\d{4}-\d{2}-\d{2}\s*$/, ',2027-01-15'),
+      ...rest,
+      'e2e-roaster-new-lot,E2E Roaster,München,New Lot,KE,,washed,,1,filter,,250,15.00,,true,2027-01-15',
+    ].join('\n');
+    await page.route('**/catalog/munich.csv', (route) => route.fulfill({ body: newer, contentType: 'text/csv' }));
+    await page.reload();
+    await expect(page.getByText('Catalog updated: 1 new, 1 changed')).toBeVisible();
+    await page.goto('./#/settings');
+    await expect(page.getByTestId('catalog-info')).toContainText(/As of Jan 15, 2027/);
+
+    // nothing new → no notice
+    await page.reload();
+    await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
+    await page.waitForTimeout(500);
+    await expect(page.getByText('Catalog updated')).toHaveCount(0);
+  });
+});

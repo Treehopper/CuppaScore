@@ -534,6 +534,7 @@
     "soldOut": "Esaurito",
     "manualHint": "Non c'è? Compila tu i campi.",
     "picked": "Dal catalogo: {title}",
-    "unpick": "Rimuovi"
+    "unpick": "Rimuovi",
+    "updatedToast": "Catalogo aggiornato: {added} nuovi, {updated} modificati"
   }
 }
