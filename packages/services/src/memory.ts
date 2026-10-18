@@ -1,6 +1,7 @@
-import type { Bag, DomainSettings, Rating, RecordMeta } from '@cuplog/core';
+import type { Bag, CatalogProduct, DomainSettings, Rating, RecordMeta } from '@cuplog/core';
 import type {
   BagRepo,
+  CatalogRepo,
   DeviceStateRepo,
   ListOptions,
   RatingFilter,
@@ -79,6 +80,22 @@ class MemoryDeviceRepo implements DeviceStateRepo {
   }
 }
 
+class MemoryCatalogRepo implements CatalogRepo {
+  #rows = new Map<string, CatalogProduct>();
+  async get(id: string) {
+    return clone(this.#rows.get(id));
+  }
+  async list() {
+    return [...this.#rows.values()].map(clone);
+  }
+  async putMany(rows: CatalogProduct[]) {
+    for (const r of rows) this.#rows.set(r.id, clone(r));
+  }
+  async count() {
+    return this.#rows.size;
+  }
+}
+
 /** In-memory adapter: used by tests and as the reference implementation of the repo contract. */
 export function createMemoryRepos(): Repositories {
   return {
@@ -88,6 +105,7 @@ export function createMemoryRepos(): Repositories {
     venues: new MemoryRepo(),
     settings: new MemorySettingsRepo(),
     device: new MemoryDeviceRepo(),
+    catalog: new MemoryCatalogRepo(),
     uow: { run: (fn) => fn() },
   };
 }

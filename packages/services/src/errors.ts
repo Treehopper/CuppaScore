@@ -6,7 +6,11 @@ export type ErrorCode =
   | 'BAG_FINISHED'
   | 'REV_CONFLICT'
   | 'IMPORT_INVALID'
-  | 'UNSUPPORTED_SCHEMA_VERSION';
+  | 'UNSUPPORTED_SCHEMA_VERSION'
+  | 'CATALOG_CSV_HEADER'
+  | 'CATALOG_CSV_EMPTY'
+  | 'CATALOG_NO_REGION'
+  | 'CATALOG_UNAVAILABLE';
 
 export class DomainError extends Error {
   readonly code: ErrorCode;

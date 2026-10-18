@@ -1,5 +1,8 @@
 import type {
   Bag,
+  CatalogProduct,
+  CatalogRegion,
+  CatalogSearch,
   DomainSettings,
   DueReminder,
   ExportBundle,
@@ -19,6 +22,8 @@ import type {
   BagPatch,
   BagQuery,
   BagView,
+  CatalogImportReport,
+  CatalogInfo,
   ImportMode,
   ImportReport,
   InsightsView,
@@ -44,6 +49,8 @@ export type BagDto = Bag;
 export type VenueDto = Venue;
 export type RatingDto = Rating;
 export type DomainSettingsDto = DomainSettings;
+export type CatalogProductDto = CatalogProduct;
+export type { CatalogImportReport, CatalogInfo, CatalogRegion, CatalogSearch };
 export type { DueReminder, ReminderAction, ReminderConfig, ReminderRule, RuleKind };
 export type {
   AddBagCmd,
@@ -77,7 +84,7 @@ export interface RatingQuery {
   limit?: number;
 }
 
-export type Topic = 'ratings' | 'bags' | 'products' | 'venues' | 'settings';
+export type Topic = 'ratings' | 'bags' | 'products' | 'venues' | 'settings' | 'catalog';
 export type Unsubscribe = () => void;
 
 /**
@@ -123,6 +130,16 @@ export interface CupLogApi {
   /** Calendar file for one fixed-time rule (F8). */
   exportReminderIcs(ruleId: string, text: { title: string; description?: string }): Promise<string>;
 
+  // catalog (F4)
+  /** Fetches the region CSV (default: settings.catalogRegion) in the backend and imports it. */
+  loadRegionCatalog(region?: CatalogRegion): Promise<CatalogImportReport>;
+  /** A catalog CSV the user picked; `text` is untrusted and validated in the backend. */
+  importCatalogCsv(text: string, fileName?: string): Promise<CatalogImportReport>;
+  getCatalogInfo(): Promise<CatalogInfo>;
+  /** `originNames`: localised country names by ISO code for matching ("Äthiopien" → ET). */
+  searchCatalog(q?: CatalogSearch & { originNames?: Record<string, string> }): Promise<CatalogProductDto[]>;
+  getCatalogProduct(id: string): Promise<CatalogProductDto>;
+
   // data
   exportAll(): Promise<ExportBundle>;
   /** `bundle` is untrusted JSON; it is validated and migrated in the backend. */
@@ -153,6 +170,8 @@ export const COMMAND_TOPICS: Partial<Record<ApiMethod, Topic[]>> = {
   setPresetPinned: ['settings'],
   ackReminder: ['settings'],
   importAll: ['ratings', 'bags', 'products', 'venues', 'settings'],
+  loadRegionCatalog: ['catalog'],
+  importCatalogCsv: ['catalog'],
 };
 
 export const API_METHODS: readonly ApiMethod[] = [
@@ -189,4 +208,9 @@ export const API_METHODS: readonly ApiMethod[] = [
   'exportAll',
   'importAll',
   'exportRatingsCsv',
+  'loadRegionCatalog',
+  'importCatalogCsv',
+  'getCatalogInfo',
+  'searchCatalog',
+  'getCatalogProduct',
 ];

@@ -3,6 +3,7 @@ import { BREW_METHODS, BrewMethod, OutlierMethod, RatingLevel } from './enums';
 import { IsoDateTime } from './record';
 import { ReminderConfig, ReminderState } from './reminders';
 import { DEFAULT_TIME_ZONE } from './time';
+import { CATALOG_REGIONS } from './vocab';
 
 export const ConfidenceWeights = z.object({
   swipe: z.number().min(0).max(5),
@@ -31,6 +32,8 @@ export const DomainSettings = z.object({
   reminderState: ReminderState.default({}),
   /** "Not now" on the welcome reminders card; one later prompt follows (README §9.1) */
   remindersDeclinedAt: IsoDateTime.nullable().default(null),
+  /** region catalog to load (F4); null = none. Defaults to Munich, also for existing installs. */
+  catalogRegion: z.enum(CATALOG_REGIONS).nullable().default('munich'),
   updatedAt: IsoDateTime.nullable().default(null),
   rev: z.number().int().nonnegative().default(0),
 });

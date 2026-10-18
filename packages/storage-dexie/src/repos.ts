@@ -1,6 +1,7 @@
-import type { Bag, DomainSettings, Rating, RecordMeta } from '@cuplog/core';
+import type { Bag, CatalogProduct, DomainSettings, Rating, RecordMeta } from '@cuplog/core';
 import type {
   BagRepo,
+  CatalogRepo,
   DeviceStateRepo,
   ListOptions,
   MediaStore,
@@ -98,6 +99,25 @@ class DexieDeviceRepo implements DeviceStateRepo {
   }
 }
 
+class DexieCatalogRepo implements CatalogRepo {
+  readonly #db: CupLogDb;
+  constructor(db: CupLogDb) {
+    this.#db = db;
+  }
+  get(id: string): Promise<CatalogProduct | undefined> {
+    return this.#db.catalog.get(id);
+  }
+  list(): Promise<CatalogProduct[]> {
+    return this.#db.catalog.toArray();
+  }
+  async putMany(rows: CatalogProduct[]): Promise<void> {
+    await this.#db.catalog.bulkPut(rows);
+  }
+  count(): Promise<number> {
+    return this.#db.catalog.count();
+  }
+}
+
 export class DexieMediaStore implements MediaStore {
   readonly #db: CupLogDb;
   constructor(db: CupLogDb) {
@@ -130,9 +150,10 @@ export function createDexieRepos(opts: DbOptions = {}): DexieRepositories {
     venues: new DexieRepo(db.venues),
     settings: new DexieSettingsRepo(db),
     device: new DexieDeviceRepo(db),
+    catalog: new DexieCatalogRepo(db),
     media: new DexieMediaStore(db),
     uow: {
-      run: (fn) => db.transaction('rw', [db.products, db.bags, db.ratings, db.venues, db.settings, db.device], fn),
+      run: (fn) => db.transaction('rw', [db.products, db.bags, db.ratings, db.venues, db.settings, db.device, db.catalog], fn),
     },
   };
 }

@@ -1,4 +1,4 @@
-import type { Bag, Clock, DomainSettings, IdGenerator, Product, Rating, RecordMeta, Rng, Venue } from '@cuplog/core';
+import type { Bag, CatalogProduct, CatalogRegion, Clock, DomainSettings, IdGenerator, Product, Rating, RecordMeta, Rng, Venue } from '@cuplog/core';
 
 /**
  * Port interfaces (README §8.1). Implemented by adapters (storage-dexie now, Postgres later).
@@ -50,6 +50,21 @@ export interface DeviceStateRepo {
   set<T>(key: string, value: T): Promise<void>;
 }
 
+/** Catalog products (F4): shared, read-only reference data, not owned by a user. */
+export interface CatalogRepo {
+  get(id: string): Promise<CatalogProduct | undefined>;
+  list(): Promise<CatalogProduct[]>;
+  /** Insert or replace by `id`. */
+  putMany(rows: CatalogProduct[]): Promise<void>;
+  count(): Promise<number>;
+}
+
+/** Where region catalogs come from (static CSV on GitHub Pages now, a server later). */
+export interface CatalogSource {
+  /** The region's catalog CSV as text. */
+  fetchRegion(region: CatalogRegion): Promise<string>;
+}
+
 export interface MediaStore {
   put(ownerId: string, id: string, blob: Blob): Promise<void>;
   get(ownerId: string, id: string): Promise<Blob | undefined>;
@@ -68,6 +83,7 @@ export interface Repositories {
   venues: VenueRepo;
   settings: SettingsRepo;
   device: DeviceStateRepo;
+  catalog: CatalogRepo;
   uow: UnitOfWork;
 }
 

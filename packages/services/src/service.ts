@@ -49,12 +49,17 @@ import {
   type StatsSummary,
   type TimeOfDay,
   type VenueInput,
+  searchCatalog,
+  type CatalogProduct,
+  type CatalogRegion,
+  type CatalogSearch,
 } from '@cuplog/core';
 import type { z } from 'zod';
 import { exportAll, exportRatingsCsv, importAll, type ImportMode, type ImportReport } from './data';
 import { DomainError } from './errors';
 import { buildInsights, type InsightsView } from './insights';
-import type { Ctx, Repositories } from './ports';
+import { getCatalogInfo, importCatalogCsv, type CatalogImportReport, type CatalogInfo } from './catalog';
+import type { CatalogSource, Ctx, Repositories } from './ports';
 
 // ---------- commands ----------
 
@@ -182,10 +187,12 @@ function parseOrThrow<S extends z.ZodType>(schema: S, input: unknown): z.infer<S
 export class CupLogService {
   readonly repos: Repositories;
   readonly ctx: Ctx;
+  readonly catalogSource: CatalogSource | undefined;
 
-  constructor(repos: Repositories, ctx: Ctx) {
+  constructor(repos: Repositories, ctx: Ctx, catalogSource?: CatalogSource) {
     this.repos = repos;
     this.ctx = ctx;
+    this.catalogSource = catalogSource;
   }
 
   // ---------- helpers ----------
@@ -654,6 +661,43 @@ export class CupLogService {
 
   exportRatingsCsv(): Promise<string> {
     return exportRatingsCsv(this.repos, this.ctx);
+  }
+
+  // ---------- catalog (F4) ----------
+
+  getCatalogInfo(): Promise<CatalogInfo> {
+    return getCatalogInfo(this.repos);
+  }
+
+  /** Fetches the region's CSV (settings.catalogRegion unless given) through `CatalogSource` and imports it. */
+  async loadRegionCatalog(region?: CatalogRegion): Promise<CatalogImportReport> {
+    const r = region ?? (await this.getSettings()).catalogRegion;
+    if (!r) throw new DomainError('CATALOG_NO_REGION');
+    if (!this.catalogSource) throw new DomainError('CATALOG_UNAVAILABLE');
+    let text: string;
+    try {
+      text = await this.catalogSource.fetchRegion(r);
+    } catch (e) {
+      throw new DomainError('CATALOG_UNAVAILABLE', { region: r, message: e instanceof Error ? e.message : String(e) });
+    }
+    return importCatalogCsv(this.repos, this.ctx, text, r);
+  }
+
+  /** A custom or updated catalog file picked by the user. */
+  importCatalogCsv(text: string, fileName?: string): Promise<CatalogImportReport> {
+    return importCatalogCsv(this.repos, this.ctx, text, 'file', fileName ?? null);
+  }
+
+  /** `originNames`: localised country names by ISO code, so "Äthiopien" finds ET (core has no i18n). */
+  async searchCatalog(q: CatalogSearch & { originNames?: Record<string, string> } = {}): Promise<CatalogProduct[]> {
+    const names = q.originNames ?? {};
+    return searchCatalog(await this.repos.catalog.list(), q, (p) => p.originCountries.map((c) => names[c] ?? '').join(' '));
+  }
+
+  async getCatalogProduct(id: string): Promise<CatalogProduct> {
+    const p = await this.repos.catalog.get(id);
+    if (!p) throw new DomainError('NOT_FOUND', { kind: 'catalogProduct', id });
+    return p;
   }
 
   // ---------- stats ----------

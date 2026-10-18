@@ -1,5 +1,5 @@
 import { Dexie, type Table } from 'dexie';
-import { roastLevelFrom5, type Bag, type DomainSettings, type Product, type Rating, type Venue } from '@cuplog/core';
+import { roastLevelFrom5, type Bag, type CatalogProduct, type DomainSettings, type Product, type Rating, type Venue } from '@cuplog/core';
 
 export interface SettingsRow {
   ownerId: string;
@@ -18,7 +18,7 @@ export interface MediaRow {
 }
 
 /** Current IndexedDB schema version. Migrations are forward-only (README §14.3). */
-export const DB_VERSION = 2;
+export const DB_VERSION = 3;
 
 export type CupLogDb = Dexie & {
   products: Table<Product, string>;
@@ -28,6 +28,7 @@ export type CupLogDb = Dexie & {
   settings: Table<SettingsRow, string>;
   device: Table<DeviceRow, string>;
   media: Table<MediaRow, [string, string]>;
+  catalog: Table<CatalogProduct, string>;
 };
 
 export interface DbOptions {
@@ -60,5 +61,7 @@ export function openDb(opts: DbOptions = {}): CupLogDb {
         p.roastLevel = roastLevelFrom5(p.roastLevel);
       }),
   );
+  // v3: catalog products from the region CSV (F4)
+  db.version(3).stores({ catalog: 'id' });
   return db;
 }

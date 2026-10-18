@@ -4,7 +4,7 @@ import { createBrowserApi, type CupLogApi } from '@cuplog/api';
 let instance: CupLogApi | null = null;
 
 export function api(): CupLogApi {
-  instance ??= createBrowserApi();
+  instance ??= createBrowserApi(new URL(import.meta.env.BASE_URL, location.href).href);
   return instance;
 }
 

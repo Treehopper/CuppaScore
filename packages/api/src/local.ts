@@ -1,5 +1,5 @@
 import { LOCAL_OWNER, uuidv7Generator, type Clock, type Rng } from '@cuplog/core';
-import { CupLogService, isDomainError, type Repositories } from '@cuplog/services';
+import { CupLogService, isDomainError, type CatalogSource, type Repositories } from '@cuplog/services';
 import { API_METHODS, type ApiMethod, type CupLogApi } from './api';
 import { apiFromTransport } from './transport';
 import { ApiError, type Result } from './errors';
@@ -32,6 +32,7 @@ export interface LocalApiOptions {
   clock?: Clock;
   rng?: Rng;
   ownerId?: string;
+  catalogSource?: CatalogSource;
 }
 
 function toApiError(e: unknown): ApiError {
@@ -60,7 +61,7 @@ export function createService(opts: LocalApiOptions): CupLogService {
     clock,
     rng,
     ids: uuidv7Generator(clock, rng),
-  });
+  }, opts.catalogSource);
 }
 
 /** In-process API (tests, UI mocks). Results are structured-cloned like over a worker. */

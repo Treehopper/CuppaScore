@@ -65,6 +65,10 @@ export const PROCESSES = ['washed', 'natural', 'honey', 'anaerobic', 'other'] as
 
 export const ROAST_FOR = ['filter', 'espresso', 'omni'] as const;
 
+/** Region catalogs shipped with the app (`public/catalog/<region>.csv`, F4). */
+export const CATALOG_REGIONS = ['munich'] as const;
+export type CatalogRegion = (typeof CATALOG_REGIONS)[number];
+
 /** 1 = light, 2 = medium, 3 = dark: the 1–3 beans most roasters print on the bag. */
 export const ROAST_LEVELS = [1, 2, 3] as const;
 

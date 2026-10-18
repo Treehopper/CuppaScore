@@ -86,6 +86,21 @@ export function describeRepositoryContract(name: string, make: () => Promise<Rep
       expect(await repos.venues.get(LOCAL_OWNER, 'v1')).toEqual(v);
     });
 
+    it('catalog: putMany upserts by id, get/list/count', async () => {
+      const repos = await make();
+      const c = (id: string, name: string) => ({
+        id, roaster: 'Vits der Kaffee', roasterCity: 'München', name, originCountries: ['ET'], region: null, process: null,
+        varietals: [], roastLevel: 2, roastFor: ['filter' as const], tastingNotes: ['Jasmin'], weightG: 250, priceEur: null,
+        url: null, available: false, updatedAt: '2026-10-17', source: 'munich',
+      });
+      await repos.catalog.putMany([c('a', 'A'), c('b', 'B')]);
+      await repos.catalog.putMany([c('a', 'A2')]);
+      expect(await repos.catalog.count()).toBe(2);
+      expect(await repos.catalog.get('a')).toEqual(c('a', 'A2'));
+      expect(await repos.catalog.get('zz')).toBeUndefined();
+      expect((await repos.catalog.list()).map((x) => x.id).sort()).toEqual(['a', 'b']);
+    });
+
     it('put replaces', async () => {
       const repos = await make();
       await repos.products.put(product('p1'));
