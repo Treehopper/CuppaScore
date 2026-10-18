@@ -1,4 +1,4 @@
-import type { CatalogProductDto, CatalogRowIssue } from '@cuplog/api';
+import type { AddProductCmd, CatalogProductDto, CatalogRowIssue } from '@cuplog/api';
 import { i18n, t } from '../i18n/i18n.svelte';
 import { api } from './api';
 
@@ -55,3 +55,22 @@ export async function syncRegionCatalog(): Promise<void> {
     console.warn('catalog sync failed', e);
   }
 }
+
+/** A user product (with `catalogId`) prefilled from a catalog entry. */
+export function productFromCatalog(c: CatalogProductDto): AddProductCmd {
+  return {
+    catalogId: c.id,
+    roaster: c.roaster,
+    name: c.name,
+    origin: { country: c.originCountries.map((x) => countryName(x)).join(', ') || null, region: c.region, farm: null, altitudeM: null },
+    process: c.process,
+    varietals: c.varietals,
+    roastLevel: c.roastLevel,
+    roastFor: c.roastFor,
+    isBlend: c.originCountries.length > 1,
+    labelNotes: c.tastingNotes,
+  };
+}
+
+/** "Vits der Kaffee – Ethiopia Guji" */
+export const catalogTitle = (c: Pick<CatalogProductDto, 'roaster' | 'name'>): string => `${c.roaster} – ${c.name}`;

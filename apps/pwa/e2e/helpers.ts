@@ -23,3 +23,10 @@ export async function addBag(
   await page.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByRole('heading', { name: `${name} · ${label}` })).toBeVisible();
 }
+
+/** Loads the Munich catalog through Settings → Catalog (F4). */
+export async function loadCatalog(page: Page): Promise<void> {
+  await page.goto('./#/settings');
+  await page.getByRole('button', { name: 'Reload Munich catalog' }).click();
+  await expect(page.getByTestId('catalog-info')).toContainText(/Munich: \d{3} coffees/);
+}

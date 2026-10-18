@@ -526,6 +526,14 @@
       "required": "fehlt",
       "duplicate": "doppelte ID",
       "invalid": "ungültig"
-    }
+    },
+    "search": "Im Katalog suchen",
+    "searchHint": "Rösterei, Name oder Herkunft",
+    "noMatch": "Nichts gefunden. Trag den Kaffee unten ein.",
+    "results": "Katalog-Treffer",
+    "soldOut": "Ausverkauft",
+    "manualHint": "Nicht dabei? Füll die Felder selbst aus.",
+    "picked": "Aus dem Katalog: {title}",
+    "unpick": "Entfernen"
   }
 }

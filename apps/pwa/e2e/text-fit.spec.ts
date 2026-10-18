@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { addBag } from './helpers';
+import { addBag, loadCatalog } from './helpers';
 
 // Owner feedback F1: long German / pseudo-locale labels must never overlap or be clipped at 360 px.
 
@@ -25,7 +25,21 @@ async function textProblems(page: Page, width = 360): Promise<string[]> {
       for (let a: Element | null = el; a; a = a.parentElement) if (getComputedStyle(a).position === 'fixed') fixed = true;
       const range = document.createRange();
       range.selectNodeContents(n);
-      for (const r of range.getClientRects()) if (r.width >= 1 && r.height >= 1) boxes.push({ r, node: n, fixed, text });
+      // nearest scroll/clip box: text scrolled out of view vertically is hidden, not a problem
+      let clip: DOMRect | null = null;
+      for (let a: Element | null = el; a && a !== document.body; a = a.parentElement) {
+        if (getComputedStyle(a).overflowY !== 'visible') {
+          clip = a.getBoundingClientRect();
+          break;
+        }
+      }
+      for (const r of range.getClientRects()) {
+        if (r.width < 1 || r.height < 1) continue;
+        if (clip && (r.bottom <= clip.top + 1 || r.top >= clip.bottom - 1)) continue;
+        const top = clip ? Math.max(r.top, clip.top) : r.top;
+        const bottom = clip ? Math.min(r.bottom, clip.bottom) : r.bottom;
+        boxes.push({ r: new DOMRect(r.x, top, r.width, bottom - top), node: n, fixed, text });
+      }
     }
     // a closed select shows only as much of the chosen option as fits
     const ruler = document.createElement('span');
@@ -108,6 +122,19 @@ for (const locale of ['de', 'en-XA']) {
         expect(await textProblems(page)).toEqual([]);
       });
     }
+
+    test('catalog picker results and the picked entry', async ({ page }) => {
+      await loadCatalog(page);
+      await useLocale(page);
+      await page.goto('./#/bags/new');
+      await page.reload();
+      await page.getByRole('searchbox').fill('man versus');
+      await expect(page.getByTestId('catalog-result').first()).toBeVisible();
+      expect(await textProblems(page), 'results').toEqual([]);
+      await page.getByTestId('catalog-result').nth(1).click();
+      await expect(page.getByTestId('catalog-picked')).toBeVisible();
+      expect(await textProblems(page), 'picked').toEqual([]);
+    });
 
     test('welcome flow', async ({ page }) => {
       await page.goto('./#/bags');

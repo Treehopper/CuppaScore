@@ -377,12 +377,24 @@ Interaction terms (e.g. *acidity × sweet meal*) are added only once there are �
 
 ---
 
-## 6. Munich coffee catalog (pre-computed JSON)
+## 6. Munich coffee catalog
 
-### 6.1 Purpose
-A static `catalog.json` shipped with the app (and refreshed via the service worker). It covers coffees you can **buy in a Munich shop or order from a Munich-area roaster**. The PWA never scrapes. A separate offline build script produces the file.
+### 6.1 Purpose and v1 format (CSV)
+The app ships a **region catalog** so standard beans never have to be typed in: coffees you can **buy in a Munich shop or order from a Munich-area roaster**. The PWA never scrapes. The file is produced offline on a separate machine (`tools/catalog-csv/`, which fetches shop feeds; those hosts are not reachable from the build) and committed as data.
 
-### 6.2 Catalog schema
+**v1 uses a CSV file: `apps/pwa/public/catalog/munich.csv`** (RFC 4180, UTF-8, comma-separated, header row; list fields use `;` inside the cell):
+
+`id,roaster,roaster_city,name,origin_countries,region,process,varieties,roast_level,roast_for,tasting_notes,weight_g,price_eur,url,available,updated_at`
+
+- `id`: stable slug `roaster-product` · `origin_countries`: ISO 3166 alpha-2 list; blends list all known origins · `process`: `washed|natural|honey|anaerobic|other` or empty · `roast_level`: 1–3 or empty · `roast_for`: subset of `espresso;filter;omni` · `tasting_notes`: the roaster's original wording · `weight_g` / `price_eur`: of the smallest whole-bean bag (price may be empty) · `available`: `true`/`false` (sold-out lots stay so older bags can still be picked; they are listed last and flagged) · `updated_at`: ISO date.
+- **Loading:** the welcome flow has a *Region* step (Munich by default, or none; `settings.catalogRegion`). The backend fetches `${BASE_PATH}catalog/<region>.csv` through the `CatalogSource` port (`catalog-static`), validates every row with zod (`parseCatalogCsv` in core) and stores the rows in IndexedDB. The app refreshes it on start; the service worker precaches `catalog/*.csv`, so it works offline after the first load.
+- **Updates:** importing a file upserts by `id`, replacing a row only when its `updated_at` is newer. The user's own products, bags and ratings are never touched; a product made from a catalog entry keeps its `catalogId`.
+- **Settings → Catalog** shows source, count and date, reloads the region file and imports a custom/updated CSV via a file picker, reporting skipped rows with line, column and reason.
+- **Add bag / add product** offer a searchable picker over the catalog (roaster, name, origin incl. localised country names), prefilling all fields; manual entry stays as the fallback.
+
+The JSON catalog below (sellers, flavour vectors, sensory priors) is **a later option** for the recommender (M4); its zod/JSON Schema already lives in core (`catalog.ts`, `catalog-builder/catalog.schema.json`).
+
+### 6.2 Catalog schema (JSON, later)
 ```json
 {
   "version": "2026.10.15",
@@ -576,7 +588,7 @@ Every method is **async and DTO-only** (plain JSON, validated with shared zod sc
 │      │ CupLogApi via Comlink (postMessage)          │
 │ Web Worker: LocalApi → services → core              │
 │      └─► storage-dexie (IndexedDB), catalog-static  │
-│ Service Worker: app shell + catalog.json caching    │
+│ Service Worker: app shell + catalog CSV precache    │
 └─────────────────────────────────────────────────────┘
         ▲ GitHub Pages (static, HTTPS)
         │ deployed by deploy.yml on every push to develop (section 14)
@@ -587,7 +599,7 @@ Running the backend side in a worker already enforces the separation physically:
 - **Manifest:** `display: standalone`, theme colour follows the active theme, icons 192/512, shortcut "Log a cup".
 - **Storage:** request `navigator.storage.persist()` on first run. Photos are compressed to ≤ 200 kB.
 - **Reminders:** evaluated on the device when the app opens or returns to the foreground, and shown as in-app banners (section 12). No push, no notification permission.
-- **Privacy:** no server, no analytics, no network calls except loading the app and `catalog.json` from GitHub Pages. Export is the backup path.
+- **Privacy:** no server, no analytics, no network calls except loading the app and the catalog CSV from GitHub Pages. Export is the backup path.
 
 ### 8.5 Future: community server
 1. `apps/server` (Node or Bun with Hono/Fastify) imports `core` + `services` + a new `storage-postgres` adapter and exposes `CupLogApi` over HTTPS. The OpenAPI spec is generated from the same zod schemas (or tRPC is used directly).

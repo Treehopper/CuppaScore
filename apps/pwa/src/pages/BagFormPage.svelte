@@ -1,9 +1,11 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import type { BagDto } from '@cuplog/api';
+  import type { BagDto, CatalogProductDto } from '@cuplog/api';
+  import CatalogPicker from '../components/CatalogPicker.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
+  import { catalogTitle, productFromCatalog } from '../lib/catalog';
   import { BAG_FORMS } from '../lib/domain';
   import { showError } from '../lib/errors';
   import { productTitle } from '../lib/labels';
@@ -46,6 +48,22 @@
         ''),
   );
 
+  /** catalog entry picked instead of one of your products (F4); its product is created on save */
+  let picked = $state<CatalogProductDto | null>(null);
+
+  function pick(c: CatalogProductDto): void {
+    picked = c;
+    if (c.weightG !== null) form.weightG = String(c.weightG);
+    if (c.priceEur !== null) form.priceEur = c.priceEur.toFixed(2);
+    if (!form.shop.trim()) form.shop = c.roaster;
+  }
+
+  /** Your product for the picked catalog entry: the one you already have, else a new one. */
+  async function productForPick(c: CatalogProductDto): Promise<string> {
+    const mine = products.data?.find((p) => p.product.catalogId === c.id && !p.product.deletedAt);
+    return mine ? mine.product.id : (await api().addProduct(productFromCatalog(c))).id;
+  }
+
   function onProductChange(e: Event & { currentTarget: HTMLSelectElement }): void {
     if (e.currentTarget.value === NEW_PRODUCT) router.go('/products/new?then=bag');
     else form.productId = e.currentTarget.value;
@@ -75,7 +93,9 @@
       notes: form.notes,
     };
     try {
-      const bag = id ? await api().updateBag(id, fields) : await api().addBag({ productId, ...fields });
+      const bag = id
+        ? await api().updateBag(id, fields)
+        : await api().addBag({ productId: picked ? await productForPick(picked) : productId, ...fields });
       router.go(`/bags/${bag.id}`, { replace: true });
     } catch (err) {
       showError(err);
@@ -88,8 +108,16 @@
 <PageHeader title={id ? t('bags.editTitle') : t('bags.add')} back={id ? `/bags/${id}` : '/bags'} />
 
 <form class="stack" onsubmit={submit}>
+  {#if !id && !picked}
+    <CatalogPicker onpick={pick} />
+  {/if}
   <div class="card">
-    {#if !id}
+    {#if picked}
+      <p class="picked" data-testid="catalog-picked">
+        <span>{t('catalog.picked', { title: catalogTitle(picked) })}</span>
+        <button type="button" class="btn-ghost small" onclick={() => (picked = null)}>{t('catalog.unpick')}</button>
+      </p>
+    {:else if !id}
       <label class="field">
         <span>{t('bag.product')}</span>
         <select required value={productId} onchange={onProductChange} data-testid="bag-product">
@@ -136,5 +164,6 @@
     <label class="field"><span>{t('bag.notes')}</span><textarea bind:value={form.notes}></textarea></label>
   </div>
 
-  <button class="btn-primary btn-block" type="submit" disabled={saving || (!id && !productId)}>{t('common.save')}</button>
+  <button class="btn-primary btn-block" type="submit" disabled={saving || (!id && !productId && !picked)}>{t('common.save')}</button>
 </form>
+

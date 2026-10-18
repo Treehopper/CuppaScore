@@ -526,6 +526,14 @@
       "required": "mancante",
       "duplicate": "id duplicato",
       "invalid": "non valido"
-    }
+    },
+    "search": "Cerca nel catalogo",
+    "searchHint": "Torrefazione, nome o origine",
+    "noMatch": "Nessun risultato. Inserisci il caffè qui sotto.",
+    "results": "Risultati del catalogo",
+    "soldOut": "Esaurito",
+    "manualHint": "Non c'è? Compila tu i campi.",
+    "picked": "Dal catalogo: {title}",
+    "unpick": "Rimuovi"
   }
 }

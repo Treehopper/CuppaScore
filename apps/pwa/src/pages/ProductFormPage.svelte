@@ -1,9 +1,11 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import type { ProductDto } from '@cuplog/api';
+  import type { AddProductCmd, CatalogProductDto, ProductDto } from '@cuplog/api';
+  import CatalogPicker from '../components/CatalogPicker.svelte';
   import PageHeader from '../components/PageHeader.svelte';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
+  import { catalogTitle, productFromCatalog } from '../lib/catalog';
   import { PROCESSES, ROAST_FOR, ROAST_LEVELS } from '../lib/domain';
   import { showError } from '../lib/errors';
   import { splitList } from '../lib/labels';
@@ -15,27 +17,34 @@
   type Process = (typeof PROCESSES)[number];
   type RoastFor = (typeof ROAST_FOR)[number];
 
-  function fromProduct(p: ProductDto | undefined) {
+  function fromProduct(p: AddProductCmd | undefined) {
     return {
       roaster: p?.roaster ?? '',
       name: p?.name ?? '',
-      country: p?.origin.country ?? '',
-      region: p?.origin.region ?? '',
-      farm: p?.origin.farm ?? '',
-      altitude: p?.origin.altitudeM == null ? '' : String(p.origin.altitudeM),
+      country: p?.origin?.country ?? '',
+      region: p?.origin?.region ?? '',
+      farm: p?.origin?.farm ?? '',
+      altitude: p?.origin?.altitudeM == null ? '' : String(p.origin.altitudeM),
       process: (p?.process ?? '') as Process | '',
-      varietals: p?.varietals.join(', ') ?? '',
+      varietals: p?.varietals?.join(', ') ?? '',
       roastLevel: (p?.roastLevel ?? null) as number | null,
       roastFor: [...(p?.roastFor ?? [])] as RoastFor[],
       isBlend: p?.isBlend ?? false,
       decaf: p?.decaf ?? false,
-      labelNotes: p?.labelNotes.join(', ') ?? '',
+      labelNotes: p?.labelNotes?.join(', ') ?? '',
     };
   }
 
   // the form edits a copy; `initial` is only the starting point
   const id = $derived(initial?.id);
   let form = $state(untrack(() => fromProduct(initial)));
+  /** catalog entry the form was prefilled from (F4) */
+  let picked = $state<CatalogProductDto | null>(null);
+
+  function pick(c: CatalogProductDto): void {
+    picked = c;
+    form = fromProduct(productFromCatalog(c));
+  }
   let saving = $state(false);
 
   async function submit(e: SubmitEvent): Promise<void> {
@@ -43,6 +52,7 @@
     saving = true;
     const alt = form.altitude.trim() === '' ? null : Math.round(Number(form.altitude));
     const cmd = {
+      ...(picked ? { catalogId: picked.id } : {}),
       roaster: form.roaster.trim(),
       name: form.name.trim(),
       origin: {
@@ -83,6 +93,14 @@
 <PageHeader title={id ? t('products.editTitle') : t('products.add')} back={id ? `/products/${id}` : '/bags'} />
 
 <form class="stack" onsubmit={submit}>
+  {#if picked}
+    <p class="card picked" data-testid="catalog-picked">
+      <span>{t('catalog.picked', { title: catalogTitle(picked) })}</span>
+      <button type="button" class="btn-ghost small" onclick={() => ((picked = null), (form = fromProduct(undefined)))}>{t('catalog.unpick')}</button>
+    </p>
+  {:else if !id}
+    <CatalogPicker onpick={pick} />
+  {/if}
   <div class="card">
     <label class="field"><span>{t('product.roaster')}</span><input required bind:value={form.roaster} autocomplete="off" /></label>
     <label class="field"><span>{t('product.name')}</span><input required bind:value={form.name} autocomplete="off" /></label>

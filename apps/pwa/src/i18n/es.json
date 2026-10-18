@@ -526,6 +526,14 @@
       "required": "falta",
       "duplicate": "id duplicado",
       "invalid": "no válido"
-    }
+    },
+    "search": "Buscar en el catálogo",
+    "searchHint": "Tostador, nombre u origen",
+    "noMatch": "No se encontró nada. Introduce el café abajo.",
+    "results": "Resultados del catálogo",
+    "soldOut": "Agotado",
+    "manualHint": "¿No aparece? Rellena tú los campos.",
+    "picked": "Del catálogo: {title}",
+    "unpick": "Quitar"
   }
 }

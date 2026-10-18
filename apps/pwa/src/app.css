@@ -243,6 +243,18 @@ textarea {
   gap: 0.5rem;
 }
 
+.picked {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 0 var(--gap);
+}
+
+.picked > button {
+  flex-shrink: 0;
+}
+
 /* ---------- chips & segmented control ---------- */
 
 .chips {

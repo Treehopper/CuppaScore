@@ -526,6 +526,14 @@
       "required": "missing",
       "duplicate": "duplicate id",
       "invalid": "not valid"
-    }
+    },
+    "search": "Find in catalog",
+    "searchHint": "Roaster, name or origin",
+    "noMatch": "Nothing found. Enter the coffee below.",
+    "results": "Catalog results",
+    "soldOut": "Sold out",
+    "manualHint": "Not listed? Fill in the fields yourself.",
+    "picked": "From the catalog: {title}",
+    "unpick": "Clear"
   }
 }

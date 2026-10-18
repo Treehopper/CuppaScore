@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { addBag } from './helpers';
+import { addBag, loadCatalog } from './helpers';
 
 const HEADER = 'id,roaster,roaster_city,name,origin_countries,region,process,varieties,roast_level,roast_for,tasting_notes,weight_g,price_eur,url,available,updated_at';
 
@@ -65,4 +65,49 @@ test('choosing no region in the welcome flow loads no catalog', async ({ page })
   await expect(page.getByLabel('Use the Munich catalog')).not.toBeChecked();
   await expect(page.getByTestId('catalog-info')).toContainText('No catalog loaded yet');
   await expect(page.getByRole('button', { name: 'Reload Munich catalog' })).toBeDisabled();
+});
+
+test('Add product: search the catalog (also by localised origin), pick and prefill (F4)', async ({ page }) => {
+  await page.goto('./#/products/new');
+  await expect(page.getByTestId('catalog-picker')).toHaveCount(0); // no catalog, manual entry only
+  await loadCatalog(page);
+  await page.goto('./#/products/new');
+  const search = page.getByLabel('Find in catalog');
+  await search.fill('zzzz');
+  await expect(page.getByText('Nothing found')).toBeVisible();
+  await search.fill('vits ethiopia bonga');
+  await page.getByTestId('catalog-result').first().click();
+  await expect(page.getByTestId('catalog-picked')).toContainText('Vits der Kaffee – Äthiopien Bonga Forest');
+  await expect(page.getByLabel('Roaster')).toHaveValue('Vits der Kaffee');
+  await expect(page.getByLabel('Country')).toHaveValue('Ethiopia');
+  await expect(page.getByRole('radio', { name: 'Dark' })).toHaveAttribute('aria-checked', 'true');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('heading', { name: 'Äthiopien Bonga Forest' })).toBeVisible();
+});
+
+test('Add bag from the catalog: prefill, product created once and reused; sold-out lots last (F4)', async ({ page }) => {
+  await loadCatalog(page);
+  await page.goto('./#/bags/new');
+  const search = page.getByLabel('Find in catalog');
+  await search.fill('vits äthiopien');
+  const results = page.getByTestId('catalog-result');
+  await expect(results.first()).not.toContainText('Sold out');
+  await expect(results.last()).toContainText('Sold out');
+  await search.fill('bonga forest');
+  await results.first().click();
+  await expect(page.getByLabel('Weight (g)')).toHaveValue('250');
+  await expect(page.getByLabel('Price (€)')).toHaveValue('9.00');
+  await expect(page.getByLabel('Shop')).toHaveValue('Vits der Kaffee');
+  await page.getByLabel('Label').fill('Bag #1');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('heading', { name: 'Äthiopien Bonga Forest · Bag #1' })).toBeVisible();
+
+  await page.goto('./#/bags/new');
+  await page.getByLabel('Find in catalog').fill('bonga forest');
+  await page.getByTestId('catalog-result').first().click();
+  await page.getByLabel('Label').fill('Bag #2');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('heading', { name: 'Äthiopien Bonga Forest · Bag #2' })).toBeVisible();
+  await page.goto('./#/products');
+  await expect(page.getByTestId('product-card')).toHaveCount(1);
 });
