@@ -23,7 +23,7 @@ Owner tested the live M1 build on a phone. These take priority over the mileston
   - note: core `catalogCsv.ts` (RFC 4180 parser, `parseCatalogCsv` → skip issues as codes, `searchCatalog` with caller-supplied localised origin names); Dexie v3 `catalog` table + `CatalogRepo` (not owner-scoped) + `CatalogSource` port (`catalog-static`, fetch in the worker; page passes its base URL as the worker name `cuplog-api|<base>`); meta in device state key `catalog`; `settings.catalogRegion` defaults to `munich` (also for existing installs); app re-imports the region file on start after onboarding; picker creates the user product on bag Save (not on pick); old JSON `searchCatalog` removed, JSON schema kept
 
 ## Next up
-- Finish task 26 if in progress, then the Owner feedback items F1–F4 above, then continue the milestone list. Task 26 (Stats screen: insights UI + bag trend chart, meal & time-of-day analysis, cost per cup, venue ranking). Read README §9.3 item 3 and use the dataviz skill for charts.
+- Owner feedback F1–F4 done. Continue with task 30 (small), then 28 (catalog features, needed by M4), 29 (barcode), then M4.
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -84,11 +84,12 @@ Owner tested the live M1 build on a phone. These take priority over the mileston
   - note: charts in `components/charts/` (DivergingBars, LineChart as role=slider crosshair, Columns, ChartTable "Show as table"); new theme tokens `--more`/`--less` (blue/orange, validated with the dataviz validator — red/green failed CVD) also used by ScoreGauge; Sparkline removed; taste profile shown as bars, not a radar. Env: container has 2 GB RAM — close the MCP browser before running e2e (Chromium crashed under memory pressure); `pkill -f` patterns that appear in your own command line kill the shell. **M2 complete.**
 
 ## M3 — Catalog
-- [ ] 27. Catalog schema (zod + JSON Schema), `catalog-static` adapter, `searchCatalog`, service-worker caching of `catalog.json`
-- [ ] 28. Catalog builder: sellers.yml, Shopify/Woo/JSON-LD adapters (fixture-tested), normalisation, flavour lexicon, sensory priors, dedupe, validation, diff summary
-- [ ] 29. Add bag from catalog (prefill) + barcode scanning
-- [ ] 30. Catalog update detection (E3)
-
+_Reshaped by owner feedback F4: v1 ships the Munich catalog as CSV (generated on the host by `tools/catalog-csv/`), the JSON builder pipeline (README §6.2–6.3) is a later option._
+- [x] 27. Catalog schema, `catalog-static` adapter, `searchCatalog`, service-worker caching
+  - note: done as part of F4 for the CSV (`CatalogProduct`, `parseCatalogCsv`, `CatalogRepo`/`CatalogSource`, precached `catalog/*.csv`); JSON `Catalog` zod schema + `catalog-builder/catalog.schema.json` kept for later
+- [ ] 28. Features for catalog rows (core, needed by M4): flavour lexicon (de/en tasting notes → 8 flavour dims, SCA wheel), rule-based sensory priors (process/roast/origin), decaf/blend detection from names; unit-tested against the Munich CSV (coverage report of unmapped notes). _The scraping JSON builder (sellers.yml, Shopify/Woo adapters, diff summary) is deferred by the owner (F4)._
+- [ ] 29. Barcode scanning (A2): scan with `BarcodeDetector` where available (ZXing fallback if the package installs), store `barcode` on the user's product, scanning a known barcode picks that product in Add bag; unknown → manual/catalog search. (Catalog prefill in Add bag is done, F4.)
+- [ ] 30. Catalog update notice (E3): the app already re-imports the region CSV on start (upsert by newer `updated_at`); show a small toast/notice when that import added or updated coffees, and the catalog date in Settings (done)
 ## M4 — Recommendations
 - [ ] 31. Core: feature vectors (§7.1) + taste profile (§7.2)
 - [ ] 32. Core: recommender scoring, explanations, exploration slot (§7.3–7.4)
@@ -102,6 +103,8 @@ Owner tested the live M1 build on a phone. These take priority over the mileston
 - [ ] 38. Final polish: Lighthouse config, pseudo-locale overflow pass, a11y
 
 ## Decisions (README §17 and other gaps)
+- Catalog (F4): `settings.catalogRegion` defaults to Munich for new *and* existing installs (owner wants the Munich catalog; "none" is one tap in Settings). Rows are upserted only when `updated_at` is newer; rows missing from a newer file are kept (sold-out lots must stay pickable). Catalog rows are shared reference data without `ownerId`.
+- Text fitting (F1): `body { overflow-wrap: anywhere }` as a page-wide safety net; e2e `text-fit.spec.ts` is the guard (de + en-XA, 360 px).
 - Charts: "more/less of this" polarity uses CVD-safe blue/orange `--more`/`--less` instead of red/green; taste profile is horizontal bars rather than the README's radar (radar is hard to read and to make accessible).
 - Personal star spread is floored at 0.5★ so a very consistent rater's half star doesn't jump to the full ±1.
 - Reminder banner sits above every screen (README says top of Quick Log) so a reminder that comes due while another screen is open still shows (F5b).
