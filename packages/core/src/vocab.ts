@@ -65,6 +65,9 @@ export const PROCESSES = ['washed', 'natural', 'honey', 'anaerobic', 'other'] as
 
 export const ROAST_FOR = ['filter', 'espresso', 'omni'] as const;
 
+/** 1 = light, 2 = medium, 3 = dark: the 1–3 beans most roasters print on the bag. */
+export const ROAST_LEVELS = [1, 2, 3] as const;
+
 export const BAG_FORMS = ['beans', 'ground', 'capsules', 'pods'] as const;
 
 export const OUTLIER_METHODS = ['mad', 'trimmed', 'off'] as const;

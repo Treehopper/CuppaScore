@@ -1,13 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { migrateBundle, toCsv } from './bundle';
-import { makeRating } from './testing';
+import { makeProduct, makeRating } from './testing';
 
 describe('bundle', () => {
-  const base = { app: 'cuplog', schemaVersion: 1, exportedAt: '2026-10-16T08:00:00+02:00', products: [], bags: [], venues: [], settings: null };
+  const base = { app: 'cuplog', schemaVersion: 2, exportedAt: '2026-10-16T08:00:00+02:00', products: [], bags: [], venues: [], settings: null };
 
   it('accepts current bundles', () => {
     const res = migrateBundle({ ...base, ratings: [makeRating()] });
     expect(res.ok).toBe(true);
+  });
+
+  it('migrates v1 bundles: roast level 1–5 becomes 1–3', () => {
+    const p = (roastLevel: number | null) => ({ ...makeProduct(), roastLevel });
+    const res = migrateBundle({ ...base, schemaVersion: 1, ratings: [], products: [p(1), p(2), p(3), p(4), p(5), p(null)] });
+    expect(res.ok && res.bundle.products.map((x) => x.roastLevel)).toEqual([1, 1, 2, 3, 3, null]);
+    expect(res.ok && res.bundle.schemaVersion).toBe(2);
+    expect(migrateBundle({ ...base, ratings: [], products: [p(4)] })).toMatchObject({ ok: false });
   });
 
   it('rejects future versions and invalid records', () => {

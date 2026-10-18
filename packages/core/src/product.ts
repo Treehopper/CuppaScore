@@ -18,8 +18,8 @@ export const ProductFields = z.object({
   origin: Origin.default({ country: null, region: null, farm: null, altitudeM: null }),
   process: Process.nullable().default(null),
   varietals: z.array(z.string().max(60)).max(20).default([]),
-  /** 1 = very light … 5 = dark */
-  roastLevel: z.number().int().min(1).max(5).nullable().default(null),
+  /** 1 = light, 2 = medium, 3 = dark (ROAST_LEVELS) */
+  roastLevel: z.number().int().min(1).max(3).nullable().default(null),
   roastFor: z.array(RoastFor).max(3).default([]),
   isBlend: z.boolean().default(false),
   labelNotes: z.array(z.string().max(60)).max(30).default([]),
@@ -33,3 +33,9 @@ export type ProductInput = z.input<typeof ProductFields>;
 
 export const Product = RecordMeta.extend(ProductFields.shape);
 export type Product = z.infer<typeof Product>;
+
+/** Maps the old 1–5 roast scale to 1–3 (1–2 → 1, 3 → 2, 4–5 → 3); used by storage and bundle migrations. */
+export function roastLevelFrom5(level: number | null | undefined): number | null {
+  if (typeof level !== 'number' || !Number.isFinite(level)) return null;
+  return level <= 2 ? 1 : level === 3 ? 2 : 3;
+}

@@ -157,11 +157,9 @@
     "omni": "Omni"
   },
   "roastLevel": {
-    "1": "Molto chiara",
-    "2": "Chiara",
-    "3": "Media",
-    "4": "Medio-scura",
-    "5": "Scura"
+    "1": "Chiara",
+    "2": "Media",
+    "3": "Scura"
   },
   "form": {
     "beans": "Chicchi",

@@ -157,11 +157,9 @@
     "omni": "Omni"
   },
   "roastLevel": {
-    "1": "Sehr hell",
-    "2": "Hell",
-    "3": "Mittel",
-    "4": "Mittel-dunkel",
-    "5": "Dunkel"
+    "1": "Hell",
+    "2": "Mittel",
+    "3": "Dunkel"
   },
   "form": {
     "beans": "Bohnen",

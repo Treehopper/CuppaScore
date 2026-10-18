@@ -165,7 +165,7 @@ In v1, all user data is stored in **IndexedDB** (via Dexie.js), but only behind 
   "createdAt": "2026-10-15T08:00:00+02:00"
 }
 ```
-`roastLevel`: 1 = very light … 5 = dark. `roastFor`: filter / espresso / omni.
+`roastLevel`: 1 = light, 2 = medium, 3 = dark (the 1–3 beans most roasters print on the bag; data from the old 1–5 scale is migrated 1–2 → 1, 3 → 2, 4–5 → 3). `roastFor`: filter / espresso / omni.
 
 ### 4.2 Bag
 ```json
@@ -430,7 +430,7 @@ A static `catalog.json` shipped with the app (and refreshed via the service work
 ### 6.3 Build pipeline (`/catalog-builder`, Node, run manually or weekly via `catalog.yml`, which opens a PR; see 14.1)
 1. **Seed sellers** from `sellers.yml` (hand-curated list, see 6.4).
 2. **Fetch** product pages from each seller's webshop. Prefer structured data: Shopify `/products.json`, WooCommerce Store API, schema.org `Product` JSON-LD. Fall back to HTML parsing with per-shop adapters. Respect robots.txt and terms of use. Throttle requests.
-3. **Normalise** fields: process synonyms (*washed/gewaschen/lavado*), roast level from text ("hell", "Filterröstung", "Espresso dunkel" → 1–5), origin to ISO country codes, price to €/kg.
+3. **Normalise** fields: process synonyms (*washed/gewaschen/lavado*), roast level from text ("hell", "Filterröstung", "Espresso dunkel" → 1–3), origin to ISO country codes, price to €/kg.
 4. **Map tasting notes → flavour vector** using a lexicon based on the SCA flavour wheel (`flavour-lexicon.json`, German + English: *Beere/berry → fruity*, *Nuss/hazelnut → nutty* …). Notes the lexicon doesn't cover are optionally classified by an LLM step, cached by note string.
 5. **Estimate sensory axes** from process, roast level, origin and notes (rule-based priors, e.g. light washed Kenyan → high acidity; dark Brazilian blend → high body/bitterness).
 6. **Deduplicate** (same roaster + normalised name), mark items not seen for 30 days as `available: false`.
@@ -456,7 +456,7 @@ Every product (yours and catalog) is encoded as a fixed-length vector:
 |---|---|---|
 | Flavour (8 dims) | `flavourVector` (from label notes + your flavour tags) | 0.35 |
 | Sensory (4 dims) | acidity, sweetness, body, bitterness (0–1) | 0.25 |
-| Roast level | (level − 1) / 4 | 0.15 |
+| Roast level | (level − 1) / 2 | 0.15 |
 | Process | one-hot: washed / natural / honey / anaerobic / other | 0.10 |
 | Origin region | one-hot: East Africa / Central Am. / South Am. / Asia-Pacific / blend | 0.10 |
 | Roasted for | filter / espresso / omni | 0.05 |

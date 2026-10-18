@@ -1,5 +1,5 @@
 import { Dexie, type Table } from 'dexie';
-import type { Bag, DomainSettings, Product, Rating, Venue } from '@cuplog/core';
+import { roastLevelFrom5, type Bag, type DomainSettings, type Product, type Rating, type Venue } from '@cuplog/core';
 
 export interface SettingsRow {
   ownerId: string;
@@ -18,7 +18,7 @@ export interface MediaRow {
 }
 
 /** Current IndexedDB schema version. Migrations are forward-only (README §14.3). */
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 
 export type CupLogDb = Dexie & {
   products: Table<Product, string>;
@@ -51,5 +51,14 @@ export function openDb(opts: DbOptions = {}): CupLogDb {
     device: 'key',
     media: '[ownerId+id]',
   });
+  // v2: roast level 1–5 → 1–3 (owner feedback F3)
+  db.version(2).upgrade((tx) =>
+    tx
+      .table<Product, string>('products')
+      .toCollection()
+      .modify((p) => {
+        p.roastLevel = roastLevelFrom5(p.roastLevel);
+      }),
+  );
   return db;
 }

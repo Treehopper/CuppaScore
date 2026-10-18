@@ -5,6 +5,10 @@ import { addBag } from './helpers';
 
 /** Lists text that overlaps other text, is clipped (overflow/ellipsis/viewport) or spills out of its control. */
 async function textProblems(page: Page, width = 360): Promise<string[]> {
+  // page data arrives from the API worker after the first paint
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(300);
+  await page.locator('details').evaluateAll((ds) => ds.forEach((d) => ((d as HTMLDetailsElement).open = true)));
   return page.evaluate((width) => {
     type Box = { r: DOMRect; node: Text; fixed: boolean; text: string };
     const problems: string[] = [];

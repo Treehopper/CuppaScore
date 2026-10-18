@@ -43,7 +43,7 @@ export const CatalogCoffee = z.object({
     .default({}),
   process: Process.nullable().optional(),
   varietals: z.array(z.string()).default([]),
-  roastLevel: z.number().int().min(1).max(5).nullable().optional(),
+  roastLevel: z.number().int().min(1).max(3).nullable().optional(),
   roastFor: z.array(RoastFor).default([]),
   isBlend: z.boolean().default(false),
   decaf: z.boolean().default(false),

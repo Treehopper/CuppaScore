@@ -4,7 +4,7 @@
   import PageHeader from '../components/PageHeader.svelte';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
-  import { PROCESSES, ROAST_FOR } from '../lib/domain';
+  import { PROCESSES, ROAST_FOR, ROAST_LEVELS } from '../lib/domain';
   import { showError } from '../lib/errors';
   import { splitList } from '../lib/labels';
   import { router } from '../lib/router.svelte';
@@ -110,17 +110,26 @@
     <div class="field">
       <span id="roast-level">{t('product.roastLevel')}</span>
       <div class="segmented" role="radiogroup" aria-labelledby="roast-level">
-        {#each [1, 2, 3, 4, 5] as lvl (lvl)}
+        {#each ROAST_LEVELS as lvl (lvl)}
           <button
             type="button"
             role="radio"
+            class="roast"
             aria-checked={form.roastLevel === lvl}
-            title={t(`roastLevel.${lvl}`)}
-            onclick={() => (form.roastLevel = form.roastLevel === lvl ? null : lvl)}>{lvl}</button
+            onclick={() => (form.roastLevel = form.roastLevel === lvl ? null : lvl)}
           >
+            <span class="beans" aria-hidden="true">
+              {#each ROAST_LEVELS as b (b)}
+                <svg viewBox="0 0 24 24" width="18" height="18" class:on={b <= lvl}>
+                  <path d="M12 2.5c4.7 0 7.5 4.3 7.5 9.5s-2.8 9.5-7.5 9.5-7.5-4.3-7.5-9.5S7.3 2.5 12 2.5z" />
+                  <path d="M12 3.5c-2.2 2.6-2.2 5.6 0 8.5s2.2 5.9 0 8.5" class="seam" />
+                </svg>
+              {/each}
+            </span>
+            <span>{t(`roastLevel.${lvl}`)}</span>
+          </button>
         {/each}
       </div>
-      {#if form.roastLevel}<span class="small muted">{t(`roastLevel.${form.roastLevel}`)}</span>{/if}
     </div>
     <div class="field">
       <span id="roast-for">{t('product.roastFor')}</span>
@@ -148,3 +157,31 @@
 
   <button class="btn-primary btn-block" type="submit" disabled={saving}>{t('common.save')}</button>
 </form>
+
+<style>
+  .roast {
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.35rem 0.25rem;
+  }
+  .beans {
+    display: flex;
+    gap: 1px;
+  }
+  .beans svg {
+    fill: none;
+    stroke: var(--muted);
+    stroke-width: 1.6;
+  }
+  .beans svg.on {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+  .beans .seam {
+    fill: none;
+    stroke: var(--surface);
+  }
+  .beans svg:not(.on) .seam {
+    stroke: var(--muted);
+  }
+</style>

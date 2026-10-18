@@ -17,7 +17,7 @@ describe('export / import', () => {
   it('round-trips through replace into an empty store', async () => {
     const a = await seeded();
     const bundle = await a.svc.exportAll();
-    expect(bundle).toMatchObject({ app: 'cuplog', schemaVersion: 1 });
+    expect(bundle).toMatchObject({ app: 'cuplog', schemaVersion: 2 });
     const json = JSON.parse(JSON.stringify(bundle));
     const b = makeTestService();
     const report = await b.svc.importAll(json, 'replace');
@@ -51,7 +51,7 @@ describe('export / import', () => {
   it('rejects invalid bundles with codes', async () => {
     const a = await seeded();
     for (const [input, code] of [
-      [{ app: 'cuplog', schemaVersion: 2 }, 'UNSUPPORTED_SCHEMA_VERSION'],
+      [{ app: 'cuplog', schemaVersion: 3 }, 'UNSUPPORTED_SCHEMA_VERSION'],
       [{ app: 'cuplog', schemaVersion: 1, ratings: 'x' }, 'IMPORT_INVALID'],
     ] as const) {
       const err = await a.svc.importAll(input, 'merge').catch((e: unknown) => e);

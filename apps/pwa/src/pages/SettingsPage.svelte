@@ -85,12 +85,20 @@
           onchange={(e) => save({ halfLifeDays: Number(e.currentTarget.value) })}
         />
       </label>
-      <label class="field">
-        <span>{t('settings.outlierMethod')}</span>
-        <select value={s.outlierMethod} onchange={(e) => save({ outlierMethod: e.currentTarget.value as DomainSettingsDto['outlierMethod'] })}>
-          {#each OUTLIER_METHODS as o (o)}<option value={o}>{t(`settings.outlier.${o}`)}</option>{/each}
-        </select>
-      </label>
+      <fieldset>
+        <legend class="label">{t('settings.outlierMethod')}</legend>
+        {#each OUTLIER_METHODS as o (o)}
+          <label class="check">
+            <input
+              type="radio"
+              name="outlier-method"
+              checked={s.outlierMethod === o}
+              onchange={() => save({ outlierMethod: o as DomainSettingsDto['outlierMethod'] })}
+            />
+            <span>{t(`settings.outlier.${o}`)}</span>
+          </label>
+        {/each}
+      </fieldset>
       <fieldset>
         <legend class="label">{t('settings.weights')}</legend>
         <div class="row">

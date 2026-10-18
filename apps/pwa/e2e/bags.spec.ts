@@ -12,7 +12,9 @@ test('add a product and a bag, then open, finish and edit it', async ({ page }) 
   await page.getByLabel('Name').fill('Ethiopia Guji Natural');
   await page.getByLabel('Country').fill('Ethiopia');
   await page.getByLabel('Process').selectOption('natural');
-  await page.getByRole('radio', { name: '2' }).click();
+  // roast level is 3 steps (F3)
+  await expect(page.getByRole('radiogroup', { name: 'Roast level' }).getByRole('radio')).toHaveCount(3);
+  await page.getByRole('radio', { name: 'Medium' }).click();
   await page.getByRole('button', { name: 'Filter' }).click();
   await page.getByLabel(/Tasting notes/).fill('blueberry, dark chocolate, jasmine');
   await page.getByRole('button', { name: 'Save' }).click();
@@ -46,4 +48,5 @@ test('add a product and a bag, then open, finish and edit it', async ({ page }) 
   await page.getByRole('link', { name: 'Vits der Kaffee – Ethiopia Guji Natural' }).click();
   await expect(page.getByRole('heading', { name: 'Ethiopia Guji Natural' })).toBeVisible();
   await expect(page.getByText('blueberry, dark chocolate, jasmine')).toBeVisible();
+  await expect(page.getByText(/Natural · Medium · Filter/)).toBeVisible();
 });

@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { Bag } from './bag';
-import { Product } from './product';
+import { Product, roastLevelFrom5 } from './product';
 import { Rating } from './rating';
 import { IsoDateTime } from './record';
 import { DomainSettings } from './settings';
 import { Venue } from './venue';
 
 /** Version of the export format; bump together with a migration in `migrateBundle`. */
-export const EXPORT_SCHEMA_VERSION = 1;
+export const EXPORT_SCHEMA_VERSION = 2;
 
 /** Versioned export (README §8.3); doubles as the future server-migration path. */
 export const ExportBundle = z.object({
@@ -32,7 +32,7 @@ export function migrateBundle(raw: unknown): { ok: true; bundle: ExportBundle } 
   if (typeof version !== 'number' || version > EXPORT_SCHEMA_VERSION || version < 1) {
     return { ok: false, problem: { code: 'UNSUPPORTED_SCHEMA_VERSION', version } };
   }
-  // future: if (version === 1) raw = v1toV2(raw) …
+  if (version === 1) raw = v1ToV2(raw as Record<string, unknown>);
   const res = ExportBundle.safeParse(raw);
   if (!res.success) {
     return {
@@ -41,6 +41,16 @@ export function migrateBundle(raw: unknown): { ok: true; bundle: ExportBundle } 
     };
   }
   return { ok: true, bundle: { ...res.data, schemaVersion: EXPORT_SCHEMA_VERSION } };
+}
+
+/** v2: product roast level 1–5 → 1–3. */
+function v1ToV2(raw: Record<string, unknown>): Record<string, unknown> {
+  const products = Array.isArray(raw.products)
+    ? raw.products.map((p: unknown) =>
+        p && typeof p === 'object' && 'roastLevel' in p ? { ...p, roastLevel: roastLevelFrom5((p as { roastLevel: number | null }).roastLevel) } : p,
+      )
+    : raw.products;
+  return { ...raw, products };
 }
 
 /** RFC 4180 CSV; cells containing separators, quotes or newlines are quoted. */

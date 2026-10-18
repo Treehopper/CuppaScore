@@ -157,11 +157,9 @@
     "omni": "Omni"
   },
   "roastLevel": {
-    "1": "Muy claro",
-    "2": "Claro",
-    "3": "Medio",
-    "4": "Medio-oscuro",
-    "5": "Oscuro"
+    "1": "Claro",
+    "2": "Medio",
+    "3": "Oscuro"
   },
   "form": {
     "beans": "Grano",

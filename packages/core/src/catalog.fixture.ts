@@ -53,7 +53,7 @@ export const CATALOG_FIXTURE: z.input<typeof Catalog> = {
       name: 'Brasil Café Descafeinado',
       origin: { country: 'Brazil' },
       process: 'natural',
-      roastLevel: 4,
+      roastLevel: 3,
       roastFor: ['espresso'],
       decaf: true,
       tastingNotes: ['Schokolade', 'Nuss'],
