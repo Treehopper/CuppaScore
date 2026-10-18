@@ -26,6 +26,9 @@ import type {
   CatalogImportReport,
   CatalogInfo,
   ImportMode,
+  RecommendationsView,
+  RecommendationView,
+  RecoQuery,
   ImportReport,
   InsightsView,
   LogRatingCmd,
@@ -52,6 +55,8 @@ export type RatingDto = Rating;
 export type DomainSettingsDto = DomainSettings;
 export type CatalogProductDto = CatalogProduct;
 export type { CatalogImportReport, CatalogInfo, CatalogRegion, CatalogRowIssue, CatalogSearch };
+export type { RecommendationsView, RecommendationView, RecoQuery };
+export type { Explanation } from '@cuplog/core';
 export type { DueReminder, ReminderAction, ReminderConfig, ReminderRule, RuleKind };
 export type {
   AddBagCmd,
@@ -141,6 +146,14 @@ export interface CupLogApi {
   searchCatalog(q?: CatalogSearch & { originNames?: Record<string, string> }): Promise<CatalogProductDto[]>;
   getCatalogProduct(id: string): Promise<CatalogProductDto>;
 
+  // recommendations (README §7, D1–D7)
+  getRecommendations(q?: RecoQuery): Promise<RecommendationsView>;
+  setWishlist(catalogId: string, on: boolean): Promise<DomainSettingsDto>;
+  dismissRecommendation(catalogId: string): Promise<DomainSettingsDto>;
+  restoreDismissed(): Promise<DomainSettingsDto>;
+  listWishlist(): Promise<CatalogProductDto[]>;
+  listCatalogRoasters(): Promise<string[]>;
+
   // data
   exportAll(): Promise<ExportBundle>;
   /** `bundle` is untrusted JSON; it is validated and migrated in the backend. */
@@ -172,6 +185,9 @@ export const COMMAND_TOPICS: Partial<Record<ApiMethod, Topic[]>> = {
   ackReminder: ['settings'],
   importAll: ['ratings', 'bags', 'products', 'venues', 'settings'],
   loadRegionCatalog: ['catalog'],
+  setWishlist: ['settings'],
+  dismissRecommendation: ['settings'],
+  restoreDismissed: ['settings'],
   importCatalogCsv: ['catalog'],
 };
 
@@ -214,4 +230,10 @@ export const API_METHODS: readonly ApiMethod[] = [
   'getCatalogInfo',
   'searchCatalog',
   'getCatalogProduct',
+  'getRecommendations',
+  'setWishlist',
+  'dismissRecommendation',
+  'restoreDismissed',
+  'listWishlist',
+  'listCatalogRoasters',
 ];

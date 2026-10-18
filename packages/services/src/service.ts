@@ -58,6 +58,7 @@ import type { z } from 'zod';
 import { exportAll, exportRatingsCsv, importAll, type ImportMode, type ImportReport } from './data';
 import { DomainError } from './errors';
 import { buildInsights, type InsightsView } from './insights';
+import { buildRecommendations, type RecommendationsView, type RecoQuery } from './recommendations';
 import { getCatalogInfo, importCatalogCsv, type CatalogImportReport, type CatalogInfo } from './catalog';
 import type { CatalogSource, Ctx, Repositories } from './ports';
 
@@ -698,6 +699,50 @@ export class CupLogService {
     const p = await this.repos.catalog.get(id);
     if (!p) throw new DomainError('NOT_FOUND', { kind: 'catalogProduct', id });
     return p;
+  }
+
+  // ---------- recommendations (README §7, D1–D7) ----------
+
+  async getRecommendations(q: RecoQuery = {}): Promise<RecommendationsView> {
+    const [products, ratings, bags, catalog, settings, agg] = await Promise.all([
+      this.repos.products.list(this.owner),
+      this.repos.ratings.list(this.owner),
+      this.repos.bags.list(this.owner),
+      this.repos.catalog.list(),
+      this.getSettings(),
+      this.aggOpts(),
+    ]);
+    return buildRecommendations({ products, ratings, bags, catalog, wishlist: settings.wishlist, dismissed: settings.dismissed, agg }, q);
+  }
+
+  async setWishlist(catalogId: string, on: boolean): Promise<DomainSettings> {
+    const s = await this.getSettings();
+    const rest = s.wishlist.filter((id) => id !== catalogId);
+    return this.updateSettings({ wishlist: on ? [...rest, catalogId] : rest });
+  }
+
+  /** Hides a coffee from recommendations (and the wishlist). */
+  async dismissRecommendation(catalogId: string): Promise<DomainSettings> {
+    const s = await this.getSettings();
+    return this.updateSettings({
+      dismissed: [...s.dismissed.filter((id) => id !== catalogId), catalogId],
+      wishlist: s.wishlist.filter((id) => id !== catalogId),
+    });
+  }
+
+  async restoreDismissed(): Promise<DomainSettings> {
+    return this.updateSettings({ dismissed: [] });
+  }
+
+  /** Wishlist entries that are (still) in the catalog, in the order they were added. */
+  async listWishlist(): Promise<CatalogProduct[]> {
+    const [s, catalog] = await Promise.all([this.getSettings(), this.repos.catalog.list()]);
+    const byId = new Map(catalog.map((c) => [c.id, c]));
+    return s.wishlist.flatMap((id) => (byId.has(id) ? [byId.get(id)!] : []));
+  }
+
+  async listCatalogRoasters(): Promise<string[]> {
+    return [...new Set((await this.repos.catalog.list()).map((c) => c.roaster))].sort((a, b) => a.localeCompare(b));
   }
 
   // ---------- stats ----------
