@@ -191,7 +191,11 @@
     "REV_CONFLICT": "Das wurde anderswo geändert. Bitte neu laden.",
     "IMPORT_INVALID": "Die Datei ist kein gültiger CupLog-Export.",
     "UNSUPPORTED_SCHEMA_VERSION": "Dieser Export stammt aus einer neueren CupLog-Version.",
-    "INTERNAL": "Etwas ist schiefgelaufen."
+    "INTERNAL": "Etwas ist schiefgelaufen.",
+    "CATALOG_CSV_HEADER": "Diese Datei ist keine Katalog-CSV (Spalten fehlen).",
+    "CATALOG_CSV_EMPTY": "Die Datei enthält keine gültigen Katalogzeilen.",
+    "CATALOG_NO_REGION": "Keine Region ausgewählt.",
+    "CATALOG_UNAVAILABLE": "Der Katalog konnte nicht geladen werden. Prüfe deine Verbindung."
   },
   "settings": {
     "title": "Einstellungen",
@@ -436,7 +440,11 @@
     "time": "Ab",
     "remindersNote": "Erinnerungen erscheinen in CupLog, wenn du es öffnest. Ist die App geschlossen, meldet sich dein Handy nicht.",
     "enableReminders": "Erinnerungen aktivieren",
-    "calendar": "Zusätzlich eine tägliche Erinnerung in meinen Kalender"
+    "calendar": "Zusätzlich eine tägliche Erinnerung in meinen Kalender",
+    "region": "Wo kaufst du Kaffee?",
+    "regionText": "Mit einer Region wählst du Bohnen lokaler Röstereien aus, statt sie abzutippen.",
+    "regionMunich": "Rund 200 Kaffees von Röstereien in und um München, auch offline.",
+    "regionNone": "Du trägst jeden Kaffee selbst ein. Das kannst du in den Einstellungen ändern."
   },
   "reminder": {
     "label": "Erinnerung",
@@ -494,5 +502,30 @@
     "profile": "Dein Geschmack",
     "likedTags": "Aromen in Tassen, die dir geschmeckt haben",
     "venues": "Beste Cafés je Getränk"
+  },
+  "region": {
+    "munich": "München",
+    "none": "Keine Region"
+  },
+  "catalog": {
+    "title": "Kaffee-Katalog",
+    "info": "{source}: {count, plural, one {# Kaffee} other {# Kaffees}}",
+    "updated": "Stand {date}",
+    "empty": "Noch kein Katalog geladen.",
+    "ownFile": "Eigene Datei",
+    "useRegion": "Katalog {region} verwenden",
+    "reload": "Katalog {region} neu laden",
+    "importFile": "Katalog-CSV importieren…",
+    "fileHint": "Neuere Einträge ersetzen ältere mit derselben ID. Deine eigenen Kaffees, Tüten und Tassen bleiben unverändert.",
+    "imported": "Katalog aktualisiert",
+    "report": "{rows, plural, one {# Zeile} other {# Zeilen}}: {added} neu · {updated} aktualisiert · {unchanged} unverändert",
+    "skipped": "{count, plural, one {# Zeile übersprungen} other {# Zeilen übersprungen}}:",
+    "more": "…und {count} weitere",
+    "issue": "Zeile {line} · {field}: {reason}",
+    "reason": {
+      "required": "fehlt",
+      "duplicate": "doppelte ID",
+      "invalid": "ungültig"
+    }
   }
 }

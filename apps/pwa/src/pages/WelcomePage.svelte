@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ReminderRule } from '@cuplog/api';
+  import type { CatalogRegion, ReminderRule } from '@cuplog/api';
   import Icon from '../components/Icon.svelte';
   import LanguagePicker from '../components/LanguagePicker.svelte';
   import ThemePicker from '../components/ThemePicker.svelte';
@@ -13,10 +13,12 @@
   import { router } from '../lib/router.svelte';
 
   /** First launch (README §9.1): short, skippable; everything can be changed in Settings. */
-  type Step = 'hello' | 'install' | 'gear' | 'reminders';
+  type Step = 'hello' | 'install' | 'region' | 'gear' | 'reminders';
 
   // decided once: installing mid-flow shouldn't make the card vanish under the user
-  const steps: Step[] = install.standalone ? ['hello', 'gear', 'reminders'] : ['hello', 'install', 'gear', 'reminders'];
+  const steps: Step[] = install.standalone
+    ? ['hello', 'region', 'gear', 'reminders']
+    : ['hello', 'install', 'region', 'gear', 'reminders'];
   let index = $state(0);
   const step = $derived(steps[index]!);
 
@@ -32,6 +34,10 @@
     const next = on ? [...ownedNow, m] : ownedNow.filter((x) => x !== m);
     owned = BREW_METHODS.filter((x) => next.includes(x));
   }
+
+  // region catalog (F4): Munich by default
+  let region = $state<CatalogRegion | null | undefined>(undefined);
+  const regionNow = $derived(region === undefined ? (settings.data?.catalogRegion ?? 'munich') : region);
 
   // reminders: the four suggestions shown on the card, times editable inline
   const SHOWN = ['rem_1', 'rem_2', 'rem_3', 'rem_6'];
@@ -65,6 +71,11 @@
 
   async function next(): Promise<void> {
     if (step === 'gear' && !(await save({ ownedMethods: ownedNow, defaultLevel: levelNow }))) return;
+    if (step === 'region') {
+      if (!(await save({ catalogRegion: regionNow }))) return;
+      // loads in the worker while the user carries on; a failure is retried on the next start
+      if (regionNow) api().loadRegionCatalog(regionNow).catch((e: unknown) => console.warn('catalog load failed', e));
+    }
     go(Math.min(index + 1, steps.length - 1));
   }
 
@@ -133,6 +144,23 @@
       {:else}
         <p class="card small">{t('welcome.installMenu')}</p>
       {/if}
+    </section>
+  {:else if step === 'region'}
+    <section class="stack" aria-labelledby="w-region">
+      <h1 id="w-region">{t('welcome.region')}</h1>
+      <p>{t('welcome.regionText')}</p>
+      <fieldset class="stack">
+        <legend class="visually-hidden">{t('welcome.region')}</legend>
+        {#each ['munich', null] as const as r (r ?? 'none')}
+          <label class="check card choice">
+            <input type="radio" name="region" checked={regionNow === r} onchange={() => (region = r)} />
+            <span>
+              <strong>{r ? t(`region.${r}`) : t('region.none')}</strong><br />
+              <span class="small muted">{r ? t('welcome.regionMunich') : t('welcome.regionNone')}</span>
+            </span>
+          </label>
+        {/each}
+      </fieldset>
     </section>
   {:else if step === 'gear'}
     <section class="stack" aria-labelledby="w-gear">
@@ -225,6 +253,9 @@
     display: flex;
     gap: 0.75rem;
     align-items: center;
+  }
+  .choice {
+    padding: 0.75rem 1rem;
   }
   .rules {
     gap: 0.5rem;

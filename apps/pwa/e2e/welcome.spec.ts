@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 
-test('welcome flow: theme preview, gear & level, reminders; shown only once', async ({ page }) => {
+test('welcome flow: theme preview, region catalog, gear & level, reminders; shown only once', async ({ page }) => {
   await page.goto('./');
   await expect(page).toHaveURL(/#\/welcome$/);
   await expect(page.getByRole('heading', { name: 'Welcome to CupLog' })).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCount(0);
-  await expect(page.getByText('Step 1 of 4')).toBeVisible();
+  await expect(page.getByText('Step 1 of 5')).toBeVisible();
 
   await page.getByRole('radio', { name: 'Solarized Dark' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'solarized-dark');
@@ -16,6 +16,11 @@ test('welcome flow: theme preview, gear & level, reminders; shown only once', as
   await expect(page.getByRole('heading', { name: 'Put CupLog on your home screen' })).toBeVisible();
   await expect(page.getByText('Use your browser\'s menu')).toBeVisible();
   await page.getByRole('button', { name: 'Not now' }).click();
+
+  // region: Munich is preselected and loads the catalog in the background (F4)
+  await expect(page.getByRole('heading', { name: 'Where do you buy coffee?' })).toBeVisible();
+  await expect(page.getByRole('radio', { name: /Munich/ })).toBeChecked();
+  await page.getByRole('button', { name: 'Next' }).click();
 
   await expect(page.getByRole('heading', { name: 'Your gear & rating style' })).toBeVisible();
   await page.getByLabel('V60').uncheck();
@@ -40,6 +45,7 @@ test('welcome flow: theme preview, gear & level, reminders; shown only once', as
 
   await page.getByRole('link', { name: 'Settings' }).click();
   await expect(page.getByRole('radio', { name: 'Swipe' })).toHaveAttribute('aria-checked', 'true');
+  await expect(page.getByTestId('catalog-info')).toContainText(/Munich: \d{3} coffees/);
   await expect(page.getByLabel('V60')).not.toBeChecked();
   const [dl] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Export all (JSON)' }).click()]);
   const bundle = JSON.parse(await readFile(await dl.path(), 'utf8'));

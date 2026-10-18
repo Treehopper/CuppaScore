@@ -191,7 +191,11 @@
     "REV_CONFLICT": "È stato modificato altrove. Ricarica.",
     "IMPORT_INVALID": "Il file non è un'esportazione CupLog valida.",
     "UNSUPPORTED_SCHEMA_VERSION": "Questa esportazione proviene da una versione più recente di CupLog.",
-    "INTERNAL": "Qualcosa è andato storto."
+    "INTERNAL": "Qualcosa è andato storto.",
+    "CATALOG_CSV_HEADER": "Questo file non è un CSV di catalogo (mancano colonne).",
+    "CATALOG_CSV_EMPTY": "Il file non contiene righe di catalogo valide.",
+    "CATALOG_NO_REGION": "Nessuna regione selezionata.",
+    "CATALOG_UNAVAILABLE": "Impossibile caricare il catalogo. Controlla la connessione."
   },
   "settings": {
     "title": "Impostazioni",
@@ -436,7 +440,11 @@
     "time": "Dalle",
     "remindersNote": "I promemoria compaiono in CupLog quando lo apri. Ad app chiusa il telefono non ti avvisa.",
     "enableReminders": "Attiva promemoria",
-    "calendar": "Aggiungi anche un promemoria quotidiano al calendario"
+    "calendar": "Aggiungi anche un promemoria quotidiano al calendario",
+    "region": "Dove compri il caffè?",
+    "regionText": "Con una regione scegli i chicchi delle torrefazioni locali invece di digitarli.",
+    "regionMunich": "Circa 200 caffè delle torrefazioni di Monaco e dintorni, anche offline.",
+    "regionNone": "Inserisci ogni caffè da solo. Puoi cambiarlo nelle Impostazioni."
   },
   "reminder": {
     "label": "Promemoria",
@@ -494,5 +502,30 @@
     "profile": "Il tuo gusto",
     "likedTags": "Aromi nelle tazze che ti sono piaciute",
     "venues": "I bar migliori per bevanda"
+  },
+  "region": {
+    "munich": "Monaco di Baviera",
+    "none": "Nessuna regione"
+  },
+  "catalog": {
+    "title": "Catalogo caffè",
+    "info": "{source}: {count, plural, one {# caffè} other {# caffè}}",
+    "updated": "Aggiornato al {date}",
+    "empty": "Nessun catalogo caricato.",
+    "ownFile": "File personale",
+    "useRegion": "Usa il catalogo di {region}",
+    "reload": "Ricarica catalogo {region}",
+    "importFile": "Importa CSV del catalogo…",
+    "fileHint": "Le voci più recenti sostituiscono quelle più vecchie con lo stesso id. I tuoi caffè, sacchetti e tazze restano invariati.",
+    "imported": "Catalogo aggiornato",
+    "report": "{rows, plural, one {# riga} other {# righe}}: {added} nuove · {updated} aggiornate · {unchanged} invariate",
+    "skipped": "{count, plural, one {# riga saltata} other {# righe saltate}}:",
+    "more": "…e altri {count}",
+    "issue": "Riga {line} · {field}: {reason}",
+    "reason": {
+      "required": "mancante",
+      "duplicate": "id duplicato",
+      "invalid": "non valido"
+    }
   }
 }

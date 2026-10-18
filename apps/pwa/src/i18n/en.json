@@ -191,7 +191,11 @@
     "REV_CONFLICT": "This was changed elsewhere. Please reload.",
     "IMPORT_INVALID": "The file is not a valid CupLog export.",
     "UNSUPPORTED_SCHEMA_VERSION": "This export comes from a newer CupLog version.",
-    "INTERNAL": "Something went wrong."
+    "INTERNAL": "Something went wrong.",
+    "CATALOG_CSV_HEADER": "This file isn't a catalog CSV (header columns missing).",
+    "CATALOG_CSV_EMPTY": "The file contains no valid catalog rows.",
+    "CATALOG_NO_REGION": "No region is selected.",
+    "CATALOG_UNAVAILABLE": "The catalog couldn't be loaded. Check your connection."
   },
   "settings": {
     "title": "Settings",
@@ -436,7 +440,11 @@
     "time": "From",
     "remindersNote": "Reminders appear inside CupLog when you open it. Your phone won't notify you while the app is closed.",
     "enableReminders": "Enable reminders",
-    "calendar": "Also add a daily reminder to my calendar"
+    "calendar": "Also add a daily reminder to my calendar",
+    "region": "Where do you buy coffee?",
+    "regionText": "With a region, you can pick beans from local roasters instead of typing them in.",
+    "regionMunich": "About 200 coffees from Munich-area roasters, also offline.",
+    "regionNone": "Enter every coffee yourself. You can change this in Settings."
   },
   "reminder": {
     "label": "Reminder",
@@ -494,5 +502,30 @@
     "profile": "Your taste",
     "likedTags": "Flavours in cups you liked",
     "venues": "Best cafés by drink"
+  },
+  "region": {
+    "munich": "Munich",
+    "none": "No region"
+  },
+  "catalog": {
+    "title": "Coffee catalog",
+    "info": "{source}: {count, plural, one {# coffee} other {# coffees}}",
+    "updated": "As of {date}",
+    "empty": "No catalog loaded yet.",
+    "ownFile": "Own file",
+    "useRegion": "Use the {region} catalog",
+    "reload": "Reload {region} catalog",
+    "importFile": "Import catalog CSV…",
+    "fileHint": "Newer entries replace older ones with the same id. Your own coffees, bags and cups stay untouched.",
+    "imported": "Catalog updated",
+    "report": "{rows, plural, one {# row} other {# rows}}: {added} new · {updated} updated · {unchanged} unchanged",
+    "skipped": "{count, plural, one {# row skipped} other {# rows skipped}}:",
+    "more": "…and {count} more",
+    "issue": "Line {line} · {field}: {reason}",
+    "reason": {
+      "required": "missing",
+      "duplicate": "duplicate id",
+      "invalid": "not valid"
+    }
   }
 }

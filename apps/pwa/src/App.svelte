@@ -23,10 +23,12 @@
   import SettingsPage from './pages/SettingsPage.svelte';
   import StatsPage from './pages/StatsPage.svelte';
   import { applyThemeEffect } from './themes/apply.svelte';
+  import { syncRegionCatalog } from './lib/catalog';
 
   applyThemeEffect();
   applyLangEffect();
   reminders.start();
+  void syncRegionCatalog();
 
   // first launch from the home screen / root URL opens the welcome flow; deep links skip it
   if (router.current.segments.length === 0) {

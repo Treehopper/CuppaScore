@@ -2,6 +2,7 @@ import type {
   Bag,
   CatalogProduct,
   CatalogRegion,
+  CatalogRowIssue,
   CatalogSearch,
   DomainSettings,
   DueReminder,
@@ -50,7 +51,7 @@ export type VenueDto = Venue;
 export type RatingDto = Rating;
 export type DomainSettingsDto = DomainSettings;
 export type CatalogProductDto = CatalogProduct;
-export type { CatalogImportReport, CatalogInfo, CatalogRegion, CatalogSearch };
+export type { CatalogImportReport, CatalogInfo, CatalogRegion, CatalogRowIssue, CatalogSearch };
 export type { DueReminder, ReminderAction, ReminderConfig, ReminderRule, RuleKind };
 export type {
   AddBagCmd,

@@ -191,7 +191,11 @@
     "REV_CONFLICT": "Se cambió en otro lugar. Recarga, por favor.",
     "IMPORT_INVALID": "El archivo no es una exportación válida de CupLog.",
     "UNSUPPORTED_SCHEMA_VERSION": "Esta exportación viene de una versión más reciente de CupLog.",
-    "INTERNAL": "Algo salió mal."
+    "INTERNAL": "Algo salió mal.",
+    "CATALOG_CSV_HEADER": "Este archivo no es un CSV de catálogo (faltan columnas).",
+    "CATALOG_CSV_EMPTY": "El archivo no contiene filas de catálogo válidas.",
+    "CATALOG_NO_REGION": "No hay ninguna región seleccionada.",
+    "CATALOG_UNAVAILABLE": "No se pudo cargar el catálogo. Comprueba tu conexión."
   },
   "settings": {
     "title": "Ajustes",
@@ -436,7 +440,11 @@
     "time": "Desde",
     "remindersNote": "Los recordatorios aparecen en CupLog al abrirla. Con la app cerrada, el móvil no te avisará.",
     "enableReminders": "Activar recordatorios",
-    "calendar": "Añadir también un recordatorio diario a mi calendario"
+    "calendar": "Añadir también un recordatorio diario a mi calendario",
+    "region": "¿Dónde compras café?",
+    "regionText": "Con una región eliges granos de tostadores locales en lugar de escribirlos.",
+    "regionMunich": "Unos 200 cafés de tostadores de Múnich y alrededores, también sin conexión.",
+    "regionNone": "Introduces cada café tú mismo. Puedes cambiarlo en Ajustes."
   },
   "reminder": {
     "label": "Recordatorio",
@@ -494,5 +502,30 @@
     "profile": "Tu gusto",
     "likedTags": "Sabores en las tazas que te gustaron",
     "venues": "Las mejores cafeterías por bebida"
+  },
+  "region": {
+    "munich": "Múnich",
+    "none": "Ninguna región"
+  },
+  "catalog": {
+    "title": "Catálogo de cafés",
+    "info": "{source}: {count, plural, one {# café} other {# cafés}}",
+    "updated": "Actualizado el {date}",
+    "empty": "Aún no hay catálogo cargado.",
+    "ownFile": "Archivo propio",
+    "useRegion": "Usar el catálogo de {region}",
+    "reload": "Recargar catálogo de {region}",
+    "importFile": "Importar CSV de catálogo…",
+    "fileHint": "Las entradas más nuevas sustituyen a las antiguas con el mismo id. Tus cafés, bolsas y tazas no cambian.",
+    "imported": "Catálogo actualizado",
+    "report": "{rows, plural, one {# fila} other {# filas}}: {added} nuevas · {updated} actualizadas · {unchanged} sin cambios",
+    "skipped": "{count, plural, one {# fila omitida} other {# filas omitidas}}:",
+    "more": "…y {count} más",
+    "issue": "Fila {line} · {field}: {reason}",
+    "reason": {
+      "required": "falta",
+      "duplicate": "id duplicado",
+      "invalid": "no válido"
+    }
   }
 }

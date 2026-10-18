@@ -42,7 +42,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+        // region catalogs (catalog/*.csv, F4) are precached so they load offline after the first visit
+        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,csv}'],
         navigateFallback: `${base}index.html`,
         // catalog.json changes independently of the app shell: serve fresh when online (README §6.1, E3)
         runtimeCaching: [
