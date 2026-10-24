@@ -19,6 +19,12 @@ describe('flavour lexicon', () => {
     expect(noteFlavour('Nougat')).toEqual({ nutty: 1, chocolate: 0.5 });
     expect(noteFlavour('Rosine')).toEqual({ fruity: 0.7, caramel: 0.5 }); // not "rose"
     expect(noteFlavour('Tropical fruit')).toEqual({ fruity: 1 });
+    // German compounds and spellings from the Munich CSV
+    expect(noteFlavour('Vollmilchschokolade')).toEqual({ chocolate: 1, caramel: 0.3 });
+    expect(noteFlavour('Gewürze')).toEqual({ spice: 1 });
+    expect(noteFlavour('Haselnuesse')).toEqual({ nutty: 1 });
+    expect(noteFlavour('Blutorange')).toEqual({ citrus: 1, fruity: 0.3 }); // not "blute"
+    expect(noteFlavour('Steinobst')).toEqual({ fruity: 1 });
     expect(noteFlavour('vollmundig')).toBeNull();
   });
 

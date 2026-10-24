@@ -22,11 +22,12 @@ const LEXICON: [string, Hit][] = [
   // chocolate
   ['schoko', { chocolate: 1 }], ['chocolat', { chocolate: 1 }], ['kakao', { chocolate: 1 }], ['cacao', { chocolate: 1 }],
   ['cocoa', { chocolate: 1 }], ['brownie', { chocolate: 1 }], ['dunkelschoko', { chocolate: 1 }], ['zartbitter', { chocolate: 1 }],
-  ['milchschoko', { chocolate: 1, caramel: 0.3 }], ['mocca', { chocolate: 1 }], ['mokka', { chocolate: 1 }],
+  ['milchschoko', { chocolate: 1, caramel: 0.3 }], ['vollmilch', { chocolate: 1, caramel: 0.3 }], ['mocca', { chocolate: 1 }], ['mokka', { chocolate: 1 }],
   // nutty
   ['nuss', { nutty: 1 }], ['nusse', { nutty: 1 }], ['nussig', { nutty: 1 }], ['nut', { nutty: 1 }], ['nutty', { nutty: 1 }],
   ['haselnuss', { nutty: 1 }], ['hazel', { nutty: 1 }], ['walnuss', { nutty: 1 }], ['walnut', { nutty: 1 }], ['mandel', { nutty: 1 }],
   ['almond', { nutty: 1 }], ['pecan', { nutty: 1 }], ['peanut', { nutty: 1 }], ['erdnuss', { nutty: 1 }], ['pistaz', { nutty: 1 }],
+  ['pekan', { nutty: 1 }], ['macadamia', { nutty: 1 }], ['cashew', { nutty: 1 }], ['haselnue', { nutty: 1 }], ['krokant', { nutty: 0.7, caramel: 0.7 }],
   ['marzipan', { nutty: 1, caramel: 0.3 }], ['nougat', { nutty: 1, chocolate: 0.5 }], ['praline', { nutty: 0.7, chocolate: 0.7 }],
   ['geroestet', { nutty: 0.5 }], ['gerostet', { nutty: 0.5 }], ['roasted', { nutty: 0.5 }],
   // caramel / sweet
@@ -40,7 +41,7 @@ const LEXICON: [string, Hit][] = [
   ['beere', { fruity: 1 }], ['beeren', { fruity: 1 }], ['beerig', { fruity: 1 }], ['berry', { fruity: 1 }], ['berries', { fruity: 1 }],
   ['blaubeer', { fruity: 1 }], ['blueberr', { fruity: 1 }], ['brombeer', { fruity: 1 }], ['blackberr', { fruity: 1 }], ['himbeer', { fruity: 1 }],
   ['raspberr', { fruity: 1 }], ['erdbeer', { fruity: 1 }], ['strawberr', { fruity: 1 }], ['johannisbeer', { fruity: 1 }], ['currant', { fruity: 1 }],
-  ['cranberr', { fruity: 1 }], ['kirsch', { fruity: 1 }], ['cherr', { fruity: 1 }], ['pflaum', { fruity: 1 }], ['plum', { fruity: 1 }],
+  ['cranberr', { fruity: 1 }], ['waldbeer', { fruity: 1 }], ['cassis', { fruity: 1 }], ['steinobst', { fruity: 1 }], ['steinfrucht', { fruity: 1 }], ['obst', { fruity: 1 }], ['kirsch', { fruity: 1 }], ['cherr', { fruity: 1 }], ['pflaum', { fruity: 1 }], ['plum', { fruity: 1 }],
   ['pfirsich', { fruity: 1 }], ['peach', { fruity: 1 }], ['aprikos', { fruity: 1 }], ['apricot', { fruity: 1 }], ['nektarin', { fruity: 1 }],
   ['mango', { fruity: 1 }], ['banan', { fruity: 1 }], ['ananas', { fruity: 1 }], ['pineapple', { fruity: 1 }], ['papaya', { fruity: 1 }],
   ['maracuja', { fruity: 1, citrus: 0.3 }], ['passion', { fruity: 1, citrus: 0.3 }], ['guav', { fruity: 1 }], ['lychee', { fruity: 1, floral: 0.3 }],
@@ -53,13 +54,13 @@ const LEXICON: [string, Hit][] = [
   // citrus
   ['zitrus', { citrus: 1 }], ['zitrusfrucht', { citrus: 1 }], ['citrus', { citrus: 1 }], ['zitron', { citrus: 1 }], ['lemon', { citrus: 1 }],
   ['limett', { citrus: 1 }], ['lime', { citrus: 1 }], ['orange', { citrus: 1 }], ['mandarin', { citrus: 1 }], ['grapefruit', { citrus: 1 }],
-  ['bergamott', { citrus: 0.7, floral: 0.7 }], ['bergamot', { citrus: 0.7, floral: 0.7 }], ['yuzu', { citrus: 1 }], ['clementin', { citrus: 1 }],
+  ['bergamott', { citrus: 0.7, floral: 0.7 }], ['bergamot', { citrus: 0.7, floral: 0.7 }], ['yuzu', { citrus: 1 }], ['clementin', { citrus: 1 }], ['blutorange', { citrus: 1, fruity: 0.3 }],
   // floral
   ['floral', { floral: 1 }], ['blum', { floral: 1 }], ['blute', { floral: 1 }], ['flower', { floral: 1 }], ['jasmin', { floral: 1 }],
   ['rose', { floral: 1 }], ['lavend', { floral: 1 }], ['hibisk', { floral: 0.7, fruity: 0.5 }], ['hibisc', { floral: 0.7, fruity: 0.5 }],
   ['holunder', { floral: 1 }], ['elderflower', { floral: 1 }], ['orangenblut', { floral: 1, citrus: 0.3 }],
   // spice
-  ['wurz', { spice: 1 }], ['spic', { spice: 1 }], ['zimt', { spice: 1 }], ['cinnamon', { spice: 1 }], ['pfeffer', { spice: 1 }],
+  ['wurz', { spice: 1 }], ['gewurz', { spice: 1 }], ['feinwurz', { spice: 1 }], ['spic', { spice: 1 }], ['zimt', { spice: 1 }], ['cinnamon', { spice: 1 }], ['pfeffer', { spice: 1 }],
   ['pepper', { spice: 1 }], ['nelke', { spice: 1 }], ['clove', { spice: 1 }], ['kardamom', { spice: 1 }], ['cardamom', { spice: 1 }],
   ['ingwer', { spice: 1 }], ['ginger', { spice: 1 }], ['anis', { spice: 1 }], ['lakritz', { spice: 1 }], ['licorice', { spice: 1 }],
   ['sussholz', { spice: 1 }], ['muskat', { spice: 1 }], ['nutmeg', { spice: 1 }],
@@ -73,7 +74,7 @@ const LEXICON: [string, Hit][] = [
 /** Descriptor words that inform the sensory priors rather than flavour. */
 const SENSORY_HINTS: [string, Partial<Sensory>][] = [
   ['vollmundig', { body: 0.15 }], ['full', { body: 0.15 }], ['body', { body: 0.1 }], ['fulle', { body: 0.1 }], ['cremig', { body: 0.1 }],
-  ['creamy', { body: 0.1 }], ['crema', { body: 0.05 }], ['saure', { acidity: 0.1 }], ['acid', { acidity: 0.1 }], ['lebhaft', { acidity: 0.1 }],
+  ['creamy', { body: 0.1 }], ['sahn', { body: 0.1 }], ['samt', { body: 0.05, bitterness: -0.1 }], ['crema', { body: 0.05 }], ['saure', { acidity: 0.1 }], ['acid', { acidity: 0.1 }], ['lebhaft', { acidity: 0.1 }],
   ['bright', { acidity: 0.1 }], ['juicy', { acidity: 0.1 }], ['saftig', { acidity: 0.1 }], ['suss', { sweetness: 0.1 }], ['sweet', { sweetness: 0.1 }],
   ['weich', { bitterness: -0.1 }], ['smooth', { bitterness: -0.1 }], ['mild', { bitterness: -0.1, acidity: -0.05 }], ['kraftig', { body: 0.1, bitterness: 0.1 }],
   ['strong', { body: 0.1, bitterness: 0.1 }], ['bitter', { bitterness: 0.15 }],
