@@ -377,13 +377,19 @@ for host, (roaster, city, platform) in SHOPS.items():
                 head = body[:i] if i > 0 else body
             else:
                 i = body.find(name.split()[0]); j = body.find("Facebook", i)
-                text = body[i:j] if i >= 0 else body
-                head = text
+                head = body[i:j] if i >= 0 else body
+                # origin / variety / process / taste labels follow the share links
+                k = body.find("Pinterest", j); e = body.find("gangundgäbe legt", k)
+                details = re.sub(r"(?i)land\s*/\s*region\s*:", "Region:", body[k + 9:e if e > 0 else None]) if k > 0 else ""
+                text = re.sub(r"(?i)gestaltung:\s*\n?\s*copa-ipa\.de", "", details) + "\n" + head
             price = re.search(r"(\d+,\d{2})\s*€", head)
             kg = re.search(r"Inhalt:\s*([\d.,]+)\s*Kilogramm", head)
             label = f"{float(kg.group(1).replace(',', '.')) * 1000:.0f} g" if kg else (re.search(r"\d+\s*(?:g|Gramm)\b", head) or [""])[0]
             variants = [(label, float(price.group(1).replace(",", ".")))] if price else []
             add(host, name.title() if name.isupper() else name, url, text, "", "", variants, "ausverkauft" not in head.lower())
+            if host == "gangundgaebe" and rows and rows[-1]["url"] == url:  # labels are often set in capitals
+                for k in ("region", "varieties"):
+                    rows[-1][k] = ";".join(v.title() if v.isupper() else v for v in rows[-1][k].split(";"))
         continue
     if not os.path.exists(os.path.join(RAW, host + ".json")):
         report.append(f"missing {host}.json")

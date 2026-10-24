@@ -158,12 +158,12 @@ fausto-kaffeerosterei-espresso-pura-vida,FAUSTO Kaffeerösterei,München,Espress
 fausto-kaffeerosterei-kaffee-flor-de-marcala-bio,FAUSTO Kaffeerösterei,München,Kaffee Flor de Marcala BIO,HN,,,,,filter,,350,10.60,https://www.fausto-kaffee.de/Kaffee-Flor-de-Marcala-BIO/KFDM.350.gB,true,2026-10-17
 fausto-kaffeerosterei-bruhkaffee-pura-vida,FAUSTO Kaffeerösterei,München,Brühkaffee Pura Vida,CR,,,,,filter,Schokolade;Beeren;Kakao,1000,27.90,https://www.fausto-kaffee.de/Bruehkaffee-Pura-Vida/KPUR.1000.gB,true,2026-10-17
 fausto-kaffeerosterei-espresso-barista,FAUSTO Kaffeerösterei,München,Espresso Barista,BR;IN,,,,,espresso,,350,10.85,https://www.fausto-kaffee.de/Espresso-Barista/BARI.350.gB,true,2026-10-17
-gangundgabe-espresso-dunkel,gangundgäbe,München,Espresso Dunkel,,,,,3,espresso,Schokolade;Nussig,250,9.80,https://www.gangundgaebe.de/roestkaffee/espresso-dunkel,true,2026-10-17
-gangundgabe-athiopien,gangundgäbe,München,Äthiopien,ET,,,,,,Nougat;Floral,250,12.50,https://www.gangundgaebe.de/roestkaffee/aethiopien,true,2026-10-17
-gangundgabe-espresso-hell,gangundgäbe,München,Espresso Hell,,,,,1,espresso,Mandel,250,11.80,https://www.gangundgaebe.de/roestkaffee/espresso-hell-95gy4,true,2026-10-17
-gangundgabe-schwarz,gangundgäbe,München,Schwarz,,,,,,,Schokolade,250,11.80,https://www.gangundgaebe.de/roestkaffee/schwarz,true,2026-10-17
-gangundgabe-viel,gangundgäbe,München,Viel,,,,,,,Kakao;Würzig,250,12.80,https://www.gangundgaebe.de/roestkaffee/weiss-z9ely,true,2026-10-17
-gangundgabe-filterkaffee-ecuador,gangundgäbe,München,Filterkaffee ECUADOR,EC,,,,,filter,Schokolade,250,11.50,https://www.gangundgaebe.de/roestkaffee/ecuador,true,2026-10-17
+gangundgabe-espresso-dunkel,gangundgäbe,München,Espresso Dunkel,EC;VN,Palanda,washed,,3,espresso,Schokolade;Nuss,250,9.80,https://www.gangundgaebe.de/roestkaffee/espresso-dunkel,true,2026-10-24
+gangundgabe-athiopien,gangundgäbe,München,Äthiopien,ET,Sidama,washed,Diverse Heirloom,,omni,Nougat;Floral;Pfirsich,250,12.50,https://www.gangundgaebe.de/roestkaffee/aethiopien,true,2026-10-24
+gangundgabe-espresso-hell,gangundgäbe,München,Espresso Hell,HN,Marcala / La Paz,natural,Catuai,1,omni,Orange;Mandel;Gewürze,250,11.80,https://www.gangundgaebe.de/roestkaffee/espresso-hell-95gy4,true,2026-10-24
+gangundgabe-schwarz,gangundgäbe,München,Schwarz,PE,Peru/Moyobamba,washed,Caturra;Catimor;Pache;Tipica,,espresso,Schokolade;Gewürze;Früchte,250,11.80,https://www.gangundgaebe.de/roestkaffee/schwarz,true,2026-10-24
+gangundgabe-viel,gangundgäbe,München,Viel,VN,Vietnam / Dak Lak (Cư M’gar),honey,,,espresso,Kakao;Honig;Tee,250,12.80,https://www.gangundgaebe.de/roestkaffee/weiss-z9ely,true,2026-10-24
+gangundgabe-filterkaffee-ecuador,gangundgäbe,München,Filterkaffee ECUADOR,EC,Palanda,washed,Tipica mejorada,,filter,Schokolade;Walnuss,250,11.50,https://www.gangundgaebe.de/roestkaffee/ecuador,true,2026-10-24
 dallmayr-crema-d-oro,Dallmayr,München,Crema d'Oro,,,,,,espresso,,200,,https://www.dallmayr.com/de/kaffee/doro/,true,2026-10-17
 dallmayr-crema-d-oro-intensa,Dallmayr,München,Crema d'Oro intensa,,,,,,espresso,,500,,https://www.dallmayr.com/de/kaffee/doro/,true,2026-10-17
 dallmayr-espresso-d-oro,Dallmayr,München,Espresso d'Oro,,,,,,espresso,,200,,https://www.dallmayr.com/de/kaffee/doro/,true,2026-10-17
