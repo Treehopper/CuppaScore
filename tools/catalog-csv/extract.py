@@ -21,6 +21,7 @@ SHOPS = {
     "district-five.de": ("District Five", "Ingolstadt", "shopify"),
     "wild-kaffee.com": ("Wildkaffee", "Farchant (Garmisch-Partenkirchen)", "shopify"),
     "martermuehle.de": ("Kaffeerösterei Martermühle", "Aßling", "shopify"),
+    "murnauer-kaffeeroesterei.de": ("Murnauer Kaffeerösterei", "Obersöchering (Murnau)", "shopify"),
     "fausto": ("FAUSTO Kaffeerösterei", "München", "html"),
     "gangundgaebe": ("gangundgäbe", "München", "html"),
     "dallmayrline": ("Dallmayr", "München", "dallmayr"),
@@ -28,7 +29,7 @@ SHOPS = {
 
 EXCLUDE = re.compile(
     r"gutschein|gift|voucher|set\b|test roast|drip coffee bag|probier|starterset|bestseller|box\b|abo\b|subscription|"
-    r"tasse|mug|cup\b|becher|t-shirt|shopper|canister|kaffeedose|dose\b|french press|filter papier|"
+    r"tasse|mug|(?<!best )cup\b|becher|t-shirt|shopper|canister|kaffeedose|dose\b|french press|filter papier|"
     r"\bfilters?\b.*\(|papier|matcha|hojicha|\btee\b|\btea\b|wein|bier|kurs|class\b|masterclass|workshop|"
     r"führung|kapsel|capsule|ese\b|pads?\b|drip ?bag|dripbag|cold brew|nitro|creme\b|kaffeecreme|"
     r"florentiner|spende|wholesale|grosshandel|roaster.s choice|aeropress|hario|kalita|chemex|"
@@ -328,12 +329,24 @@ for host, (roaster, city, platform) in SHOPS.items():
                 continue
             if host == "martermuehle.de" and (not re.search(r"kaffee|espresso", ptype, re.I) or re.search(r"paket|pads|sack", ptype, re.I)):
                 continue  # merch, sugar, tours, bundles
+            if host == "murnauer-kaffeeroesterei.de" and (ptype != "Kaffee" or "set" in [t.lower() for t in p.get("tags") or []]
+                                                           or re.search(r"aromareise|adventskalender|des monats|probiert|genuss-box|cup of excellence", p["title"], re.I)):
+                continue  # sets, monthly/waitlist pages, everything that isn't a single coffee
             tags = p.get("tags") or []
             tag_text = " ".join(t.split("_", 1)[-1] for t in tags)
             if host == "ninefine.de":  # structured tags
                 fl = [t.split("_", 1)[1] for t in tags if t.startswith("flavor_")]
                 text = clean(p.get("body_html")) + ("\nNotes: " + ", ".join(fl) if fl else "")
                 text += "\nRöstung: " + " ".join(t.split("_", 1)[1] for t in tags if t.startswith("roast_"))
+            elif host == "murnauer-kaffeeroesterei.de":  # "COUNTRY | REGION" / NAME / notes
+                text = clean(p.get("body_html"))
+                lines = text.split("\n")
+                i = next((i for i, l in enumerate(lines) if "|" in l and countries(l)), None)
+                if i is not None:
+                    notes = next((l for l in lines[i + 2:i + 4] if FLAVOUR_RE.search(l)), "")  # may follow a subtitle
+                    text = f"Herkunft: {lines[i]}\nNotes: {notes.replace('|', ',')}\n" + text
+                if "kaffeeempfehlungen" in [t.lower() for t in tags]:
+                    tag_text += " filter"  # the shop's filter recommendations (vs. espressoempfehlungen)
             else:
                 text = clean(p.get("body_html"))
             opts = " ".join(" ".join(o.get("values", [])) for o in p.get("options", []))

@@ -23,6 +23,7 @@ duplicates, private-label blends without a public page).
 | District Five | Ingolstadt | Shopify `/products.json` |
 | Wildkaffee | Farchant | Shopify `/products.json` |
 | Kaffeerösterei Martermühle | Aßling | Shopify `/products.json` (coffee/espresso product types only) |
+| Murnauer Kaffeerösterei | Obersöchering (Murnau) | Shopify `/products.json` (single coffees; sets, boxes and monthly coffee skipped) |
 | Vits der Kaffee, Kaffeerösterei Viktualienmarkt | München | WooCommerce Store API (+ Vits product pages) |
 | FAUSTO, gangundgäbe | München | product pages from the shop sitemap |
 | Dallmayr | München | product-line pages on dallmayr.com (no prices; the shop domain disallows crawlers) |

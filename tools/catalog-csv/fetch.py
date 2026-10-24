@@ -15,7 +15,7 @@ os.makedirs(os.path.join(RAW, "pages"), exist_ok=True)
 UA = {"User-Agent": "CupLog-catalog/0.1 (personal, non-commercial; +https://www.hohenegger.eu/CuppaScore/)"}
 DELAY = 1.5
 
-SHOPIFY = ["mvsm.coffee", "ninefine.de", "alrighty.coffee", "delmocca.de", "district-five.de", "stray.coffee", "wild-kaffee.com", "martermuehle.de"]
+SHOPIFY = ["mvsm.coffee", "ninefine.de", "alrighty.coffee", "delmocca.de", "district-five.de", "stray.coffee", "wild-kaffee.com", "martermuehle.de", "murnauer-kaffeeroesterei.de"]
 WOO = ["kaffeeroesterei-viktualienmarkt.de", "vitsderkaffee.de"]
 DALLMAYR_LINES = ["prodomo", "ethiopia", "homebarista", "roestkunst", "doro"]
 
