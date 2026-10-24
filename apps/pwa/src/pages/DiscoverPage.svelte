@@ -73,10 +73,10 @@
   </section>
 {:else}
   <div class="segmented tabs" role="tablist" aria-label={t('nav.discover')}>
-    <button type="button" role="tab" aria-selected={tab === 'forYou'} aria-pressed={tab === 'forYou'} onclick={() => (tab = 'forYou')}>
+    <button type="button" role="tab" aria-selected={tab === 'forYou'} onclick={() => (tab = 'forYou')}>
       {t('discover.forYou')}
     </button>
-    <button type="button" role="tab" aria-selected={tab === 'wishlist'} aria-pressed={tab === 'wishlist'} onclick={() => (tab = 'wishlist')}>
+    <button type="button" role="tab" aria-selected={tab === 'wishlist'} onclick={() => (tab = 'wishlist')}>
       {t('discover.wishlistTab', { count: saved.data?.length ?? 0 })}
     </button>
   </div>

@@ -303,7 +303,8 @@ textarea {
 }
 
 .segmented > button[aria-pressed='true'],
-.segmented > button[aria-checked='true'] {
+.segmented > button[aria-checked='true'],
+.segmented > button[aria-selected='true'] {
   background: var(--bg);
   box-shadow: var(--shadow);
   font-weight: 600;
