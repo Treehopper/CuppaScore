@@ -122,3 +122,13 @@ for line in DALLMAYR_LINES:
         body = get(url).decode("utf-8", "ignore")
         open(out, "w", encoding="utf-8").write(f"<!-- {url} -->\n" + body)
 print("dallmayr lines", len(DALLMAYR_LINES))
+
+# DINZLER (Shopware): the sitemap lists every grind/size variant, the coffee category pages one URL per product
+dz = set()
+for cat in ["kaffee-shop", "espresso-shop", "filterkaffee-shop"]:
+    page = get(f"https://www.dinzler.de/shop/{cat}").decode("utf-8", "ignore")
+    dz |= set(re.findall(r'href="(https://www\.dinzler\.de/shop/(?:dinzler-|crazy-sheep-|espresso-dinzler-)[a-z0-9.-]+-\d{4,6})"', page))
+dz = sorted(u for u in dz if not re.search(r"kurs|abo-|probier|adventskalender|kaffeebeutel|kapsel|kaltstart|coaching", u))
+for u in dz:
+    save_page("dinzler", u)
+print("dinzler pages", len(dz))

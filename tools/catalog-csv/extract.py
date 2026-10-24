@@ -25,6 +25,7 @@ SHOPS = {
     "fausto": ("FAUSTO Kaffeerösterei", "München", "html"),
     "gangundgaebe": ("gangundgäbe", "München", "html"),
     "dallmayrline": ("Dallmayr", "München", "dallmayr"),
+    "dinzler": ("DINZLER Kaffeerösterei", "Irschenberg", "dinzler"),
 }
 
 EXCLUDE = re.compile(
@@ -52,9 +53,10 @@ COUNTRIES = {
     "MX": ["mexico", "mexiko"],
     "PE": ["peru"],
     "BO": ["bolivien", "bolivia"],
-    "EC": ["ecuador"],
+    "EC": ["ecuador", "galapagos"],
     "RW": ["ruanda", "rwanda"],
     "BI": ["burundi"],
+    "ZM": ["sambia", "zambia"],
     "UG": ["uganda"],
     "TZ": ["tansania", "tanzania"],
     "CD": ["kongo", "congo", "drc"],
@@ -294,6 +296,44 @@ for host, (roaster, city, platform) in SHOPS.items():
                 rows[-1]["roast_for"] = for_
                 rows[-1]["price_eur"] = ""
                 rows[-1]["weight_g"] = min(beans)
+        continue
+    if platform == "dinzler":  # Shopware product pages: bean icons, brew-method icons, "Aroma" and "Herkunft" blocks
+        import glob
+        ICON_FOR = {"siebtraeger": "espresso", "bialetti": "espresso", "filter-coffee": "filter", "frenchpress": "filter"}
+        for f in sorted(glob.glob(os.path.join(RAW, "pages", host + "_*.html"))):
+            h = open(f, encoding="utf-8", errors="ignore").read()
+            url = re.match(r"<!-- (\S+) -->", h).group(1)
+            h1 = re.search(r"<h1[^>]*>(.*?)</h1>", h, re.S)
+            if not h1:
+                report.append(f"skip {host}: {url} (no product title)")
+                continue
+            name = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", h1.group(1)))).strip()
+            name = re.sub(r"^(?:DINZLER (?!x )|Espresso DINZLER (?=\w))", lambda m: "Espresso " if m.group(0).startswith("Espresso") else "", name)
+            name = name.replace("CRAZY SHEEP", "Crazy Sheep")
+            i, j, k = h.find("<h5>Stärke</h5>"), h.find("<h5>Empfohlene Zubereitung</h5>"), h.find("<h5>Aroma</h5>")
+            beans = h[i:j].count("icon-bean-active") if 0 < i < j else 0
+            methods = {ICON_FOR[c] for c in re.findall(r'class="icon icon-([\w-]+) is-din"', h[j:k]) if c in ICON_FOR} if 0 < j < k else set()
+            body = clean(re.sub(r"(?is)<(script|style|svg|nav|header|footer)[^>]*>.*?</\1>", " ", h))
+            aroma = re.search(r"\nAroma\n([^\n]+)", body)
+            start = body.find("\n", aroma.end()) if aroma else 0
+            desc = body[start:body.find("klimaneutral geröstet", start)] if "klimaneutral geröstet" in body[start:] else body[start:start + 2500]
+            origins = " ".join(re.findall(r"\nHerkunft\n([^\n]{1,40})\n", body))
+            price = re.search(r'property="product:price"\s+content="([\d.,]+)', h)
+            unit = re.search(r"\n([\d.,]+) €/kg", body)
+            variants = []
+            if price and unit:
+                eur, per_kg = (float(x.group(1).replace(".", "").replace(",", ".")) for x in (price, unit))
+                variants = [(f"{round(eur / per_kg * 1000)} g", eur)]
+            notes = ";".join(dict.fromkeys(x for x in split_notes(aroma.group(1)).split(";") + lexicon_notes(desc).split(";") if x)) if aroma else ""
+            add(host, name, url, f"Herkunft: {origins}\n{desc}", origins, "", variants, "Sofort verfügbar" in body)
+            if rows and rows[-1]["url"] == url:
+                rows[-1]["roast_level"] = str(beans) if beans in (1, 2, 3) else ""
+                rows[-1]["roast_for"] = "omni" if len(methods) == 2 else methods.pop() if methods else rows[-1]["roast_for"]
+                rows[-1]["tasting_notes"] = ";".join([n for n in notes.split(";") if n.lower() != "säurearm"][:8])
+                # blends: one "Herkunft" block per page, the other origins are named in the opening lines
+                bean_lines = [x for x in re.split(r"(?<=[.!?])\s+", desc[:600])
+                              if re.search(r"bohnen|rohkaffee|herkunft|stamm|mischung|plantage", x, re.I) and not re.search(r"ursprung in|legende", x, re.I)]
+                rows[-1]["origin_countries"] = ";".join(dict.fromkeys(c for t in (name, origins, *bean_lines) for c in countries(t)))
         continue
     if platform == "html":
         import glob

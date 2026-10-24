@@ -27,10 +27,11 @@ duplicates, private-label blends without a public page).
 | Vits der Kaffee, Kaffeerösterei Viktualienmarkt | München | WooCommerce Store API (+ Vits product pages) |
 | FAUSTO, gangundgäbe | München | product pages from the shop sitemap |
 | Dallmayr | München | product-line pages on dallmayr.com (no prices; the shop domain disallows crawlers) |
+| DINZLER (incl. Crazy Sheep) | Irschenberg | product pages linked from the `/shop` coffee categories (strength beans → `roast_level`, brew icons → `roast_for`) |
 
 Not included yet: Vogelmaier (robots.txt disallows all), Supremo (no public feed or sitemap),
 JB Kaffee, Mahlefitz, Pacandé, Coffeemamas (no sitemap or feed found), Schneid (mostly
-flavoured coffees), Dinzler. Add them by hand as CSV rows or with a new adapter in
+flavoured coffees). Add them by hand as CSV rows or with a new adapter in
 `extract.py`.
 
 ## Columns
