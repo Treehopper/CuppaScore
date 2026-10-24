@@ -26,6 +26,7 @@ SHOPS = {
     "gangundgaebe": ("gangundgäbe", "München", "html"),
     "dallmayrline": ("Dallmayr", "München", "dallmayr"),
     "dinzler": ("DINZLER Kaffeerösterei", "Irschenberg", "dinzler"),
+    "pacande": ("Pacandé", "München", "pacande"),
 }
 
 EXCLUDE = re.compile(
@@ -42,7 +43,7 @@ EXCLUDE = re.compile(
 COUNTRIES = {
     "ET": ["äthiopien", "ethiopia", "etiopia", "ethiopian", "äthiopisch"],
     "KE": ["kenia", "kenya", "kenyan"],
-    "CO": ["kolumbien", "colombia", "colombian", "kolumbianisch"],
+    "CO": ["kolumbien", "colombia", "colombian", "kolumbianisch", "huila", "antioquia", "tolima", "nariño", "narino", "valle del cauca", "quindío", "quindio"],
     "BR": ["brasilien", "brazil", "brasil", "brasilianisch", "brazilian"],
     "GT": ["guatemala"],
     "SV": ["el salvador"],
@@ -211,7 +212,7 @@ SYN = {"honey": "honig", "caramel": "karamell", "karamel": "karamell", "chocolat
        "milk chocolate": "milchschokolade", "cocoa": "kakao", "hazelnut": "haselnuss", "almond": "mandel", "walnut": "walnuss",
        "cherry": "kirsche", "strawberry": "erdbeere", "raspberry": "himbeere", "blackberry": "brombeere", "blueberry": "blaubeere",
        "peach": "pfirsich", "apricot": "aprikose", "plum": "pflaume", "lemon": "zitrone", "citrus": "zitrus", "bergamot": "bergamotte",
-       "pineapple": "ananas", "jasmine": "jasmin", "vanilla": "vanille", "cinnamon": "zimt", "floral": "blumig", "nutty": "nussig"}
+       "pineapple": "ananas", "guava": "guave", "banana": "banane", "jasmine": "jasmin", "vanilla": "vanille", "cinnamon": "zimt", "floral": "blumig", "nutty": "nussig"}
 
 
 def dedupe_notes(notes, proc, name):
@@ -334,6 +335,32 @@ for host, (roaster, city, platform) in SHOPS.items():
                 bean_lines = [x for x in re.split(r"(?<=[.!?])\s+", desc[:600])
                               if re.search(r"bohnen|rohkaffee|herkunft|stamm|mischung|plantage", x, re.I) and not re.search(r"ursprung in|legende", x, re.I)]
                 rows[-1]["origin_countries"] = ";".join(dict.fromkeys(c for t in (name, origins, *bean_lines) for c in countries(t)))
+        continue
+    if platform == "pacande":  # prerendered Nuxt pages: 9-dot roast scale, size <select>, price range, "Beschreibung"
+        import glob
+        VARIETIES = r"pink bourbon|bourbon|caturra(?: chiroso)?|castillo|typica|geisha|gesha|tabi|sidra|wush wush|java"
+        for f in sorted(glob.glob(os.path.join(RAW, "pages", host + "_*.html"))):
+            h = open(f, encoding="utf-8", errors="ignore").read()
+            url = re.match(r"<!-- (\S+) -->", h).group(1)
+            i = h.find('class="roast-level')
+            if i < 0:
+                report.append(f"skip {host}: {url} (no roast scale, not a coffee)")
+                continue
+            name = html.unescape(re.search(r'property="og:title" content="([^"|]+)', h).group(1)).strip()
+            dots = h[i:i + 3000].count("rounded-full bg-white")
+            sizes = [weight_g(x.replace("gr", "g")) for x in re.findall(r'<option value="\d+">(\d+ ?gr?)</option>', h)]
+            prices = [float(x) for x in re.findall(r"<span>([\d.]+)€(?: – [\d.]+€)? </span>", h)[:1]]
+            body = clean(re.sub(r"(?is)<(script|style|svg|nav|header|footer)[^>]*>.*?</\1>", " ", h))
+            a = body.find("\nBeschreibung\n")
+            desc = body[a + 14:body.find("\nÜber uns\n", a)] if a > 0 else ""
+            sizes = [g for g in sizes if g]
+            variants = [(f"{min(sizes)} g", prices[0])] if sizes and prices else []
+            add(host, name, url, desc, "", "", variants, "InStock" in h)
+            if rows and rows[-1]["url"] == url:
+                rows[-1]["roast_level"] = str((dots + 2) // 3) if 1 <= dots <= 9 else ""
+                rows[-1]["varieties"] = ";".join(dict.fromkeys(v.title() for v in re.findall(VARIETIES, desc, re.I)))
+                tip = " ".join(re.findall(r"[^.\n]*(?:tip|omniroast|als espresso|im filter|für espresso|für filter|siebträger|handfilter)[^.\n]*", desc, re.I))
+                rows[-1]["roast_for"] = roast_for(name, tip) or rows[-1]["roast_for"]
         continue
     if platform == "html":
         import glob

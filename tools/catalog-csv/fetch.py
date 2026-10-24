@@ -132,3 +132,10 @@ dz = sorted(u for u in dz if not re.search(r"kurs|abo-|probier|adventskalender|k
 for u in dz:
     save_page("dinzler", u)
 print("dinzler pages", len(dz))
+
+# Pacandé (Nuxt, prerendered product pages; /api/ is disallowed): product URLs from the sitemap
+pc = [u for u in sitemap("https://pacande.com/__sitemap__/de-DE.xml")
+      if "/shop/" in u and not re.search(r"poster|pin-|workshop|tasting|cupping|tea", u)]
+for u in pc:
+    save_page("pacande", u)
+print("pacande pages", len(pc))

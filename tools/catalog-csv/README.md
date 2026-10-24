@@ -28,9 +28,10 @@ duplicates, private-label blends without a public page).
 | FAUSTO, gangundgäbe | München | product pages from the shop sitemap |
 | Dallmayr | München | product-line pages on dallmayr.com (no prices; the shop domain disallows crawlers) |
 | DINZLER (incl. Crazy Sheep) | Irschenberg | product pages linked from the `/shop` coffee categories (strength beans → `roast_level`, brew icons → `roast_for`) |
+| Pacandé | München | prerendered product pages from the sitemap (9-dot roast scale → `roast_level`; `/api/` is disallowed) |
 
 Not included yet: Vogelmaier (robots.txt disallows all), Supremo (no public feed or sitemap),
-JB Kaffee, Mahlefitz, Pacandé, Coffeemamas (no sitemap or feed found), Schneid (mostly
+JB Kaffee, Mahlefitz, Coffeemamas (no sitemap or feed found), Schneid (mostly
 flavoured coffees). Add them by hand as CSV rows or with a new adapter in
 `extract.py`.
 
