@@ -29,6 +29,7 @@ duplicates, private-label blends without a public page).
 | Dallmayr | München | product-line pages on dallmayr.com (no prices; the shop domain disallows crawlers) |
 | DINZLER (incl. Crazy Sheep) | Irschenberg | product pages linked from the `/shop` coffee categories (strength beans → `roast_level`, brew icons → `roast_for`) |
 | Pacandé | München | prerendered product pages from the sitemap (9-dot roast scale → `roast_level`; `/api/` is disallowed) |
+| sweet spot kaffee (shop; guest roasters such as La Cabra, Tim Wendelboe, SEY) | — | WooCommerce Store API + product pages for the bag weight; `roaster` is the product's "Rösterei", the URL points to the shop. The range rotates weekly, so refetch often |
 
 Not included yet: Vogelmaier (robots.txt disallows all), Supremo (no public feed or sitemap),
 JB Kaffee, Mahlefitz, Coffeemamas (no sitemap or feed found), Schneid (mostly

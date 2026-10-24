@@ -27,6 +27,7 @@ SHOPS = {
     "dallmayrline": ("Dallmayr", "München", "dallmayr"),
     "dinzler": ("DINZLER Kaffeerösterei", "Irschenberg", "dinzler"),
     "pacande": ("Pacandé", "München", "pacande"),
+    "sweetspotkaffee.de": ("sweet spot kaffee", "", "sweetspot"),  # retailer: the roaster comes from each product
 }
 
 EXCLUDE = re.compile(
@@ -361,6 +362,39 @@ for host, (roaster, city, platform) in SHOPS.items():
                 rows[-1]["varieties"] = ";".join(dict.fromkeys(v.title() for v in re.findall(VARIETIES, desc, re.I)))
                 tip = " ".join(re.findall(r"[^.\n]*(?:tip|omniroast|als espresso|im filter|für espresso|für filter|siebträger|handfilter)[^.\n]*", desc, re.I))
                 rows[-1]["roast_for"] = roast_for(name, tip) or rows[-1]["roast_for"]
+        continue
+    if platform == "sweetspot":  # WooCommerce Store API with "Rösterei" / "Röstung" / "Tasting Notes" attributes
+        import glob
+        pages = {}
+        for f in glob.glob(os.path.join(RAW, "pages", "sweetspot_*.html")):
+            h = open(f, encoding="utf-8", errors="ignore").read()
+            pages[re.match(r"<!-- (\S+) -->", h).group(1)] = h
+        if not os.path.exists(os.path.join(RAW, host + ".json")):
+            report.append(f"missing {host}.json")
+            continue
+        for p in json.load(open(os.path.join(RAW, host + ".json"))):
+            if not {c["name"] for c in p.get("categories", [])} & {"Espresso", "Filterkaffee"}:
+                continue
+            attrs = {a["name"]: [html.unescape(t["name"]) for t in a.get("terms", [])] for a in p.get("attributes", [])}
+            by = (attrs.get("Rösterei") or [""])[0]
+            name = html.unescape(p["name"])
+            name = name[len(by):].strip(" –-") if by and name.lower().startswith(by.lower()) else name
+            text = clean((p.get("short_description") or "") + "\n" + (p.get("description") or ""))
+            text = re.sub(r"(?im)^(?:field|origin|country)\s*:", lambda m: "Region:" if m.group(0).lower().startswith("field") else "Herkunft:", text)
+            text = re.sub(r"(?im)^(?:processing|process)\s*:", "Aufbereitung:", text)
+            sizes = [s for s in attrs.get("Größe", [])]
+            page_w = re.search(r"product-attributes-item--weight\">.*?([\d,]+)\s*kg", pages.get(p["permalink"], ""), re.S)
+            label = min(sizes, key=lambda x: weight_g(x) or 1e9) if sizes else (f"{float(page_w.group(1).replace(',', '.')) * 1000:.0f} g" if page_w else "")
+            pr = p["prices"]
+            price = int(pr["price"]) / 10 ** int(pr.get("currency_minor_unit", 2))
+            add(host, name, p["permalink"], text, " ".join(attrs.get("Röstung", [])), "", [(label, price)], bool(p.get("is_in_stock", True)))
+            if rows and rows[-1]["url"] == p["permalink"]:
+                r = rows[-1]
+                if by:
+                    r["roaster"], r["roaster_city"], r["id"] = by, "", f"{slug(by)}-{slug(name)}"
+                r["roast_for"] = roast_for(" ".join(attrs.get("Röstung", []))) or r["roast_for"]
+                if attrs.get("Tasting Notes"):
+                    r["tasting_notes"] = ";".join(attrs["Tasting Notes"])
         continue
     if platform == "html":
         import glob

@@ -16,7 +16,7 @@ UA = {"User-Agent": "CupLog-catalog/0.1 (personal, non-commercial; +https://www.
 DELAY = 1.5
 
 SHOPIFY = ["mvsm.coffee", "ninefine.de", "alrighty.coffee", "delmocca.de", "district-five.de", "stray.coffee", "wild-kaffee.com", "martermuehle.de", "murnauer-kaffeeroesterei.de"]
-WOO = ["kaffeeroesterei-viktualienmarkt.de", "vitsderkaffee.de"]
+WOO = ["kaffeeroesterei-viktualienmarkt.de", "vitsderkaffee.de", "sweetspotkaffee.de"]
 DALLMAYR_LINES = ["prodomo", "ethiopia", "homebarista", "roestkunst", "doro"]
 
 
@@ -139,3 +139,9 @@ pc = [u for u in sitemap("https://pacande.com/__sitemap__/de-DE.xml")
 for u in pc:
     save_page("pacande", u)
 print("pacande pages", len(pc))
+
+# sweet spot kaffee (shop for guest roasters): the bag weight is only on the product page
+for p in json.load(open(os.path.join(RAW, "sweetspotkaffee.de.json"))):
+    if {c["name"] for c in p.get("categories", [])} & {"Espresso", "Filterkaffee"}:
+        save_page("sweetspot", p["permalink"])
+print("sweetspot pages done")
