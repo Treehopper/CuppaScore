@@ -20,6 +20,7 @@ SHOPS = {
     "kaffeeroesterei-viktualienmarkt.de": ("Kaffeerösterei Viktualienmarkt", "München", "woo"),
     "district-five.de": ("District Five", "Ingolstadt", "shopify"),
     "wild-kaffee.com": ("Wildkaffee", "Farchant (Garmisch-Partenkirchen)", "shopify"),
+    "martermuehle.de": ("Kaffeerösterei Martermühle", "Aßling", "shopify"),
     "fausto": ("FAUSTO Kaffeerösterei", "München", "html"),
     "gangundgaebe": ("gangundgäbe", "München", "html"),
     "dallmayrline": ("Dallmayr", "München", "dallmayr"),
@@ -28,7 +29,7 @@ SHOPS = {
 EXCLUDE = re.compile(
     r"gutschein|gift|voucher|set\b|test roast|drip coffee bag|probier|starterset|bestseller|box\b|abo\b|subscription|"
     r"tasse|mug|cup\b|becher|t-shirt|shopper|canister|kaffeedose|dose\b|french press|filter papier|"
-    r"\bfilters?\b.*\(|papier|matcha|hojicha|\btee\b|\btea\b|wein|bier|kurs|class|masterclass|workshop|"
+    r"\bfilters?\b.*\(|papier|matcha|hojicha|\btee\b|\btea\b|wein|bier|kurs|class\b|masterclass|workshop|"
     r"führung|kapsel|capsule|ese\b|pads?\b|drip ?bag|dripbag|cold brew|nitro|creme\b|kaffeecreme|"
     r"florentiner|spende|wholesale|grosshandel|roaster.s choice|aeropress|hario|kalita|chemex|"
     r"comandante|timemore|cafflano|third wave water|espazzola|pitcher|scale|waage|mühle|grinder|"
@@ -316,12 +317,17 @@ for host, (roaster, city, platform) in SHOPS.items():
             variants = [(label, float(price.group(1).replace(",", ".")))] if price else []
             add(host, name.title() if name.isupper() else name, url, text, "", "", variants, "ausverkauft" not in head.lower())
         continue
+    if not os.path.exists(os.path.join(RAW, host + ".json")):
+        report.append(f"missing {host}.json")
+        continue
     data = json.load(open(os.path.join(RAW, host + ".json")))
     for p in data:
         if platform == "shopify":
             ptype = p.get("product_type") or ""
             if re.search(r"equipment|zubeh|gift|geschenk|tea|tee|wein|bier|merch|essentials|workshop|^mvsm$|cold brew|süss|sussig", ptype, re.I):
                 continue
+            if host == "martermuehle.de" and (not re.search(r"kaffee|espresso", ptype, re.I) or re.search(r"paket|pads|sack", ptype, re.I)):
+                continue  # merch, sugar, tours, bundles
             tags = p.get("tags") or []
             tag_text = " ".join(t.split("_", 1)[-1] for t in tags)
             if host == "ninefine.de":  # structured tags
@@ -336,6 +342,8 @@ for host, (roaster, city, platform) in SHOPS.items():
                 if re.search(r"gemahlen|ground|siebträger \(|herdkanne|french|filter \(", v.get("title", ""), re.I) and not re.search(r"ganze bohne|whole", v.get("title", ""), re.I):
                     continue
                 variants.append((v.get("title", "") + " " + (v.get("option1") or ""), float(v.get("price") or 0)))
+            if not any(weight_g(l) for l, _ in variants):  # e.g. "Default Title"; size only in the text
+                variants = [(labelled(text, r"inhalt"), pr) for _, pr in variants]
             add(host, p["title"], f"https://{host}/products/{p['handle']}", text, tag_text + " " + ptype, opts, variants,
                 any(v.get("available") for v in p.get("variants", [])))
         else:  # WooCommerce Store API

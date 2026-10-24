@@ -22,6 +22,7 @@ duplicates, private-label blends without a public page).
 | Man versus Machine, Nine Fine Roastery, ALRIGHTY, delmocca, stray coffee roasters | München | Shopify `/products.json` |
 | District Five | Ingolstadt | Shopify `/products.json` |
 | Wildkaffee | Farchant | Shopify `/products.json` |
+| Kaffeerösterei Martermühle | Aßling | Shopify `/products.json` (coffee/espresso product types only) |
 | Vits der Kaffee, Kaffeerösterei Viktualienmarkt | München | WooCommerce Store API (+ Vits product pages) |
 | FAUSTO, gangundgäbe | München | product pages from the shop sitemap |
 | Dallmayr | München | product-line pages on dallmayr.com (no prices; the shop domain disallows crawlers) |
