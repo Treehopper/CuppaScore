@@ -104,6 +104,7 @@ Products, bags and brews are separate entities on purpose. The same product can 
 - **D5** As a user, I want to **dismiss** a recommendation or save it to a **wishlist**.
 - **D6** As a user, I want to see **where to buy** each recommended coffee in Munich (shop address, roaster webshop link).
 - **D7** As a user, I want an **exploration slot** ("something different you might enjoy") so I don't get stuck in a bubble.
+- **D8** As a new user, I want to add the coffees I **already love as favourites** (from the catalog or by hand) without buying and rating a bag first, and have them count for recommendations.
 
 ### Epic E — Data & app
 - **E1** As a user, I want the app to **work offline** and be installable on my phone's home screen.
@@ -160,12 +161,13 @@ In v1, all user data is stored in **IndexedDB** (via Dexie.js), but only behind 
   "isBlend": false,
   "labelNotes": ["blueberry", "dark chocolate", "jasmine"],
   "decaf": false,
+  "favourite": true,
   "barcode": "4260…",
   "photo": "blob-ref",
   "createdAt": "2026-10-15T08:00:00+02:00"
 }
 ```
-`roastLevel`: 1 = light, 2 = medium, 3 = dark (the 1–3 beans most roasters print on the bag; data from the old 1–5 scale is migrated 1–2 → 1, 3 → 2, 4–5 → 3). `roastFor`: filter / espresso / omni.
+`roastLevel`: 1 = light, 2 = medium, 3 = dark (the 1–3 beans most roasters print on the bag; data from the old 1–5 scale is migrated 1–2 → 1, 3 → 2, 4–5 → 3). `roastFor`: filter / espresso / omni. `favourite`: one of the coffees you already love (D8); a product can exist without any bag.
 
 ### 4.2 Bag
 ```json
@@ -479,7 +481,7 @@ For *your* products, the sensory block is overwritten by the average of your own
 ```
 userVector = normalise( Σ P_i · v_i  +  λ · wishShift )
 ```
-`P_i` is the combined, centred preference of product *i* (5.1), already recency- and confidence-weighted, so swipe-only, star-only and detailed products all contribute. Positively scored products pull the profile towards themselves, negatively scored ones push it away. `wishShift` moves the sensory part of the target in the direction of your recent advanced "wish" inputs (e.g. +sweetness), with λ = 0.2. Separate profiles are kept **per context** (method × meal × time-of-day bucket) when there is enough data (≥ 10 ratings), falling back to the global profile.
+`P_i` is the combined, centred preference of product *i* (5.1), already recency- and confidence-weighted, so swipe-only, star-only and detailed products all contribute. A **favourite without cups** (D8) counts with `P_i = 0.6` (a clear like); once it has cups of its own, those decide. Positively scored products pull the profile towards themselves, negatively scored ones push it away. `wishShift` moves the sensory part of the target in the direction of your recent advanced "wish" inputs (e.g. +sweetness), with λ = 0.2. Separate profiles are kept **per context** (method × meal × time-of-day bucket) when there is enough data (≥ 10 ratings), falling back to the global profile.
 
 ### 7.3 Scoring catalog coffees
 ```
@@ -619,13 +621,15 @@ Running the backend side in a worker already enforces the separation physically:
 ## 9. Screens & UX
 
 ### 9.1 Welcome (first launch)
-A short, skippable flow of 4–5 cards. Everything can be changed later in Settings.
+A short, skippable flow of 5–6 cards. Everything can be changed later in Settings.
 
 1. **Hello:** language (pre-selected from the device) and theme (Crema / Espresso / Solarized, with live preview).
 2. **Install:** shown only if the app isn't running standalone yet.
    - *Android:* "Install CupLog" button (uses the browser's `beforeinstallprompt`).
    - *iOS (Safari):* a 3-step illustration: Share ⎋ → *Add to Home Screen* → open from the icon.
    - "Not now" is allowed. The card notes that the installed app keeps data more reliably and opens in one tap, which makes logging (and seeing reminders) easier.
+   - **Region:** Munich catalog (default) or none (F4).
+   - **Coffees you already love?** Search the catalog and add favourites in one tap each (D8); not listed → later under Bags → Products → *Add favourite*.
 3. **Your gear & rating style:** tick the brew methods you own (AeroPress, Flair NEO, V60 …), which seed the Method dropdown. Pick a default rating level: **Swipe** (fastest), **Stars** or **Detail**. It can be switched for any single cup.
 4. **Reminders?**
    > *Should CupLog nudge you to rate your coffee when you open the app?*

@@ -141,7 +141,7 @@ for (const locale of ['de', 'en-XA']) {
       await useLocale(page);
       await page.goto('./#/welcome');
       await page.reload();
-      for (let step = 0; step < 4; step++) {
+      for (let step = 0; step < 6; step++) {
         await page.locator('h1').first().waitFor();
         expect(await textProblems(page), `step ${step}`).toEqual([]);
         const next = page.getByTestId('welcome-next');

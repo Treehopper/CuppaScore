@@ -49,6 +49,21 @@ describe('getRecommendations', () => {
     expect(r).toMatchObject({ ratedProducts: 2, coldStart: true });
   });
 
+  it('uses favourites without cups as liked coffees; your cups win once there are some', async () => {
+    const t = makeTestService('2026-10-18T09:00:00+02:00');
+    await t.svc.importCatalogCsv(CSV);
+    const brasil = await t.svc.addProduct({ roaster: 'Wildkaffee', name: 'Brasil', catalogId: 'wild-brasil', process: 'natural', roastLevel: 3, labelNotes: ['Schokolade', 'Haselnuss'], favourite: true });
+    const r = await t.svc.getRecommendations();
+    expect(r).toMatchObject({ ratedProducts: 1, coldStart: true });
+    expect(r.items.map((x) => x.item.id)).not.toContain('wild-brasil');
+    expect(r.items[0]!.item.id).toBe('dallmayr-crema');
+    expect(r.items[0]!.similarProduct?.id).toBe(brasil.id);
+
+    const bag = await t.svc.addBag({ productId: brasil.id });
+    await t.svc.logRating({ level: 'stars', overall: 1, source: 'home', bagId: bag.id, brew: { method: 'v60' } });
+    expect((await t.svc.getRecommendations()).items[0]!.item.id).not.toBe('dallmayr-crema');
+  });
+
   it('filters by method, price, roaster and decaf', async () => {
     const { svc } = await setup();
     const ids = async (q: Parameters<typeof svc.getRecommendations>[0]) => (await svc.getRecommendations(q)).items.map((x) => x.item.id).sort();

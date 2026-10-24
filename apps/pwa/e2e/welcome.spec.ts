@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 
-test('welcome flow: theme preview, region catalog, gear & level, reminders; shown only once', async ({ page }) => {
+test('welcome flow: theme preview, region catalog, favourites, gear & level, reminders; shown only once', async ({ page }) => {
   await page.goto('./');
   await expect(page).toHaveURL(/#\/welcome$/);
   await expect(page.getByRole('heading', { name: 'Welcome to CupLog' })).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCount(0);
-  await expect(page.getByText('Step 1 of 5')).toBeVisible();
+  await expect(page.getByText('Step 1 of 6')).toBeVisible();
 
   await page.getByRole('radio', { name: 'Solarized Dark' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'solarized-dark');
@@ -20,6 +20,20 @@ test('welcome flow: theme preview, region catalog, gear & level, reminders; show
   // region: Munich is preselected and loads the catalog in the background (F4)
   await expect(page.getByRole('heading', { name: 'Where do you buy coffee?' })).toBeVisible();
   await expect(page.getByRole('radio', { name: /Munich/ })).toBeChecked();
+  await page.getByRole('button', { name: 'Next' }).click();
+
+  // favourites from the catalog, without a bag (they shape recommendations)
+  await expect(page.getByRole('heading', { name: 'Coffees you already love?' })).toBeVisible();
+  const search = page.getByLabel('Find in catalog');
+  for (const q of ['vits ethiopia bonga', 'dallmayr']) {
+    await search.fill(q);
+    await page.getByTestId('catalog-result').first().click();
+  }
+  const favs = page.getByTestId('welcome-favourites');
+  await expect(favs.getByRole('listitem')).toHaveCount(2);
+  await expect(favs).toContainText('Vits der Kaffee – Äthiopien Bonga Forest');
+  await favs.getByRole('button', { name: /^Remove / }).last().click();
+  await expect(favs.getByRole('listitem')).toHaveCount(1);
   await page.getByRole('button', { name: 'Next' }).click();
 
   await expect(page.getByRole('heading', { name: 'Your gear & rating style' })).toBeVisible();
@@ -42,6 +56,11 @@ test('welcome flow: theme preview, region catalog, gear & level, reminders; show
 
   await expect(page).toHaveURL(/#\/log$/);
   await expect(page.getByRole('navigation')).toBeVisible();
+
+  await page.goto('./#/products');
+  await expect(page.getByTestId('product-card')).toHaveCount(2);
+  await expect(page.getByTestId('product-card').filter({ has: page.getByRole('img', { name: 'Favourite' }) })).toHaveCount(1);
+  await expect(page.getByTestId('favourites-hint')).toHaveCount(0);
 
   await page.getByRole('link', { name: 'Settings' }).click();
   await expect(page.getByRole('radio', { name: 'Swipe' })).toHaveAttribute('aria-checked', 'true');

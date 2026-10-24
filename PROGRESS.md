@@ -22,6 +22,9 @@ Owner tested the live M1 build on a phone. These take priority over the mileston
   - This replaces README §6's catalog.json for v1; update README §6 to describe the CSV path (keep the JSON builder as a later option).
   - note: core `catalogCsv.ts` (RFC 4180 parser, `parseCatalogCsv` → skip issues as codes, `searchCatalog` with caller-supplied localised origin names); Dexie v3 `catalog` table + `CatalogRepo` (not owner-scoped) + `CatalogSource` port (`catalog-static`, fetch in the worker; page passes its base URL as the worker name `cuplog-api|<base>`); meta in device state key `catalog`; `settings.catalogRegion` defaults to `munich` (also for existing installs); app re-imports the region file on start after onboarding; picker creates the user product on bag Save (not on pick); old JSON `searchCatalog` removed, JSON schema kept
 
+- [x] F5. **Favourites without a bag** (owner, 2026-10-24): on install the owner already has favourite coffees and wants to add them without buying and rating bags; they must count for recommendations.
+  - note: `Product.favourite` (zod default `false`, no Dexie/bundle migration needed); `ratedProducts` gives an unrated favourite `p = FAVOURITE_P` (0.6, core `recommend.ts`), so it shapes the profile, anchors "similar to …" and counts towards the cold-start threshold; new welcome step "Coffees you already love?" (catalog picker, `form={false}`); Products → *Add favourite* (`#/products/new?favourite=1`), favourite checkbox in the product form, ♥ toggle on the product page, ♥ marker in the list; Add bag reuses the favourite's product by `catalogId`. Uses ♥ glyphs, not `Icon` (the Discover WIP adds a `heart` icon — switch once that's committed)
+
 ## Next up
 - Owner feedback F1–F4 done. Continue with M4 task 34 (Discover screen: list + explanations + filters + wishlist/dismiss + where to buy, D1–D7) on `api().getRecommendations`.
 
@@ -120,6 +123,8 @@ _**M3 complete.**_
 - Reminders: `pausedUntil` is the date reminders *resume* (exclusive); `bagExpiring` is due every day from N days before through the expiry date (soonest bag shown); `afterLastLog` fires at max(last+hours, window start) on the same local day and only inside its window; a rule pushed past midnight by quiet hours is dropped (today-only catch-up).
 - Theme colours: README §10 demands both the official Solarized values and WCAG AA for all text pairs, which conflict; kept hues, nudged lightness of failing tokens (themes.css), added `--on-accent`.
 - i18n library: README §11 suggests svelte-i18n; CLAUDE.md forbids Svelte 4 stores → small own runes wrapper over `intl-messageformat` (same ICU format, swappable).
+
+- Favourites (F5): your cups win over the favourite flag once a favourite has ratings (it stays marked ♥, but a bad run of cups lowers its pull). Alternative kept possible: blend `FAVOURITE_P` in as a prior pseudo-cup.
 
 ## Blocked / needs owner
 _(none yet)_

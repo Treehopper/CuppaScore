@@ -26,6 +26,7 @@ export const product = (id: string, ownerId = LOCAL_OWNER): Product => ({
   isBlend: false,
   labelNotes: ['blueberry'],
   decaf: false,
+  favourite: false,
   barcode: null,
   photoMediaId: null,
 });

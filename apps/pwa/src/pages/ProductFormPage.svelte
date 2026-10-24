@@ -14,7 +14,7 @@
   import { router } from '../lib/router.svelte';
   import { toasts } from '../lib/toast.svelte';
 
-  /** `initial` → edit; otherwise create. `?then=bag` returns to "Add bag" with the new product. */
+  /** `initial` → edit; otherwise create. `?then=bag` returns to "Add bag" with the new product, `?favourite=1` starts as a favourite. */
   let { initial }: { initial?: ProductDto } = $props();
 
   type Process = (typeof PROCESSES)[number];
@@ -34,6 +34,7 @@
       roastFor: [...(p?.roastFor ?? [])] as RoastFor[],
       isBlend: p?.isBlend ?? false,
       decaf: p?.decaf ?? false,
+      favourite: p?.favourite ?? router.current.query.favourite === '1',
       labelNotes: p?.labelNotes?.join(', ') ?? '',
       // a scan in "Add bag" that found nothing arrives as ?barcode=
       barcode: p?.barcode ?? router.current.query.barcode ?? '',
@@ -48,7 +49,7 @@
 
   function pick(c: CatalogProductDto): void {
     picked = c;
-    form = { ...fromProduct(productFromCatalog(c)), barcode: form.barcode };
+    form = { ...fromProduct(productFromCatalog(c)), barcode: form.barcode, favourite: form.favourite };
   }
   let saving = $state(false);
 
@@ -77,6 +78,7 @@
       roastFor: form.roastFor,
       isBlend: form.isBlend,
       decaf: form.decaf,
+      favourite: form.favourite,
       labelNotes: splitList(form.labelNotes),
       barcode,
     };
@@ -101,7 +103,7 @@
   }
 </script>
 
-<PageHeader title={id ? t('products.editTitle') : t('products.add')} back={id ? `/products/${id}` : '/bags'} />
+<PageHeader title={id ? t('products.editTitle') : t('products.add')} back={id ? `/products/${id}` : router.current.query.then === 'bag' ? '/bags' : '/products'} />
 
 <form class="stack" onsubmit={submit}>
   {#if picked}
@@ -112,6 +114,10 @@
   {:else if !id}
     <CatalogPicker onpick={pick} />
   {/if}
+  <div class="card">
+    <label class="check"><input type="checkbox" bind:checked={form.favourite} data-testid="product-favourite" />{t('product.favourite')}</label>
+    <p class="small muted">{t('product.favouriteHint')}</p>
+  </div>
   <div class="card">
     <label class="field"><span>{t('product.roaster')}</span><input required bind:value={form.roaster} autocomplete="off" /></label>
     <label class="field"><span>{t('product.name')}</span><input required bind:value={form.name} autocomplete="off" /></label>

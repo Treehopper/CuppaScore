@@ -259,7 +259,9 @@
     "add": "Produkt hinzufügen",
     "editTitle": "Produkt bearbeiten",
     "empty": "Noch keine Produkte.",
-    "bagsCount": "{count, plural, one {# Tüte} other {# Tüten}}"
+    "bagsCount": "{count, plural, one {# Tüte} other {# Tüten}}",
+    "addFavourite": "Favorit hinzufügen",
+    "favouritesHint": "Schon Lieblingskaffees? Füge sie hinzu, ohne erst eine Tüte zu kaufen – die Empfehlungen gehen von ihnen aus."
   },
   "product": {
     "roaster": "Rösterei",
@@ -277,7 +279,11 @@
     "isBlend": "Mischung",
     "decaf": "Entkoffeiniert",
     "labelNotes": "Geschmacksnoten auf dem Etikett",
-    "unknown": "Unbekanntes Produkt"
+    "unknown": "Unbekanntes Produkt",
+    "favourite": "Favorit",
+    "favouriteHint": "Zählt für Empfehlungen als Kaffee, den du magst – auch ohne bewertete Tasse.",
+    "favouriteOn": "Zu deinen Favoriten hinzugefügt",
+    "favouriteOff": "Aus deinen Favoriten entfernt"
   },
   "stats": {
     "score": "Mehr-davon-Wert",
@@ -444,7 +450,12 @@
     "region": "Wo kaufst du Kaffee?",
     "regionText": "Mit einer Region wählst du Bohnen lokaler Röstereien aus, statt sie abzutippen.",
     "regionMunich": "Rund 200 Kaffees von Röstereien in und um München, auch offline.",
-    "regionNone": "Du trägst jeden Kaffee selbst ein. Das kannst du in den Einstellungen ändern."
+    "regionNone": "Du trägst jeden Kaffee selbst ein. Das kannst du in den Einstellungen ändern.",
+    "favourites": "Kaffees, die du schon liebst?",
+    "favouritesText": "Füge jetzt deine Lieblingskaffees hinzu, damit die Empfehlungen von deinem Geschmack ausgehen – ohne erst eine Tüte zu kaufen und zu bewerten.",
+    "favouritesList": "Deine Favoriten",
+    "favouritesManual": "Nicht im Katalog? Füge ihn später unter Tüten → Produkte → Favorit hinzufügen hinzu.",
+    "favouriteRemove": "{name} entfernen"
   },
   "reminder": {
     "label": "Erinnerung",
@@ -535,7 +546,8 @@
     "manualHint": "Nicht dabei? Füll die Felder selbst aus.",
     "picked": "Aus dem Katalog: {title}",
     "unpick": "Entfernen",
-    "updatedToast": "Katalog aktualisiert: {added} neu, {updated} geändert"
+    "updatedToast": "Katalog aktualisiert: {added} neu, {updated} geändert",
+    "noMatchOnly": "Nichts gefunden."
   },
   "barcode": {
     "scan": "Barcode scannen",

@@ -2,6 +2,7 @@ import {
   aggregate,
   catalogProductFeatures,
   exploreDims,
+  FAVOURITE_P,
   featureVector,
   isDecaf,
   methodMatch,
@@ -43,7 +44,7 @@ export interface RecommendationView {
 
 export interface RecommendationsView {
   items: RecommendationView[];
-  /** products with a score that shaped the profile; < 5 means "cold start" (README §7.4) */
+  /** products with a score or favourites that shaped the profile; < 5 means "cold start" (README §7.4) */
   ratedProducts: number;
   coldStart: boolean;
 }
@@ -82,7 +83,7 @@ export interface RecoInputs {
   agg: AggregateOptions;
 }
 
-/** Your products as recommender inputs: vector + current combined preference. */
+/** Your products as recommender inputs: vector + current combined preference (a favourite without cups counts as liked). */
 export function ratedProducts(i: Pick<RecoInputs, 'products' | 'ratings' | 'catalog' | 'agg'>): RatedProduct[] {
   const catalog = new Map(i.catalog.map((c) => [c.id, c]));
   return i.products
@@ -98,7 +99,7 @@ export function ratedProducts(i: Pick<RecoInputs, 'products' | 'ratings' | 'cata
           advancedCount: sum?.byLevel.advanced ?? 0,
         }),
       );
-      return { productId: p.id, catalogId: p.catalogId, vector, p: sum?.currentScore ?? null, dims: exploreDims(vector) };
+      return { productId: p.id, catalogId: p.catalogId, vector, p: sum?.currentScore ?? (p.favourite ? FAVOURITE_P : null), dims: exploreDims(vector) };
     });
 }
 

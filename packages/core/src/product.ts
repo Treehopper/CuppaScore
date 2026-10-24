@@ -24,6 +24,8 @@ export const ProductFields = z.object({
   isBlend: z.boolean().default(false),
   labelNotes: z.array(z.string().max(60)).max(30).default([]),
   decaf: z.boolean().default(false),
+  /** one of your favourite coffees: counts as liked for recommendations until it has ratings of its own */
+  favourite: z.boolean().default(false),
   barcode: z.string().max(32).nullable().default(null),
   /** MediaStore reference (README §8.3). */
   photoMediaId: Id.nullable().default(null),

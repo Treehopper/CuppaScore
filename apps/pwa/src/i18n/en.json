@@ -259,7 +259,9 @@
     "add": "Add product",
     "editTitle": "Edit product",
     "empty": "No products yet.",
-    "bagsCount": "{count, plural, one {# bag} other {# bags}}"
+    "bagsCount": "{count, plural, one {# bag} other {# bags}}",
+    "addFavourite": "Add favourite",
+    "favouritesHint": "Already have favourite coffees? Add them without buying a bag first – recommendations start from them."
   },
   "product": {
     "roaster": "Roaster",
@@ -277,7 +279,11 @@
     "isBlend": "Blend",
     "decaf": "Decaf",
     "labelNotes": "Tasting notes on the label",
-    "unknown": "Unknown product"
+    "unknown": "Unknown product",
+    "favourite": "Favourite",
+    "favouriteHint": "Counts as a coffee you like for recommendations, even before you've rated a cup.",
+    "favouriteOn": "Added to your favourites",
+    "favouriteOff": "Removed from your favourites"
   },
   "stats": {
     "score": "More-of-this score",
@@ -444,7 +450,12 @@
     "region": "Where do you buy coffee?",
     "regionText": "With a region, you can pick beans from local roasters instead of typing them in.",
     "regionMunich": "About 200 coffees from Munich-area roasters, also offline.",
-    "regionNone": "Enter every coffee yourself. You can change this in Settings."
+    "regionNone": "Enter every coffee yourself. You can change this in Settings.",
+    "favourites": "Coffees you already love?",
+    "favouritesText": "Add your favourite coffees now, so recommendations start from your taste – no need to buy and rate a bag first.",
+    "favouritesList": "Your favourites",
+    "favouritesManual": "Not in the catalog? Add it later under Bags → Products → Add favourite.",
+    "favouriteRemove": "Remove {name}"
   },
   "reminder": {
     "label": "Reminder",
@@ -535,7 +546,8 @@
     "manualHint": "Not listed? Fill in the fields yourself.",
     "picked": "From the catalog: {title}",
     "unpick": "Clear",
-    "updatedToast": "Catalog updated: {added} new, {updated} changed"
+    "updatedToast": "Catalog updated: {added} new, {updated} changed",
+    "noMatchOnly": "Nothing found."
   },
   "barcode": {
     "scan": "Scan barcode",

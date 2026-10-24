@@ -259,7 +259,9 @@
     "add": "Añadir producto",
     "editTitle": "Editar producto",
     "empty": "Aún no hay productos.",
-    "bagsCount": "{count, plural, one {# bolsa} other {# bolsas}}"
+    "bagsCount": "{count, plural, one {# bolsa} other {# bolsas}}",
+    "addFavourite": "Añadir favorito",
+    "favouritesHint": "¿Ya tienes cafés favoritos? Añádelos sin comprar antes una bolsa: las recomendaciones parten de ellos."
   },
   "product": {
     "roaster": "Tostador",
@@ -277,7 +279,11 @@
     "isBlend": "Mezcla",
     "decaf": "Descafeinado",
     "labelNotes": "Notas de cata de la etiqueta",
-    "unknown": "Producto desconocido"
+    "unknown": "Producto desconocido",
+    "favourite": "Favorito",
+    "favouriteHint": "Cuenta como un café que te gusta para las recomendaciones, aunque no hayas valorado ninguna taza.",
+    "favouriteOn": "Añadido a tus favoritos",
+    "favouriteOff": "Eliminado de tus favoritos"
   },
   "stats": {
     "score": "Puntuación «más de esto»",
@@ -444,7 +450,12 @@
     "region": "¿Dónde compras café?",
     "regionText": "Con una región eliges granos de tostadores locales en lugar de escribirlos.",
     "regionMunich": "Unos 200 cafés de tostadores de Múnich y alrededores, también sin conexión.",
-    "regionNone": "Introduces cada café tú mismo. Puedes cambiarlo en Ajustes."
+    "regionNone": "Introduces cada café tú mismo. Puedes cambiarlo en Ajustes.",
+    "favourites": "¿Cafés que ya te encantan?",
+    "favouritesText": "Añade ahora tus cafés favoritos para que las recomendaciones partan de tu gusto, sin tener que comprar y valorar antes una bolsa.",
+    "favouritesList": "Tus favoritos",
+    "favouritesManual": "¿No está en el catálogo? Añádelo luego en Bolsas → Productos → Añadir favorito.",
+    "favouriteRemove": "Quitar {name}"
   },
   "reminder": {
     "label": "Recordatorio",
@@ -535,7 +546,8 @@
     "manualHint": "¿No aparece? Rellena tú los campos.",
     "picked": "Del catálogo: {title}",
     "unpick": "Quitar",
-    "updatedToast": "Catálogo actualizado: {added} nuevos, {updated} cambiados"
+    "updatedToast": "Catálogo actualizado: {added} nuevos, {updated} cambiados",
+    "noMatchOnly": "No se ha encontrado nada."
   },
   "barcode": {
     "scan": "Escanear código de barras",

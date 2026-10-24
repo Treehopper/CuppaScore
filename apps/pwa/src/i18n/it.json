@@ -259,7 +259,9 @@
     "add": "Aggiungi prodotto",
     "editTitle": "Modifica prodotto",
     "empty": "Ancora nessun prodotto.",
-    "bagsCount": "{count, plural, one {# sacchetto} other {# sacchetti}}"
+    "bagsCount": "{count, plural, one {# sacchetto} other {# sacchetti}}",
+    "addFavourite": "Aggiungi preferito",
+    "favouritesHint": "Hai già dei caffè preferiti? Aggiungili senza comprare prima un sacchetto: i consigli partono da lì."
   },
   "product": {
     "roaster": "Torrefazione",
@@ -277,7 +279,11 @@
     "isBlend": "Miscela",
     "decaf": "Decaffeinato",
     "labelNotes": "Note di degustazione in etichetta",
-    "unknown": "Prodotto sconosciuto"
+    "unknown": "Prodotto sconosciuto",
+    "favourite": "Preferito",
+    "favouriteHint": "Conta come caffè che ti piace per i consigli, anche senza tazze valutate.",
+    "favouriteOn": "Aggiunto ai preferiti",
+    "favouriteOff": "Rimosso dai preferiti"
   },
   "stats": {
     "score": "Punteggio «di più»",
@@ -444,7 +450,12 @@
     "region": "Dove compri il caffè?",
     "regionText": "Con una regione scegli i chicchi delle torrefazioni locali invece di digitarli.",
     "regionMunich": "Circa 200 caffè delle torrefazioni di Monaco e dintorni, anche offline.",
-    "regionNone": "Inserisci ogni caffè da solo. Puoi cambiarlo nelle Impostazioni."
+    "regionNone": "Inserisci ogni caffè da solo. Puoi cambiarlo nelle Impostazioni.",
+    "favourites": "Caffè che ami già?",
+    "favouritesText": "Aggiungi ora i tuoi caffè preferiti, così i consigli partono dai tuoi gusti, senza dover prima comprare e valutare un sacchetto.",
+    "favouritesList": "I tuoi preferiti",
+    "favouritesManual": "Non è nel catalogo? Aggiungilo più tardi in Sacchetti → Prodotti → Aggiungi preferito.",
+    "favouriteRemove": "Rimuovi {name}"
   },
   "reminder": {
     "label": "Promemoria",
@@ -535,7 +546,8 @@
     "manualHint": "Non c'è? Compila tu i campi.",
     "picked": "Dal catalogo: {title}",
     "unpick": "Rimuovi",
-    "updatedToast": "Catalogo aggiornato: {added} nuovi, {updated} modificati"
+    "updatedToast": "Catalogo aggiornato: {added} nuovi, {updated} modificati",
+    "noMatchOnly": "Nessun risultato."
   },
   "barcode": {
     "scan": "Scansiona codice a barre",

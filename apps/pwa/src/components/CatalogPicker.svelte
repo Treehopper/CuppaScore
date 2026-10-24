@@ -5,8 +5,8 @@
   import { originNames, originText } from '../lib/catalog';
   import { query } from '../lib/query.svelte';
 
-  /** Searchable list over the region catalog (F4); the form prefills itself from the picked entry. */
-  let { onpick }: { onpick: (c: CatalogProductDto) => void } = $props();
+  /** Searchable list over the region catalog (F4); the form prefills itself from the picked entry. `form = false`: no form below to fall back to. */
+  let { onpick, form = true }: { onpick: (c: CatalogProductDto) => void; form?: boolean } = $props();
 
   const uid = $props.id();
   const info = query(() => api().getCatalogInfo(), ['catalog']);
@@ -51,7 +51,7 @@
     />
     {#if debounced && results.data}
       {#if results.data.length === 0}
-        <p class="small muted" role="status">{t('catalog.noMatch')}</p>
+        <p class="small muted" role="status">{form ? t('catalog.noMatch') : t('catalog.noMatchOnly')}</p>
       {:else}
         <ul class="list results" aria-label={t('catalog.results')}>
           {#each results.data as c (c.id)}
@@ -68,7 +68,7 @@
         </ul>
       {/if}
     {/if}
-    <p class="small muted">{t('catalog.manualHint')}</p>
+    {#if form}<p class="small muted">{t('catalog.manualHint')}</p>{/if}
   </div>
 {/if}
 

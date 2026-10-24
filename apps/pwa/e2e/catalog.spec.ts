@@ -58,6 +58,10 @@ test('choosing no region in the welcome flow loads no catalog', async ({ page })
   await page.getByRole('button', { name: 'Not now' }).click();
   await page.getByRole('radio', { name: /No region/ }).check();
   await page.getByRole('button', { name: 'Next' }).click();
+  // favourites: no catalog to search, only the hint to add them by hand later
+  await expect(page.getByText('Not in the catalog?')).toBeVisible();
+  await expect(page.getByTestId('catalog-picker')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Next' }).click();
   await page.getByRole('button', { name: 'Next' }).click();
   await page.getByRole('button', { name: 'Not now' }).click();
   await expect(page).toHaveURL(/#\/log$/);

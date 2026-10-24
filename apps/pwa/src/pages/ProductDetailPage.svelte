@@ -5,8 +5,10 @@
   import StatsPanel from '../components/StatsPanel.svelte';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
+  import { showError } from '../lib/errors';
   import { methodLabel } from '../lib/labels';
   import { query } from '../lib/query.svelte';
+  import { toasts } from '../lib/toast.svelte';
 
   let { id }: { id: string } = $props();
 
@@ -15,6 +17,15 @@
   const bags = query(() => api().listBags({ productId: id }), ['bags', 'ratings']);
   const stats = query(() => api().getProductStats(id, { includeOutliers }), ['ratings', 'settings']);
   const ratings = query(() => api().listRatings({ productId: id }), ['ratings']);
+
+  async function toggleFavourite(on: boolean): Promise<void> {
+    try {
+      await api().updateProduct(id, { favourite: on });
+      toasts.show(t(on ? 'product.favouriteOn' : 'product.favouriteOff'));
+    } catch (e) {
+      showError(e);
+    }
+  }
 
   const bagLabel = (bagId: string): string => bags.data?.find((b) => b.bag.id === bagId)?.bag.label || t('bags.unnamed');
 </script>
@@ -25,6 +36,14 @@
   {@const p = product.data}
   <PageHeader title={p.name} back="/products">
     {#snippet actions()}
+      <button
+        type="button"
+        class="btn-ghost icon-btn fav"
+        aria-pressed={p.favourite}
+        aria-label={t('product.favourite')}
+        onclick={() => toggleFavourite(!p.favourite)}
+        data-testid="favourite-toggle"><span aria-hidden="true">{p.favourite ? '♥' : '♡'}</span></button
+      >
       <a class="btn btn-ghost icon-btn" href={`#/products/${id}/edit`} aria-label={t('common.edit')}><Icon name="edit" /></a>
     {/snippet}
   </PageHeader>
@@ -69,6 +88,10 @@
 {/if}
 
 <style>
+  .fav {
+    font-size: 1.5rem;
+    color: var(--accent);
+  }
   .head {
     justify-content: space-between;
   }

@@ -1,10 +1,12 @@
 <script lang="ts">
-  import type { CatalogRegion, ReminderRule } from '@cuplog/api';
+  import type { CatalogProductDto, CatalogRegion, ReminderRule } from '@cuplog/api';
+  import CatalogPicker from '../components/CatalogPicker.svelte';
   import Icon from '../components/Icon.svelte';
   import LanguagePicker from '../components/LanguagePicker.svelte';
   import ThemePicker from '../components/ThemePicker.svelte';
   import { t } from '../i18n/i18n.svelte';
   import { api } from '../lib/api';
+  import { productFromCatalog } from '../lib/catalog';
   import { BREW_METHODS, RATING_LEVELS, SUGGESTED_REMINDER_RULES, type BrewMethod, type RatingLevel } from '../lib/domain';
   import { downloadText } from '../lib/download';
   import { showError } from '../lib/errors';
@@ -13,12 +15,12 @@
   import { router } from '../lib/router.svelte';
 
   /** First launch (README §9.1): short, skippable; everything can be changed in Settings. */
-  type Step = 'hello' | 'install' | 'region' | 'gear' | 'reminders';
+  type Step = 'hello' | 'install' | 'region' | 'favourites' | 'gear' | 'reminders';
 
   // decided once: installing mid-flow shouldn't make the card vanish under the user
   const steps: Step[] = install.standalone
-    ? ['hello', 'region', 'gear', 'reminders']
-    : ['hello', 'install', 'region', 'gear', 'reminders'];
+    ? ['hello', 'region', 'favourites', 'gear', 'reminders']
+    : ['hello', 'install', 'region', 'favourites', 'gear', 'reminders'];
   let index = $state(0);
   const step = $derived(steps[index]!);
 
@@ -38,6 +40,28 @@
   // region catalog (F4): Munich by default
   let region = $state<CatalogRegion | null | undefined>(undefined);
   const regionNow = $derived(region === undefined ? (settings.data?.catalogRegion ?? 'munich') : region);
+
+  // favourites: coffees you already love, picked from the catalog without a bag (recommendations start from them)
+  const products = query(() => api().listProducts(), ['products']);
+  const favourites = $derived((products.data ?? []).map((v) => v.product).filter((p) => p.favourite && !p.deletedAt));
+
+  async function addFavourite(c: CatalogProductDto): Promise<void> {
+    try {
+      const mine = products.data?.find((v) => v.product.catalogId === c.id && !v.product.deletedAt);
+      if (mine) await api().updateProduct(mine.product.id, { favourite: true });
+      else await api().addProduct({ ...productFromCatalog(c), favourite: true });
+    } catch (e) {
+      showError(e);
+    }
+  }
+
+  async function removeFavourite(id: string): Promise<void> {
+    try {
+      await api().updateProduct(id, { favourite: false });
+    } catch (e) {
+      showError(e);
+    }
+  }
 
   // reminders: the four suggestions shown on the card, times editable inline
   const SHOWN = ['rem_1', 'rem_2', 'rem_3', 'rem_6'];
@@ -162,6 +186,29 @@
         {/each}
       </fieldset>
     </section>
+  {:else if step === 'favourites'}
+    <section class="stack" aria-labelledby="w-fav">
+      <h1 id="w-fav">{t('welcome.favourites')}</h1>
+      <p>{t('welcome.favouritesText')}</p>
+      <CatalogPicker onpick={addFavourite} form={false} />
+      {#if favourites.length}
+        <h2 class="label">{t('welcome.favouritesList')}</h2>
+        <ul class="list favs" data-testid="welcome-favourites">
+          {#each favourites as p (p.id)}
+            <li class="card fav">
+              <span><span class="heart" aria-hidden="true">♥</span> {p.roaster} – {p.name}</span>
+              <button
+                type="button"
+                class="btn-ghost icon-btn"
+                aria-label={t('welcome.favouriteRemove', { name: p.name })}
+                onclick={() => removeFavourite(p.id)}><Icon name="close" /></button
+              >
+            </li>
+          {/each}
+        </ul>
+      {/if}
+      <p class="small muted">{t('welcome.favouritesManual')}</p>
+    </section>
   {:else if step === 'gear'}
     <section class="stack" aria-labelledby="w-gear">
       <h1 id="w-gear">{t('welcome.gear')}</h1>
@@ -265,6 +312,19 @@
     gap: 0.5rem;
     align-items: center;
     justify-content: space-between;
+  }
+  .favs {
+    gap: 0.5rem;
+  }
+  .fav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+  }
+  .heart {
+    color: var(--accent);
   }
   .cal {
     justify-self: start;

@@ -59,6 +59,8 @@ export interface RecoOptions {
 
 export const LIKED_P = 0.2;
 export const DISLIKED_P = -0.2;
+/** preference of a favourite you haven't rated yet: a clear like, below a run of 5-star cups */
+export const FAVOURITE_P = 0.6;
 
 export function pricePerKg(p: Pick<CatalogProduct, 'priceEur' | 'weightG'>): number | null {
   return p.priceEur !== null && p.weightG ? (p.priceEur / p.weightG) * 1000 : null;
