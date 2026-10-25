@@ -25,7 +25,7 @@
   {#if rec.explanation.kind === 'explore'}<span class="badge explore">{t('discover.somethingDifferent')}</span>{/if}
   <p class="why" data-testid="reco-why">{whyText(rec)}</p>
   <p class="small muted">
-    {[originText(c), c.process ? t(`process.${c.process}`) : null, c.roastLevel ? t(`roastLevel.${c.roastLevel}`) : null].filter(Boolean).join(' · ')}
+    {[originText(c), c.process ? t(`process.${c.process}`) : null, c.roastLevel ? t(`roastLevel.${c.roastLevel}`) : null, c.roastFor.map((r) => t(`roastFor.${r}`)).join(', ')].filter(Boolean).join(' · ')}
   </p>
   {#if c.tastingNotes.length}<p class="small"><em>{c.tastingNotes.join(', ')}</em></p>{/if}
   <p class="small">

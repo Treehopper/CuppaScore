@@ -559,5 +559,76 @@
     "invalid": "Not a valid EAN/UPC number.",
     "unknown": "New barcode: add the coffee once, next time the scan finds it.",
     "found": "Found: {title}"
+  },
+  "dim": {
+    "flavour": {
+      "fruity": "fruity notes",
+      "floral": "floral notes",
+      "chocolate": "chocolate notes",
+      "nutty": "nutty notes",
+      "caramel": "caramel sweetness",
+      "spice": "spicy notes",
+      "earthy": "earthy notes",
+      "citrus": "citrus notes"
+    },
+    "sensory": {
+      "acidity": "similar acidity",
+      "sweetness": "similar sweetness",
+      "body": "similar body",
+      "bitterness": "similar bitterness"
+    },
+    "roast": {
+      "1": "light roast",
+      "2": "medium roast",
+      "3": "dark roast"
+    },
+    "roastFor": "roasted for {use}",
+    "origin": {
+      "eastAfrica": "East African origin",
+      "centralAmerica": "Central American origin",
+      "southAmerica": "South American origin",
+      "asiaPacific": "Asia-Pacific origin",
+      "blend": "a blend"
+    }
+  },
+  "discover": {
+    "forYou": "For you",
+    "wishlistTab": "Wishlist ({count})",
+    "filters": "Filters",
+    "filterUse": "Good for",
+    "any": "Any",
+    "filterRoaster": "Roaster",
+    "filterPrice": "Price",
+    "upTo": "up to €{price}/kg",
+    "decaf": "Include decaf",
+    "coldStart": "Rate or favourite a few more coffees for better suggestions ({n} of {total}).",
+    "none": "Nothing matches these filters.",
+    "wishlistEmpty": "Your wishlist is empty. Tap “Wishlist” on a suggestion to keep it here.",
+    "noCatalog": "Recommendations come from the region catalog, and none is loaded.",
+    "toSettings": "Load a catalog in Settings",
+    "match": "{pct} % match",
+    "matchHint": "How close this coffee is to your taste profile",
+    "somethingDifferent": "Something different",
+    "perKg": "{price}/kg",
+    "noPrice": "No price listed",
+    "wish": "Wishlist",
+    "wishlisted": "On wishlist",
+    "addBag": "Bought it",
+    "shop": "Shop",
+    "map": "Map",
+    "dismiss": "Not for me",
+    "wishAdded": "Saved to your wishlist",
+    "wishRemoved": "Removed from your wishlist",
+    "dismissed": "Hidden from suggestions",
+    "why": {
+      "similar": "Like {product}: {features}",
+      "profile": "Fits your taste: {features}",
+      "profileShort": "Fits your taste",
+      "explore": "Something new for you: {feature}",
+      "coldStart": "Suits how you brew: {features}",
+      "coldStartShort": "A pick from the catalog"
+    },
+    "restore": "Show hidden coffees again",
+    "restored": "Hidden coffees are back"
   }
 }

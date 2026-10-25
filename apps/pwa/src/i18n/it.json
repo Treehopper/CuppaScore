@@ -559,5 +559,76 @@
     "invalid": "Numero EAN/UPC non valido.",
     "unknown": "Nuovo codice: inserisci il caffè una volta, la prossima scansione lo troverà.",
     "found": "Trovato: {title}"
+  },
+  "dim": {
+    "flavour": {
+      "fruity": "note fruttate",
+      "floral": "note floreali",
+      "chocolate": "note di cioccolato",
+      "nutty": "note di frutta secca",
+      "caramel": "dolcezza di caramello",
+      "spice": "note speziate",
+      "earthy": "note terrose",
+      "citrus": "note agrumate"
+    },
+    "sensory": {
+      "acidity": "acidità simile",
+      "sweetness": "dolcezza simile",
+      "body": "corpo simile",
+      "bitterness": "amarezza simile"
+    },
+    "roast": {
+      "1": "tostatura chiara",
+      "2": "tostatura media",
+      "3": "tostatura scura"
+    },
+    "roastFor": "tostato per {use}",
+    "origin": {
+      "eastAfrica": "origine est-africana",
+      "centralAmerica": "origine centroamericana",
+      "southAmerica": "origine sudamericana",
+      "asiaPacific": "origine Asia-Pacifico",
+      "blend": "una miscela"
+    }
+  },
+  "discover": {
+    "forYou": "Per te",
+    "wishlistTab": "Lista desideri ({count})",
+    "filters": "Filtri",
+    "filterUse": "Adatto per",
+    "any": "Tutti",
+    "filterRoaster": "Torrefazione",
+    "filterPrice": "Prezzo",
+    "upTo": "fino a {price} €/kg",
+    "decaf": "Includi decaffeinati",
+    "coldStart": "Valuta o aggiungi ai preferiti qualche altro caffè per consigli migliori ({n} di {total}).",
+    "none": "Nessun risultato con questi filtri.",
+    "wishlistEmpty": "La lista desideri è vuota. Tocca “Salva” su un consiglio per tenerlo qui.",
+    "noCatalog": "I consigli vengono dal catalogo regionale, ma non ne è caricato nessuno.",
+    "toSettings": "Carica un catalogo nelle Impostazioni",
+    "match": "{pct} % affinità",
+    "matchHint": "Quanto questo caffè è vicino al tuo profilo di gusto",
+    "somethingDifferent": "Qualcosa di diverso",
+    "perKg": "{price}/kg",
+    "noPrice": "Prezzo non indicato",
+    "wish": "Salva",
+    "wishlisted": "Salvato",
+    "addBag": "Comprato",
+    "shop": "Negozio",
+    "map": "Mappa",
+    "dismiss": "Non fa per me",
+    "wishAdded": "Salvato nella lista desideri",
+    "wishRemoved": "Rimosso dalla lista desideri",
+    "dismissed": "Nascosto dai consigli",
+    "why": {
+      "similar": "Come {product}: {features}",
+      "profile": "Adatto ai tuoi gusti: {features}",
+      "profileShort": "Adatto ai tuoi gusti",
+      "explore": "Qualcosa di nuovo per te: {feature}",
+      "coldStart": "Adatto a come prepari il caffè: {features}",
+      "coldStartShort": "Una scelta dal catalogo"
+    },
+    "restore": "Mostra di nuovo i caffè nascosti",
+    "restored": "I caffè nascosti sono tornati"
   }
 }

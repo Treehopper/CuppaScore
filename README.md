@@ -685,7 +685,7 @@ Detail level expands below the stars: strength ①–⑤, profile sliders, each 
 1. **Bags:** list grouped by status. Each card shows the robust score, n cups, freshness and expiry badge. Tap → bag detail with rating timeline, excluded outliers and per-method breakdown.
 2. **Products:** all products ever bought, ranked by bean score, with bag-to-bag comparison.
 3. **Stats / Insights:** taste-profile radar chart, context effects (meal, time of day, method), personal freshness curve, cost per cup, rating distribution.
-4. **Discover:** recommendation cards (score, why-text, price/kg, where to buy, map link), filters, wishlist, "something different" slot.
+4. **Discover:** recommendation cards (score, why-text, price/kg, where to buy, map link, "Bought it" → Add bag prefilled), filters, wishlist, "something different" slot, "Not for me" with Undo.
 5. **Add bag:** scan barcode → catalog match → confirm roast/expiry date → done. Manual entry fallback.
 6. **Settings:** theme, language, owned brew methods, **default rating level**, rating-level weights (Advanced), **reminders** (list of rules with toggles, add rule, quiet hours, pause until …, "next reminder: tomorrow 10:00", test notification), half-life slider, outlier method (MAD / trimmed / off), reminders, export/import, catalog version + "check for update".
 7. **Venues:** café list with venue ranking per drink type, visit count and "same as last time".

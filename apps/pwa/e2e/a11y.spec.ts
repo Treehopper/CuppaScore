@@ -15,6 +15,7 @@ const ROUTES = [
   '#/settings',
   '#/welcome',
   '#/stats',
+  '#/discover',
 ];
 
 async function seed(page: Page): Promise<void> {
@@ -46,7 +47,7 @@ async function scan(page: Page, where: string): Promise<void> {
 
 for (const theme of THEMES) {
   test(`axe: no WCAG A/AA violations in ${theme}`, async ({ page }) => {
-    test.setTimeout(60_000); // ~13 axe scans
+    test.setTimeout(120_000); // ~25 axe scans
     await page.addInitScript((th) => {
       localStorage.setItem('cuplog:prefs', JSON.stringify({ theme: th }));
     }, theme);
@@ -57,7 +58,7 @@ for (const theme of THEMES) {
     }
     // every welcome card
     await page.goto('./#/welcome');
-    for (const [i, name] of ['Next', 'Not now', 'Next'].entries()) {
+    for (const [i, name] of ['Next', 'Not now', 'Next', 'Next'].entries()) {
       await page.getByRole('button', { name }).click();
       await scan(page, `welcome card ${i + 2} (${theme})`);
     }

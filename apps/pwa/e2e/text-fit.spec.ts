@@ -111,7 +111,7 @@ for (const locale of ['de', 'en-XA']) {
       expect(await textProblems(page)).toEqual([]);
     });
 
-    for (const path of ['#/products/new', '#/bags/new', '#/settings', '#/bags', '#/ratings', '#/stats', '#/venues']) {
+    for (const path of ['#/products/new', '#/bags/new', '#/settings', '#/bags', '#/ratings', '#/stats', '#/venues', '#/discover']) {
       test(path, async ({ page }) => {
         await page.goto('./#/bags');
         await useLocale(page);

@@ -559,5 +559,76 @@
     "invalid": "No es un número EAN/UPC válido.",
     "unknown": "Código nuevo: añade el café una vez y el próximo escaneo lo encontrará.",
     "found": "Encontrado: {title}"
+  },
+  "dim": {
+    "flavour": {
+      "fruity": "notas afrutadas",
+      "floral": "notas florales",
+      "chocolate": "notas de chocolate",
+      "nutty": "notas a frutos secos",
+      "caramel": "dulzor a caramelo",
+      "spice": "notas especiadas",
+      "earthy": "notas terrosas",
+      "citrus": "notas cítricas"
+    },
+    "sensory": {
+      "acidity": "acidez similar",
+      "sweetness": "dulzor similar",
+      "body": "cuerpo similar",
+      "bitterness": "amargor similar"
+    },
+    "roast": {
+      "1": "tueste claro",
+      "2": "tueste medio",
+      "3": "tueste oscuro"
+    },
+    "roastFor": "tostado para {use}",
+    "origin": {
+      "eastAfrica": "origen de África oriental",
+      "centralAmerica": "origen centroamericano",
+      "southAmerica": "origen sudamericano",
+      "asiaPacific": "origen Asia-Pacífico",
+      "blend": "una mezcla"
+    }
+  },
+  "discover": {
+    "forYou": "Para ti",
+    "wishlistTab": "Lista de deseos ({count})",
+    "filters": "Filtros",
+    "filterUse": "Ideal para",
+    "any": "Todos",
+    "filterRoaster": "Tostador",
+    "filterPrice": "Precio",
+    "upTo": "hasta {price} €/kg",
+    "decaf": "Incluir descafeinados",
+    "coldStart": "Valora o marca como favoritos algunos cafés más para mejores sugerencias ({n} de {total}).",
+    "none": "Nada coincide con estos filtros.",
+    "wishlistEmpty": "Tu lista de deseos está vacía. Toca «Guardar» en una sugerencia para tenerla aquí.",
+    "noCatalog": "Las recomendaciones salen del catálogo regional y no hay ninguno cargado.",
+    "toSettings": "Carga un catálogo en Ajustes",
+    "match": "{pct} % afinidad",
+    "matchHint": "Cuánto se acerca este café a tu perfil de gusto",
+    "somethingDifferent": "Algo diferente",
+    "perKg": "{price}/kg",
+    "noPrice": "Sin precio",
+    "wish": "Guardar",
+    "wishlisted": "Guardado",
+    "addBag": "Comprado",
+    "shop": "Tienda",
+    "map": "Mapa",
+    "dismiss": "No es para mí",
+    "wishAdded": "Guardado en tu lista de deseos",
+    "wishRemoved": "Eliminado de tu lista de deseos",
+    "dismissed": "Oculto de las sugerencias",
+    "why": {
+      "similar": "Como {product}: {features}",
+      "profile": "Encaja con tu gusto: {features}",
+      "profileShort": "Encaja con tu gusto",
+      "explore": "Algo nuevo para ti: {feature}",
+      "coldStart": "Va con tu forma de preparar: {features}",
+      "coldStartShort": "Una selección del catálogo"
+    },
+    "restore": "Volver a mostrar los cafés ocultos",
+    "restored": "Los cafés ocultos han vuelto"
   }
 }

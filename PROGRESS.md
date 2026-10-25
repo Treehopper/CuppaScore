@@ -26,7 +26,7 @@ Owner tested the live M1 build on a phone. These take priority over the mileston
   - note: `Product.favourite` (zod default `false`, no Dexie/bundle migration needed); `ratedProducts` gives an unrated favourite `p = FAVOURITE_P` (0.6, core `recommend.ts`), so it shapes the profile, anchors "similar to …" and counts towards the cold-start threshold; new welcome step "Coffees you already love?" (catalog picker, `form={false}`); Products → *Add favourite* (`#/products/new?favourite=1`), favourite checkbox in the product form, ♥ toggle on the product page, ♥ marker in the list; Add bag reuses the favourite's product by `catalogId`. Uses ♥ glyphs, not `Icon` (the Discover WIP adds a `heart` icon — switch once that's committed)
 
 ## Next up
-- Owner feedback F1–F4 done. Continue with M4 task 34 (Discover screen: list + explanations + filters + wishlist/dismiss + where to buy, D1–D7) on `api().getRecommendations`.
+- Owner feedback F1–F5 done, M4 complete. Next: M5 task 35 (context-specific recommendations, D4).
 
 ## M1 — MVP
 - [x] 1. Monorepo scaffold: pnpm workspace, TS strict base config, empty packages (core, services, api, storage-dexie, catalog-static, contract-tests), Vite + Svelte 5 PWA shell with hash routing, root scripts (`check`, `test`, `build`, `test:e2e`, `catalog:build`), ESLint, dependency-cruiser layer rules, i18n key check stub, Playwright smoke test, `BASE_PATH` support
@@ -105,7 +105,8 @@ _**M3 complete.**_
   - note: `core/recommend.ts` `recommend({candidates, mine, profile, preferredRoastFor, usualPricePerKg, dismissed, rng})`; liked = p ≥ 0.2, disliked = p ≤ −0.2; price penalty 0 up to 125 % of usual €/kg, −0.2 at 200 %; explanation dims are `FEATURE_DIMS` keys (UI translates); cold start (no profile) ranks by method fit — quiz is task 37
 - [x] 33. Services/API: `getRecommendations`, wishlist, dismiss, filters
   - note: `services/recommendations.ts` (`buildRecommendations`, `preferredRoastFor` = espresso/filter methods ≥ 30 % of home cups, `usualPricePerKg` = p75); decaf hidden unless you own a decaf product or `includeDecaf`; recent wishes = last 90 days; `coldStart` = < 5 rated products (quiz task 37); API also has `listWishlist`, `restoreDismissed`, `listCatalogRoasters`
-- [ ] 34. Discover screen
+- [x] 34. Discover screen
+  - note: `#/discover` (`DiscoverPage` + `RecoCard`, why-text in `lib/reco.ts` from `FEATURE_DIMS` keys → `dim.*` i18n; sensory dims read "similar acidity" because shared dims can be low×low); tabs For you / Wishlist (wishlist lists every saved coffee, also sold-out/bought ones without a match %); filters use/roaster/€ per kg/decaf; "Not for me" + Undo (also restores the wishlist), "Show hidden coffees again"; "Bought it" → `#/bags/new?catalog=<id>` prefills the bag; map link = Google Maps search (no key). `e2e/discover.spec.ts` (incl. axe on loaded cards); `#/discover` in a11y + text-fit sweeps (a11y budget 120 s per theme). Env: a stale `vite preview` on :4173 is reused by Playwright — if every e2e test times out on its first heading, check `ss -ltnp | grep 4173` and kill it by pid; a build while a preview server runs leaves a half-written dist (index.html → missing JS). Also fixed CI: flavour lexicon learned German compounds (coverage 167/185) after the newer CSV pushed it over 15 % unmapped. **M4 complete.**
 
 ## M5 — Polish
 - [ ] 35. Context-specific recommendations (D4) in core + UI

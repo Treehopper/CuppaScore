@@ -15,7 +15,7 @@
   import { query } from '../lib/query.svelte';
   import { router } from '../lib/router.svelte';
 
-  /** `initial` → edit; otherwise create (optionally preselecting `?product=`). */
+  /** `initial` → edit; otherwise create (optionally preselecting `?product=` or the catalog entry `?catalog=`). */
   let { initial }: { initial?: BagDto } = $props();
 
   const NEW_PRODUCT = '__new__';
@@ -60,6 +60,10 @@
     if (c.priceEur !== null) form.priceEur = c.priceEur.toFixed(2);
     if (!form.shop.trim()) form.shop = c.roaster;
   }
+
+  // "Bought it" on a Discover card (D6)
+  const catalogId = router.current.query.catalog;
+  if (catalogId && !untrack(() => initial)) api().getCatalogProduct(catalogId).then(pick, showError);
 
   /** Your product for the picked catalog entry: the one you already have, else a new one. */
   async function productForPick(c: CatalogProductDto): Promise<string> {

@@ -559,5 +559,76 @@
     "invalid": "Keine gültige EAN/UPC-Nummer.",
     "unknown": "Neuer Barcode: Trag den Kaffee einmal ein, beim nächsten Scan wird er gefunden.",
     "found": "Gefunden: {title}"
+  },
+  "dim": {
+    "flavour": {
+      "fruity": "fruchtige Noten",
+      "floral": "florale Noten",
+      "chocolate": "Schokoladennoten",
+      "nutty": "nussige Noten",
+      "caramel": "Karamellsüße",
+      "spice": "würzige Noten",
+      "earthy": "erdige Noten",
+      "citrus": "Zitrusnoten"
+    },
+    "sensory": {
+      "acidity": "ähnliche Säure",
+      "sweetness": "ähnliche Süße",
+      "body": "ähnlicher Körper",
+      "bitterness": "ähnliche Bitterkeit"
+    },
+    "roast": {
+      "1": "helle Röstung",
+      "2": "mittlere Röstung",
+      "3": "dunkle Röstung"
+    },
+    "roastFor": "geröstet für {use}",
+    "origin": {
+      "eastAfrica": "aus Ostafrika",
+      "centralAmerica": "aus Mittelamerika",
+      "southAmerica": "aus Südamerika",
+      "asiaPacific": "aus Asien-Pazifik",
+      "blend": "eine Mischung"
+    }
+  },
+  "discover": {
+    "forYou": "Für dich",
+    "wishlistTab": "Wunschliste ({count})",
+    "filters": "Filter",
+    "filterUse": "Geeignet für",
+    "any": "Alle",
+    "filterRoaster": "Rösterei",
+    "filterPrice": "Preis",
+    "upTo": "bis {price} €/kg",
+    "decaf": "Entkoffeiniert einbeziehen",
+    "coldStart": "Bewerte oder favorisiere noch ein paar Kaffees für bessere Vorschläge ({n} von {total}).",
+    "none": "Nichts passt zu diesen Filtern.",
+    "wishlistEmpty": "Deine Wunschliste ist leer. Tippe bei einem Vorschlag auf „Merken“, um ihn hier zu behalten.",
+    "noCatalog": "Empfehlungen kommen aus dem Regionskatalog – es ist keiner geladen.",
+    "toSettings": "Katalog in den Einstellungen laden",
+    "match": "{pct} % Treffer",
+    "matchHint": "Wie nah dieser Kaffee an deinem Geschmacksprofil liegt",
+    "somethingDifferent": "Mal was anderes",
+    "perKg": "{price}/kg",
+    "noPrice": "Kein Preis angegeben",
+    "wish": "Merken",
+    "wishlisted": "Gemerkt",
+    "addBag": "Gekauft",
+    "shop": "Shop",
+    "map": "Karte",
+    "dismiss": "Nichts für mich",
+    "wishAdded": "Auf deiner Wunschliste",
+    "wishRemoved": "Von der Wunschliste entfernt",
+    "dismissed": "Aus den Vorschlägen ausgeblendet",
+    "why": {
+      "similar": "Wie {product}: {features}",
+      "profile": "Passt zu deinem Geschmack: {features}",
+      "profileShort": "Passt zu deinem Geschmack",
+      "explore": "Mal was Neues für dich: {feature}",
+      "coldStart": "Passt zu deiner Zubereitung: {features}",
+      "coldStartShort": "Eine Auswahl aus dem Katalog"
+    },
+    "restore": "Ausgeblendete Kaffees wieder zeigen",
+    "restored": "Ausgeblendete Kaffees sind wieder da"
   }
 }

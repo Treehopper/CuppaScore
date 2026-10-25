@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { RecoQuery } from '@cuplog/api';
+  import type { CatalogProductDto, RecommendationView, RecoQuery } from '@cuplog/api';
   import PageHeader from '../components/PageHeader.svelte';
   import RecoCard from '../components/RecoCard.svelte';
   import { t } from '../i18n/i18n.svelte';
@@ -9,7 +9,7 @@
   import { toasts } from '../lib/toast.svelte';
 
   /** Discover (README §9.3 item 4): recommendations with why-text, filters, wishlist, exploration. */
-  const COLD_START = 5;
+  const COLD_START = 5; // the service's threshold, shown as "n of 5"
   const PRICE_STEPS = [40, 60, 80, 120];
 
   let tab = $state<'forYou' | 'wishlist'>('forYou');
@@ -30,12 +30,19 @@
   const roasters = query(() => api().listCatalogRoasters(), ['catalog']);
   const recs = query(() => api().getRecommendations(q), ['ratings', 'products', 'bags', 'settings', 'catalog']);
   // the wishlist tab shows saved coffees even when they'd be filtered or ranked out
-  const wishlist = query(() => api().getRecommendations({ includeDecaf: true, limit: 500 }), ['settings', 'catalog', 'ratings']);
+  const wishlist = query(() => api().getRecommendations({ includeDecaf: true, limit: 500 }), ['settings', 'catalog', 'ratings', 'products']);
   const saved = query(() => api().listWishlist(), ['settings', 'catalog']);
+  const settings = query(() => api().getSettings(), ['settings']);
+  // every saved coffee, also sold-out or bought ones the recommender leaves out (then without a match)
   const wishItems = $derived.by(() => {
-    const ids = new Set((saved.data ?? []).map((c) => c.id));
-    return (wishlist.data?.items ?? []).filter((r) => ids.has(r.item.id));
+    const recs = new Map((wishlist.data?.items ?? []).map((r) => [r.item.id, r]));
+    return (saved.data ?? []).map((c) => recs.get(c.id) ?? plain(c));
   });
+
+  function plain(c: CatalogProductDto): RecommendationView {
+    const pricePerKg = c.priceEur !== null && c.weightG ? (c.priceEur / c.weightG) * 1000 : null;
+    return { item: c, score: 0, similarity: null, explanation: { kind: 'profile', shared: [] }, similarProduct: null, wishlisted: true, pricePerKg };
+  }
 
   async function wish(id: string, on: boolean): Promise<void> {
     try {
@@ -46,18 +53,29 @@
     }
   }
 
-  async function dismiss(id: string): Promise<void> {
+  async function dismiss(rec: RecommendationView): Promise<void> {
+    const id = rec.item.id;
     try {
       await api().dismissRecommendation(id);
       toasts.show(t('discover.dismissed'), {
         action: {
           label: t('common.undo'),
           run: async () => {
-            const s = await api().getSettings();
-            await api().updateSettings({ dismissed: s.dismissed.filter((x) => x !== id) });
+            await api().updateSettings({ dismissed: (await api().getSettings()).dismissed.filter((x) => x !== id) });
+            // dismissing also took it off the wishlist
+            if (rec.wishlisted) await api().setWishlist(id, true);
           },
         },
       });
+    } catch (e) {
+      showError(e);
+    }
+  }
+
+  async function restore(): Promise<void> {
+    try {
+      await api().restoreDismissed();
+      toasts.show(t('discover.restored'));
     } catch (e) {
       showError(e);
     }
@@ -114,7 +132,7 @@
     </details>
 
     {#if recs.data}
-      {#if recs.data.ratedProducts < COLD_START}
+      {#if recs.data.coldStart}
         <p class="card small" data-testid="cold-start">{t('discover.coldStart', { n: recs.data.ratedProducts, total: COLD_START })}</p>
       {/if}
       {#if recs.data.items.length === 0}
@@ -122,9 +140,12 @@
       {:else}
         <ul class="list" aria-label={t('discover.forYou')}>
           {#each recs.data.items as rec (rec.item.id)}
-            <li><RecoCard {rec} onwish={(on) => wish(rec.item.id, on)} ondismiss={() => dismiss(rec.item.id)} /></li>
+            <li><RecoCard {rec} onwish={(on) => wish(rec.item.id, on)} ondismiss={() => dismiss(rec)} /></li>
           {/each}
         </ul>
+      {/if}
+      {#if settings.data?.dismissed.length}
+        <button type="button" class="btn-ghost small restore" onclick={restore}>{t('discover.restore')}</button>
       {/if}
     {/if}
   {:else if wishItems.length === 0}
@@ -144,6 +165,10 @@
   }
   .filters {
     margin-bottom: var(--gap);
+  }
+  .restore {
+    margin-top: var(--gap);
+    text-decoration: underline;
   }
   .filters summary {
     cursor: pointer;

@@ -3,19 +3,19 @@
   import ReminderBanner from './components/ReminderBanner.svelte';
   import Toasts from './components/Toasts.svelte';
   import UpdateBanner from './components/UpdateBanner.svelte';
-  import { applyLangEffect, t } from './i18n/i18n.svelte';
+  import { applyLangEffect } from './i18n/i18n.svelte';
   import { router } from './lib/router.svelte';
   import { api } from './lib/api';
   import { reminders } from './lib/reminders.svelte';
   import BagDetailPage from './pages/BagDetailPage.svelte';
   import BagFormPage from './pages/BagFormPage.svelte';
   import BagsPage from './pages/BagsPage.svelte';
+  import DiscoverPage from './pages/DiscoverPage.svelte';
   import LogPage from './pages/log/LogPage.svelte';
   import NotFound from './pages/NotFound.svelte';
   import ProductDetailPage from './pages/ProductDetailPage.svelte';
   import ProductFormPage from './pages/ProductFormPage.svelte';
   import ProductsPage from './pages/ProductsPage.svelte';
-  import Placeholder from './pages/Placeholder.svelte';
   import RatingPage from './pages/RatingPage.svelte';
   import RatingsPage from './pages/RatingsPage.svelte';
   import VenuesPage from './pages/VenuesPage.svelte';
@@ -89,7 +89,7 @@
   {:else if section === 'stats'}
     <StatsPage />
   {:else if section === 'discover'}
-    <Placeholder title={t('nav.discover')} />
+    <DiscoverPage />
   {:else if section === 'settings' || section === 'about'}
     <SettingsPage />
   {:else}
