@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@cuplog/contract-tests": "workspace:*",
-    "fake-indexeddb": "^6.2.5",
+    "fake-indexeddb": "^6.2.7",
     "@cuplog/services": "workspace:*"
   }
 }
