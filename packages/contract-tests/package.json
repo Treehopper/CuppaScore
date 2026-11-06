@@ -13,7 +13,7 @@
     "@cuplog/core": "workspace:*",
     "@cuplog/services": "workspace:*",
     "@cuplog/api": "workspace:*",
-    "vitest": "^5.0.5",
+    "vitest": "^5.1.0",
     "@cuplog/storage-dexie": "workspace:*"
   },
   "devDependencies": {
